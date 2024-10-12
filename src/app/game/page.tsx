@@ -1,41 +1,35 @@
 //src/app/page.tsx
 
-"use client";   // Ensures client-side rendering
+"use client";   // Required for client-side rendering
 import { useEffect } from "react";
-import * as Phaser from 'phaser';
-
+import * as Phaser from 'phaser'; // Use the named import
+//import { clearScreenDown } from "readline";
 
 const Game = () => {
   useEffect(() => {
-    // Phaser Game Config
-    const config = {
-      type: Phaser.AUTO,
-      width: 800,
-      height: 600,
-      scene: {
-        preload: function () {
-          // Load assets
+    if (typeof window !== "undefined") {
+      const config = {
+        type: Phaser.AUTO,
+        width: 800,
+        height: 600,
+        scene: {
+          preload: function () {
+            // Load assets
+          },
+          create: function () {
+            // Initialize game objects
+          },
+          update: function () {
+            // Game loop logic
+          },
         },
-        create: function () {
-          // Initialize game objects
-        },
-        update: function () {
-          // Game loop logic
-        },
-      },
-    };
+      };
 
-    // Initialize Phaser Game
-    const game = new Phaser.Game(config);
-
-    // Clean up Phaser instance on component unmount
-    return () => {
-      game.destroy(true);
-    };
+      new Phaser.Game(config);  // Initialize Phaser only on client
+    }
   }, []);
 
-  return <div id="phaser-game"></div>; // Placeholder for the Phaser canvas
+  return <div id="phaser-game"></div>;
 };
 
 export default Game;
-

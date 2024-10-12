@@ -1,13 +1,13 @@
 //src/app/page.tsx
 
-"use client";   // Required for client-side rendering
-import { useEffect } from "react";
-import * as Phaser from 'phaser'; // Use the named import
-//import { clearScreenDown } from "readline";
+"use client"; // Ensures the component is client-side only
+import { useEffect } from 'react';
+import * as Phaser from 'phaser'; // Correct Phaser import
 
 const Game = () => {
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    // Ensure this runs only on the client-side (browser)
+    if (typeof window !== 'undefined') {
       const config = {
         type: Phaser.AUTO,
         width: 800,
@@ -17,15 +17,16 @@ const Game = () => {
             // Load assets
           },
           create: function () {
-            // Initialize game objects
+            // Create game objects
           },
           update: function () {
-            // Game loop logic
+            // Update game objects
           },
         },
       };
 
-      new Phaser.Game(config);  // Initialize Phaser only on client
+      // Create the Phaser game instance
+      new Phaser.Game(config);
     }
   }, []);
 

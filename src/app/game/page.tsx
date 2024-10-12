@@ -2,7 +2,8 @@
 
 "use client";   // Ensures client-side rendering
 import { useEffect } from "react";
-import Phaser from "phaser"; // Import Phaser
+import * as Phaser from 'phaser';
+
 
 const Game = () => {
   useEffect(() => {

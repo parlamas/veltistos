@@ -1,36 +1,13 @@
-//src/app/page.tsx
+// src/app/game/page.tsx
 
-"use client"; // Ensures the component is client-side only
-import { useEffect } from 'react';
-import * as Phaser from 'phaser'; // Correct Phaser import
+"use client";
+import dynamic from 'next/dynamic';
 
-const Game = () => {
-  useEffect(() => {
-    // Ensure this runs only on the client-side (browser)
-    if (typeof window !== 'undefined') {
-      const config = {
-        type: Phaser.AUTO,
-        width: 800,
-        height: 600,
-        scene: {
-          preload: function () {
-            // Load assets
-          },
-          create: function () {
-            // Create game objects
-          },
-          update: function () {
-            // Update game objects
-          },
-        },
-      };
+// Dynamically import the Game component, disabling SSR
+const GameComponent = dynamic(() => import('./Game'), {
+  ssr: false, // Disable server-side rendering for this component
+});
 
-      // Create the Phaser game instance
-      new Phaser.Game(config);
-    }
-  }, []);
-
-  return <div id="phaser-game"></div>;
-};
-
-export default Game;
+export default function Page() {
+  return <GameComponent />;
+}

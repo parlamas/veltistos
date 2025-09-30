@@ -38,7 +38,7 @@ body {
 .topbar {
   max-width: 1120px;             /* adequate logical padding container */
   margin: 0 auto;
-  padding: 12px 24px;             /* top/bottom + left/right padding */
+  padding: 5px 24px;             /* top/bottom + left/right padding */
   display: flex;
   align-items: center;
   justify-content: space-between;

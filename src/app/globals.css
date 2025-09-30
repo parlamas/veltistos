@@ -9,79 +9,75 @@ html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
 }
-:root {
-  --container: 1120px;
-}
+:root { --container: 1120px; }
+* { box-sizing: border-box; }
 body {
-  margin: 0; /* ensure no UA top margin */
+  margin: 0; /* kill UA default margins */
   font-feature-settings: "liga" 1, "kern" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
 /* Better long Greek words wrapping */
-.prose, main, article {
-  hyphens: auto;
-  overflow-wrap: anywhere;
-}
+.prose, main, article { hyphens: auto; overflow-wrap: anywhere; }
+.prose { @apply prose-zinc max-w-none; }
 
-/* Optional: classy default for articles */
-.prose {
-  @apply prose-zinc max-w-none;
-}
-
-/* ====== TopBar (pure CSS so it works even without Tailwind) ====== */
+/* ====== TopBar ====== */
 .topbar-wrap {
-  width: 100%;
+  margin: 0;
+  padding: 0;            /* no extra vertical space */
   background: #fff;
-  /* Keep bottom border on ONE element only */
-  border-bottom: 0;
+  border-bottom: 0;      /* divider lives on .topbar */
 }
 
 .topbar {
-  max-width: 1120px;          /* container width */
+  max-width: 1120px;
   margin: 0 auto;
-  padding: 5px 24px;          /* tighter vertical padding */
+  padding: 4px 20px;     /* tighter vertical padding (↓) */
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 24px;
-
-  /* This is the single divider line */
-  border-bottom: 1px solid #e5e7eb;
+  gap: 16px;
+  border-bottom: 1px solid #e5e7eb; /* single divider line */
   box-shadow: none;
+  min-height: 0;         /* ensure no inherited min-height */
+  line-height: 1;        /* avoid stray extra line space from inline elements */
 }
 
-.left {
+.left, .right {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+  flex: 0 0 auto;
+}
+.center {
+  flex: 1 1 auto;
+  min-width: 0;          /* prevents wrap from width calc */
+  display: flex;
+  justify-content: center;
 }
 
-/* Logo sizing — allow Next/Image inline style to control width */
+/* Logo: big but controlled */
 .logo {
-  max-height: none;
-  width: auto;
+  display: block;        /* removes inline-image baseline gap */
+  width: 320px;          /* fixed display width */
   height: auto;
-  display: block;
+  max-width: 100%;
 }
 
+/* Weather */
 .weather {
   display: flex;
   align-items: flex-start;
   gap: 10px;
 }
-.cloud { height: 28px; width: 28px; }
+.cloud { height: 28px; width: 28px; display: block; }
 .weatherText { line-height: 1.2; }
 .temp { font-size: 14px; font-weight: 600; color: #18181b; }
 .city { color: #71717a; font-weight: 500; }
 .datetime { font-size: 12px; color: #71717a; }
 
-.center {
-  flex: 1;
-  display: flex;
-  justify-content: center;
-}
+/* Search */
 .searchButton {
   display: inline-flex;
   align-items: center;
@@ -112,22 +108,18 @@ body {
 .icon { width: 18px; height: 18px; }
 .icon.muted { color: #71717a; }
 
-.right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
+/* Right */
 .support {
-  background: #dc2626;          /* red-600 */
+  background: #dc2626;
   color: #fff;
   border: none;
   font-weight: 700;
   font-size: 14px;
   padding: 8px 14px;
-  border-radius: 999px;          /* rounded pill */
+  border-radius: 999px;
   cursor: pointer;
 }
-.support:hover { background: #b91c1c; }  /* red-700 */
+.support:hover { background: #b91c1c; }
 .socials {
   display: flex;
   align-items: center;
@@ -145,3 +137,10 @@ body {
   font-size: 12px;
 }
 .smicon { width: 16px; height: 16px; }
+
+/* Responsive: avoid wrap on small screens by hiding weather */
+@media (max-width: 640px) {
+  .topbar { padding: 4px 14px; gap: 12px; }
+  .logo { width: 260px; }    /* scale logo a bit down on xs */
+  .weather { display: none; }
+}

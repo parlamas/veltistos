@@ -1,9 +1,18 @@
-﻿# Never commit keys
-*.pem
-*.ppk
-id_rsa
-id_rsa.pub
-id_ed25519
-id_ed25519.pub
-Kolios08
-Kolios08*
+﻿# Node / Next.js
+node_modules
+.next
+out
+.vercel
+
+# Env
+.env
+.env.*
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS
+.DS_Store
+Thumbs.db

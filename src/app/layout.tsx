@@ -27,13 +27,15 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased text-zinc-900 bg-white">
         <TopBar />
         {/* Zero top padding below the header */}
-        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-0 pb-6">
+        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-0 pb-6 overflow-hidden">
           {children}
         </main>
       </body>
     </html>
   );
 }
+
+
 
 
 

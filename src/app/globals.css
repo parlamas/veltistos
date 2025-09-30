@@ -1,8 +1,8 @@
-﻿@import "tailwindcss";
+﻿/* src/app/globals.css*/
+
+@import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
-
-/* keep your other CSS below (including the .topbar styles) */
 
 /* Greek-friendly text rendering */
 html {
@@ -13,6 +13,7 @@ html {
   --container: 1120px;
 }
 body {
+  margin: 0; /* ensure no UA top margin */
   font-feature-settings: "liga" 1, "kern" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -33,21 +34,36 @@ body {
 .topbar-wrap {
   width: 100%;
   background: #fff;
-  border-bottom: 1px solid #e5e7eb; /* light gray */
+  /* Keep bottom border on ONE element only */
+  border-bottom: 0;
 }
+
 .topbar {
-  max-width: 1120px;             /* adequate logical padding container */
+  max-width: 1120px;          /* container width */
   margin: 0 auto;
-  padding: 5px 24px;             /* top/bottom + left/right padding */
+  padding: 5px 24px;          /* tighter vertical padding */
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
+
+  /* This is the single divider line */
+  border-bottom: 1px solid #e5e7eb;
+  box-shadow: none;
 }
+
 .left {
   display: flex;
   align-items: center;
   gap: 16px;
+}
+
+/* Logo sizing — allow Next/Image inline style to control width */
+.logo {
+  max-height: none;
+  width: auto;
+  height: auto;
+  display: block;
 }
 
 .weather {
@@ -129,28 +145,3 @@ body {
   font-size: 12px;
 }
 .smicon { width: 16px; height: 16px; }
-
-
-.logo {
-  max-height: none;       /* remove the cap */
-  width: auto;
-  height: auto;
-  display: block;
-}
-
-
-.topbar-wrap, .topbar { min-height: 84px; } /* gives the logo some room */
-
-/* Keep bottom border on ONE element only */
-.topbar-wrap {
-  /* background: ...;  */
-  /* Remove any border-bottom here */
-  border-bottom: 0;
-}
-
-.topbar {
-  /* This is the single divider line */
-  border-bottom: 1px solid #e5e7eb; /* adjust color if needed */
-  /* Remove any extra box-shadow that mimics a second bar */
-  box-shadow: none;
-}

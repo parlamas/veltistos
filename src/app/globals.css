@@ -49,12 +49,7 @@ body {
   align-items: center;
   gap: 16px;
 }
-.logo {
-  max-height: 48px;               /* prevents vertical squash */
-  width: auto;                     /* keep aspect ratio */
-  height: auto;
-  object-fit: contain;
-}
+
 .weather {
   display: flex;
   align-items: flex-start;
@@ -136,7 +131,14 @@ body {
 .smicon { width: 16px; height: 16px; }
 
 
-.logo { width: auto; height: auto; max-width: none; display: block; }
+.logo {
+  max-height: none;       /* remove the cap */
+  width: auto;
+  height: auto;
+  display: block;
+}
+
+
 .topbar-wrap, .topbar { min-height: 84px; } /* gives the logo some room */
 
 /* Keep bottom border on ONE element only */

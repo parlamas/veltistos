@@ -26,7 +26,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html lang="el" dir="ltr" className={`${notoSans.variable} ${notoSerif.variable}`}>
       <body className="font-sans antialiased text-zinc-900 bg-white">
         <TopBar />
-        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 py-6">
+        {/* Reduce top padding under the header */}
+        <main className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8 pt-2 pb-6">
           {children}
         </main>
       </body>

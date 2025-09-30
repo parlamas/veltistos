@@ -1,134 +1,34 @@
 ﻿/* src/app/globals.css*/
 
+/* src/app/globals.css */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
 
-/* Greek-friendly text rendering */
+/* ---- Base / Greek-friendly rendering ---- */
+* { box-sizing: border-box; }
 html {
   -webkit-text-size-adjust: 100%;
   text-rendering: optimizeLegibility;
 }
 :root { --container: 1120px; }
-* { box-sizing: border-box; }
+
 body {
-  margin: 0; /* kill UA default margins */
+  margin: 0;
   font-feature-settings: "liga" 1, "kern" 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-}
-
-/* Better long Greek words wrapping */
-.prose, main, article { hyphens: auto; overflow-wrap: anywhere; }
-.prose { @apply prose-zinc max-w-none; }
-
-/* ====== TopBar ====== */
-.topbar-wrap {
-  margin: 0;
-  padding: 0;            /* no extra vertical space */
+  color: rgb(24 24 27); /* zinc-900 */
   background: #fff;
-  border-bottom: 0;      /* divider lives on .topbar */
 }
 
-
-
-.left, .right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  flex: 0 0 auto;
-}
-.center {
-  flex: 1 1 auto;
-  min-width: 0;          /* prevents wrap from width calc */
-  display: flex;
-  justify-content: center;
+/* ---- Content helpers ---- */
+main, article, .prose {
+  hyphens: auto;
+  overflow-wrap: anywhere;
 }
 
-/* Logo: big but controlled */
-.logo {
-  display: block;        /* removes inline-image baseline gap */
-  width: 320px;          /* fixed display width */
-  height: auto;
-  max-width: 100%;
-}
-
-/* Weather */
-.weather {
-  display: flex;
-  align-items: flex-start;
-  gap: 10px;
-}
-.cloud { height: 28px; width: 28px; display: block; }
-.weatherText { line-height: 1.2; }
-.temp { font-size: 14px; font-weight: 600; color: #18181b; }
-.city { color: #71717a; font-weight: 500; }
-.datetime { font-size: 12px; color: #71717a; }
-
-/* Search */
-.searchButton {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 14px;
-  padding: 6px 12px;
-  border-radius: 999px;
-  border: 1px solid #e5e7eb;
-  color: #3f3f46;
-  background: #fff;
-  cursor: pointer;
-}
-.searchButton:hover { background: #fafafa; }
-.searchBox {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  border: 1px solid #e5e7eb;
-  border-radius: 8px;
-  padding: 6px 10px;
-}
-.searchInput {
-  border: none;
-  outline: none;
-  font-size: 14px;
-  min-width: 260px;
-}
-.icon { width: 18px; height: 18px; }
-.icon.muted { color: #71717a; }
-
-/* Right */
-.support {
-  background: #dc2626;
-  color: #fff;
-  border: none;
-  font-weight: 700;
-  font-size: 14px;
-  padding: 8px 14px;
-  border-radius: 999px;
-  cursor: pointer;
-}
-.support:hover { background: #b91c1c; }
-.socials {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  color: #3f3f46;
-}
-.socialCircle {
-  display: grid;
-  place-items: center;
-  width: 32px;
-  height: 32px;
-  border: 1px solid #e5e7eb;
-  border-radius: 999px;
-  font-weight: 900;
-  font-size: 12px;
-}
-.smicon { width: 16px; height: 16px; }
-
-/* Responsive: avoid wrap on small screens by hiding weather */
-@media (max-width: 640px) {
-  .topbar { padding: 4px 14px; gap: 12px; }
-  .logo { width: 260px; }    /* scale logo a bit down on xs */
-  .weather { display: none; }
+/* Optional: nice defaults for rich text blocks */
+.prose {
+  @apply prose-zinc max-w-none;
 }

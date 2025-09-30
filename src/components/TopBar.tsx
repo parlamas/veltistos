@@ -51,15 +51,15 @@ export default function TopBar() {
         {/* LEFT: logo + weather */}
         <div className="left">
           <Link href="/" aria-label="Veltistos - Αρχική">
-            <Image
-              src="/logo.png"
-              alt="Veltistos"
-              width={180}
-              height={44}
-              className="logo"
-              priority
-              sizes="(max-width: 640px) 140px, (max-width: 1024px) 160px, 180px"
-            />
+          <Image
+  src="/logo.png"
+  alt="Veltistos"
+  width={320}
+  height={80}
+  className="logo max-w-none"
+  priority
+  sizes="(max-width: 640px) 220px, (max-width: 1024px) 280px, 320px"
+/>
           </Link>
 
           <div className="weather" aria-label="Καιρός και ώρα">

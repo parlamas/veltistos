@@ -30,19 +30,7 @@ body {
   border-bottom: 0;      /* divider lives on .topbar */
 }
 
-.topbar {
-  max-width: 1120px;
-  margin: 0 auto;
-  padding: 4px 20px;     /* tighter vertical padding (↓) */
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  border-bottom: 1px solid #e5e7eb; /* single divider line */
-  box-shadow: none;
-  min-height: 0;         /* ensure no inherited min-height */
-  line-height: 1;        /* avoid stray extra line space from inline elements */
-}
+
 
 .left, .right {
   display: flex;

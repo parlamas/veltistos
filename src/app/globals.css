@@ -1,3 +1,52 @@
+/* src/app/globals.css*/
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Greek-friendly text rendering */
+html {
+  -webkit-text-size-adjust: 100%;
+  text-rendering: optimizeLegibility;
+}
+:root {
+  --container: 1120px;
+}
+body {
+  font-feature-settings: "liga" 1, "kern" 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Better long Greek words wrapping */
+.prose, main, article {
+  hyphens: auto;
+  overflow-wrap: anywhere;
+}
+
+/* Optional: classy default for articles */
+.prose {
+  @apply prose-zinc max-w-none;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @import "tailwindcss";
 
 :root {

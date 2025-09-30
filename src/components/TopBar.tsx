@@ -10,12 +10,11 @@ export default function TopBar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [now, setNow] = useState<Date>(() => new Date());
 
-  // Update time every minute (on the minute)
-   useEffect(() => {
+  // Simple, precise clock updater
+  useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
-
 
   const tz = "Europe/Athens";
 
@@ -26,7 +25,7 @@ export default function TopBar() {
     })
       .format(now)
       .toUpperCase()
-      .replace("Ί", "Ι"); // visual fix you had
+      .replace("Ί", "Ι");
 
     const dateStr = new Intl.DateTimeFormat("el-GR", {
       day: "2-digit",
@@ -51,15 +50,17 @@ export default function TopBar() {
         {/* LEFT: logo + weather */}
         <div className="left">
           <Link href="/" aria-label="Veltistos - Αρχική">
-          <Image
-  src="/logo.png"
-  alt="Veltistos"
-  width={320}
-  height={80}
-  className="logo max-w-none"
-  priority
-  sizes="(max-width: 640px) 220px, (max-width: 1024px) 280px, 320px"
-/>
+            <Image
+              src="/logo.png"
+              alt="Veltistos"
+              // Large intrinsic size for crispness
+              width={640}
+              height={160}
+              priority
+              className="logo"
+              // 🔒 Force displayed size so it won't appear tiny
+              style={{ width: "320px", height: "auto" }}
+            />
           </Link>
 
           <div className="weather" aria-label="Καιρός και ώρα">
@@ -115,16 +116,44 @@ export default function TopBar() {
         <div className="right">
           <button className="support">Support Veltistos</button>
           <div className="socials" aria-label="Κοινωνικά Δίκτυα">
-            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" title="X" className="socialCircle" aria-label="X">
+            <a
+              href="https://x.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="X"
+              className="socialCircle"
+              aria-label="X"
+            >
               X
             </a>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="socialCircle" aria-label="LinkedIn">
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="LinkedIn"
+              className="socialCircle"
+              aria-label="LinkedIn"
+            >
               <Linkedin className="smicon" aria-hidden="true" />
             </a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" className="socialCircle" aria-label="Facebook">
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Facebook"
+              className="socialCircle"
+              aria-label="Facebook"
+            >
               <Facebook className="smicon" aria-hidden="true" />
             </a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" className="socialCircle" aria-label="Instagram">
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Instagram"
+              className="socialCircle"
+              aria-label="Instagram"
+            >
               <Instagram className="smicon" aria-hidden="true" />
             </a>
           </div>
@@ -133,4 +162,5 @@ export default function TopBar() {
     </header>
   );
 }
+
 

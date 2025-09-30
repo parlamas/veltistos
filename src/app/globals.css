@@ -1,11 +1,8 @@
-﻿@tailwind base;
-@tailwind components;
-@tailwind utilities;
+﻿@import "tailwindcss";
+@plugin "@tailwindcss/typography";
+@plugin "@tailwindcss/forms";
 
-/* your other global styles below ... *//* src/app/globals.css*/
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+/* keep your other CSS below (including the .topbar styles) */
 
 /* Greek-friendly text rendering */
 html {

@@ -1,4 +1,8 @@
-/* src/app/globals.css*/
+﻿@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* your other global styles below ... *//* src/app/globals.css*/
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -180,3 +184,4 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+

@@ -9,9 +9,7 @@ import { Home, ChevronDown } from "lucide-react";
 export default function MainNav() {
   const [elladaOpen, setElladaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [gnoseisOpen, setGnoseisOpen] = useState(false); // ← add this
-}
-
+  const [gnoseisOpen, setGnoseisOpen] = useState(false);
 
   // Toggle from TopBar burger
   useEffect(() => {
@@ -48,7 +46,15 @@ export default function MainNav() {
               aria-expanded={elladaOpen}
               onClick={() => setElladaOpen((v) => !v)}
             >
-              ΕΛΛΑΔΑ<Image src="/flags/30x20-hel-kyp.png" alt="" width={20} height={30} />
+              ΕΛΛΑΔΑ
+              <Image
+                src="/flags/30x20-hel-kyp.png"
+                alt=""
+                width={16}
+                height={11}
+                className="ml-1 inline-block rounded-[2px] ring-1 ring-white/95 ring-offset-[1px] ring-offset-red-600"
+                aria-hidden="true"
+              />
               <ChevronDown className="w-4 h-4" aria-hidden="true" />
             </button>
 
@@ -75,39 +81,37 @@ export default function MainNav() {
           {/* 4) ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ */}
           <li><Link href="/isidoros-parlamas" className="font-semibold hover:opacity-90">Ι. ΠΑΡΛΑΜΑΣ</Link></li>
 
-          {/* 5) ΓΝΩΣΕΙΣ */}
+          {/* 5) ΓΝΩΣΕΙΣ (dropdown) */}
           <li
-  className="relative group before:absolute before:left-0 before:right-0 before:top-full before:h-2 before:content-['']"
-  onMouseEnter={() => setGnoseisOpen(true)}
-  onMouseLeave={() => setGnoseisOpen(false)}
->
-  <button
-    type="button"
-    className="flex items-center gap-1 font-semibold hover:opacity-90"
-    aria-haspopup="menu"
-    aria-expanded={gnoseisOpen}
-    onClick={() => setGnoseisOpen(v => !v)} // click/tap fallback
-  >
-    γνώσεις
-    <ChevronDown className="w-4 h-4" aria-hidden="true" />
-  </button>
+            className="relative group before:absolute before:left-0 before:right-0 before:top-full before:h-2 before:content-['']"
+            onMouseEnter={() => setGnoseisOpen(true)}
+            onMouseLeave={() => setGnoseisOpen(false)}
+          >
+            <button
+              type="button"
+              className="flex items-center gap-1 font-semibold hover:opacity-90"
+              aria-haspopup="menu"
+              aria-expanded={gnoseisOpen}
+              onClick={() => setGnoseisOpen(v => !v)}
+            >
+              γνώσεις
+              <ChevronDown className="w-4 h-4" aria-hidden="true" />
+            </button>
 
-  {/* White dropdown panel with dark text (no hover gap) */}
-  <div
-    className={`absolute left-0 top-full z-20 min-w-[220px] rounded-lg bg-white text-zinc-900 shadow-lg ring-1 ring-zinc-200
-                ${gnoseisOpen ? "block" : "hidden"} group-hover:block`}
-    role="menu"
-    aria-label="Υπομενού: γνώσεις"
-  >
-    <ul className="py-1">
-      <li><Link href="/gnoseis/dialektiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Διαλεκτική</Link></li>
-      <li><Link href="/gnoseis/oristiki"   className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Οριστική</Link></li>
-      <li><Link href="/gnoseis/grammatiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γραμματική</Link></li>
-      <li><Link href="/gnoseis/glosses"    className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γλώσσες</Link></li>
-    </ul>
-  </div>
-</li>
-
+            <div
+              className={`absolute left-0 top-full z-20 min-w-[220px] rounded-lg bg-white text-zinc-900 shadow-lg ring-1 ring-zinc-200
+                          ${gnoseisOpen ? "block" : "hidden"} group-hover:block`}
+              role="menu"
+              aria-label="Υπομενού: γνώσεις"
+            >
+              <ul className="py-1">
+                <li><Link href="/gnoseis/dialektiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Διαλεκτική</Link></li>
+                <li><Link href="/gnoseis/oristiki"   className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Οριστική</Link></li>
+                <li><Link href="/gnoseis/grammatiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γραμματική</Link></li>
+                <li><Link href="/gnoseis/glosses"    className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γλώσσες</Link></li>
+              </ul>
+            </div>
+          </li>
 
           {/* 6) γονείς/μαθητές */}
           <li><Link href="/parents-students" className="font-semibold hover:opacity-90">γονείς / μαθητές</Link></li>
@@ -118,7 +122,7 @@ export default function MainNav() {
           {/* 8) VIDEOS */}
           <li><Link href="/videos" className="font-semibold hover:opacity-90">VIDEOS</Link></li>
 
-          {/* 9) Greek–Israeli Relations (flags, slightly smaller, with white ring) */}
+          {/* 9) Greek–Israeli Relations (flags) */}
           <li>
             <Link
               href="/greek-israeli-relations"
@@ -132,7 +136,7 @@ export default function MainNav() {
             </Link>
           </li>
 
-          {/* 8) Greek–Turkish Relations (flags) */}
+          {/* 10) Greek–Turkish Relations (flags) */}
           <li>
             <Link
               href="/greek-turkish-relations"
@@ -153,24 +157,32 @@ export default function MainNav() {
             <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200">
               <ul className="py-2">
                 <li><Link href="/" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">Αρχική</Link></li>
+
+                {/* ΕΛΛΑΔΑ subtree */}
                 <li className="px-4 py-2 font-semibold">ΕΛΛΑΔΑ</li>
-                <ul className="pb-2">
-                  <li><Link href="/ellada/kypros" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Κύπρος</Link></li>
-                  <li><Link href="/ellada/politiki-paideia" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">ΠολιτικήΠαιδεία</Link></li>
-                  <li><Link href="/ellada/ygeia" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Υγεία</Link></li>
-                  <li><Link href="/ellada/oikonomia" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Οικονομία</Link></li>
-                  <li><Link href="/ellada/athlitismos" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Αθλητισμός</Link></li>
-                </ul>
+                <li>
+                  <ul className="pb-2">
+                    <li><Link href="/ellada/kypros" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Κύπρος</Link></li>
+                    <li><Link href="/ellada/politiki-paideia" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">ΠολιτικήΠαιδεία</Link></li>
+                    <li><Link href="/ellada/ygeia" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Υγεία</Link></li>
+                    <li><Link href="/ellada/oikonomia" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Οικονομία</Link></li>
+                    <li><Link href="/ellada/athlitismos" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Αθλητισμός</Link></li>
+                  </ul>
+                </li>
+
+                {/* γνώσεις subtree */}
+                <li className="px-4 py-2 font-semibold">γνώσεις</li>
+                <li>
+                  <ul className="pb-2">
+                    <li><Link href="/gnoseis/dialektiki" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Διαλεκτική</Link></li>
+                    <li><Link href="/gnoseis/oristiki"   onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Οριστική</Link></li>
+                    <li><Link href="/gnoseis/grammatiki" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Γραμματική</Link></li>
+                    <li><Link href="/gnoseis/glosses"    onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Γλώσσες</Link></li>
+                  </ul>
+                </li>
+
                 <li><Link href="/diethni" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΔΙΕΘΝΗ</Link></li>
                 <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
-                <li className="px-4 py-2 font-semibold">γνώσεις</li>
-<ul className="pb-2">
-  <li><Link href="/gnoseis/dialektiki" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Διαλεκτική</Link></li>
-  <li><Link href="/gnoseis/oristiki"   onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Οριστική</Link></li>
-  <li><Link href="/gnoseis/grammatiki" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Γραμματική</Link></li>
-  <li><Link href="/gnoseis/glosses"    onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Γλώσσες</Link></li>
-</ul>
-
                 <li><Link href="/parents-students" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">γονείς/μαθητές</Link></li>
                 <li><Link href="/ai" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΑΙ</Link></li>
                 <li><Link href="/videos" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">VIDEOS</Link></li>
@@ -184,4 +196,5 @@ export default function MainNav() {
     </nav>
   );
 }
+
 

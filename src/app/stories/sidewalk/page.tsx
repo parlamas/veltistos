@@ -16,7 +16,7 @@ export default function Page() {
         </div>
 
         {/* Read the entire article */}
-        <TTSButton targetSelector="#story-content" lang="el-GR" label="" />
+        <TTSButton targetSelector="#story-content" label="" />
       </header>
 
       <figure className="my-4">

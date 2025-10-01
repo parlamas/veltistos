@@ -126,6 +126,7 @@ export default function MainNav() {
                 </ul>
                 <li><Link href="/diethni" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΔΙΕΘΝΗ</Link></li>
                 <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
+                <li><Link href="/parents-students" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">γονείς / μαθητές</Link></li>
                 <li><Link href="/ai" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΑΙ</Link></li>
                 <li><Link href="/videos" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">VIDEOS</Link></li>
                 <li><Link href="/greek-israeli-relations" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">Ελληνοϊσραηλινές Σχέσεις</Link></li>

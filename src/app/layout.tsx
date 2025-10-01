@@ -3,9 +3,9 @@
 import type { Metadata, Viewport } from "next";
 import TopBar from "@/components/TopBar";
 import MainNav from "@/components/MainNav";
+import Ticker from "@/components/Ticker";
 import { Noto_Sans, Noto_Serif } from "next/font/google";
 import "./globals.css";
-import Ticker from "@/components/Ticker";
 
 const notoSans = Noto_Sans({
   subsets: ["greek", "latin"],
@@ -27,6 +27,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  maximumScale: 1,       // prevent iOS zoom-on-focus + weird scale after rotate
   viewportFit: "cover",
 };
 
@@ -36,11 +37,13 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased text-zinc-900 bg-white">
         <TopBar />
         <MainNav />
-
-<Ticker speedSec={24} /> {/* quick scroll */}
-        <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">{children}</main>
+        <Ticker speedSec={24} /> {/* adjust if you want slower/faster */}
+        <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">
+          {children}
+        </main>
       </body>
     </html>
   );
 }
+
 

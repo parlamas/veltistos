@@ -158,7 +158,7 @@ export default function MainNav() {
 
 
               <ul className="py-2">
-                <li><Link href="/" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">Αρχική</Link></li>
+                <li><Link href="/" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">Αρχική</Link></li>
 
                 {/* ΕΛΛΑΔΑ subtree */}
                 <li className="px-4 py-2 font-semibold text-[13px]">ΕΛΛΑΔΑ</li>

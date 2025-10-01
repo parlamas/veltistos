@@ -1,6 +1,5 @@
 ﻿/* src/app/globals.css*/
 
-/* src/app/globals.css */
 @import "tailwindcss";
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";

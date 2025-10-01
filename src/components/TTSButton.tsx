@@ -11,12 +11,12 @@ export default function TTSButton({
   targetSelector,
   rate = 1,
   label = "Ακρόαση",
-  defaultLang, // ← optional: "el" | "es" | "zh" | "en"
+  defaultLang,
 }: {
   targetSelector: string;
   rate?: number;
   label?: string;
-  defaultLang?: LangKey;
+  defaultLang?: LangKey; // force a preferred default when detection is ambiguous
 }) {
   const synth = typeof window !== "undefined" ? window.speechSynthesis : null;
   const [status, setStatus] = useState<Status>("idle");
@@ -25,37 +25,41 @@ export default function TTSButton({
 
   // Load voices (Chrome populates async)
   useEffect(() => {
-    if (!synth) { setStatus("unavailable"); return; }
+    if (!synth) {
+      setStatus("unavailable");
+      return;
+    }
     const load = () => {
       const v = synth.getVoices();
       if (v && v.length) setVoices(v);
     };
     load();
-    synth.onvoiceschanged = load;
+    // onvoiceschanged is the most compatible way
+    (synth as any).onvoiceschanged = load;
     return () => {
       try { synth.cancel(); } catch {}
-      if (synth) synth.onvoiceschanged = null;
+      if (synth) (synth as any).onvoiceschanged = null;
     };
   }, [synth]);
 
-  // Map first voice per primary language key
+  // Map first voice per primary language key (el, es, zh, en)
   const voiceMap = useMemo(() => {
     const map = new Map<string, SpeechSynthesisVoice>();
     for (const v of voices) {
-      const lang = (v.lang || "").toLowerCase();   // e.g. "es-es"
-      const key = lang.split("-")[0];              // "es"
+      const lang = (v.lang || "").toLowerCase(); // e.g. "es-ES"
+      const key = lang.split("-")[0];            // "es"
       if (!map.has(key)) map.set(key, v);
     }
     return map;
   }, [voices]);
 
-  // Heuristic language detection (Greek, Chinese, Spanish, else English)
+  // Simple language detection
   function detectLang(text: string): LangKey {
-    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";           // CJK
-    if (/[\u0370-\u03FF]/.test(text)) return "el";           // Greek
-    if (/[¡¿]/.test(text)) return "es";                      // Spanish punctuation
+    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";   // CJK
+    if (/[\u0370-\u03FF]/.test(text)) return "el";   // Greek
+    if (/[¡¿]/.test(text)) return "es";              // Spanish punctuation
 
-    // Spanish stopwords (ASCII, no accents). Require at least 2 hits.
+    // Spanish stopwords (ASCII only). Require at least 2 hits.
     const esStop = /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
     let hits = 0;
     text.split(/\s+/).forEach(w => { if (esStop.test(w)) hits++; });
@@ -67,7 +71,7 @@ export default function TTSButton({
   function getText() {
     const el = document.querySelector<HTMLElement>(targetSelector);
     if (!el) return "";
-    // Clone and drop anything marked as "skip" (e.g., share bars)
+    // clone and strip anything we mark as "skip"
     const clone = el.cloneNode(true) as HTMLElement;
     clone.querySelectorAll("[data-tts-skip]").forEach(n => n.remove());
     return clone.innerText.trim();
@@ -97,25 +101,29 @@ export default function TTSButton({
 
   function speakChunks(chunks: string[]) {
     if (!synth) return;
+
     queueRef.current = chunks.map((t) => {
       const u = new SpeechSynthesisUtterance(t);
       u.rate = rate;
 
-      let key: LangKey = detectLang(t);               // detected
-      // If detection says "en" but you prefer Spanish (or another), use defaultLang when available
-      if (key === "en" && defaultLang && voiceMap.get(defaultLang)) {
-        key = defaultLang;
-      }
+      // detect, then optionally override
+      let key: LangKey = detectLang(t);
+      if (key === "en" && defaultLang) key = defaultLang;
 
-      const v =
-        voiceMap.get(key) ||
-        null;
+      // BCP-47 fallback
+      const bcp47 =
+        key === "el" ? "el-GR" :
+        key === "es" ? "es-ES" :
+        key === "zh" ? "zh-CN" :
+        "en-US";
 
-      if (v) {
-        u.voice = v;
-        u.lang = v.lang;
-      }
-      // else: don’t force u.lang → let default engine speak so it never goes silent
+      // Prefer any voice whose lang starts with the key (el, es, zh, en)
+      const v = voices.find(v => (v.lang || "").toLowerCase().startsWith(key)) || voiceMap.get(key) || null;
+
+      // ALWAYS set lang, even if no matching voice, so the engine attempts proper reading
+      u.lang = v?.lang || bcp47;
+      if (v) u.voice = v;
+
       return u;
     });
 
@@ -176,6 +184,7 @@ export default function TTSButton({
         </button>
       )}
 
+      {/* tiny hint if no Greek voice is installed */}
       {!voiceMap.get("el") && <span className="ml-2 text-xs text-zinc-500">(Δεν βρέθηκε ελληνική φωνή)</span>}
     </div>
   );

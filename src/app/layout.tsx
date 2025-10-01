@@ -39,7 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
 <Ticker speedSec={12} /> {/* quick scroll */}
         <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">{children}</main>
-        </main>
       </body>
     </html>
   );

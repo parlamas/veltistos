@@ -23,7 +23,7 @@ export default function MainNav() {
     <nav className="w-full bg-red-600 text-white sticky top-0 z-30" role="navigation" aria-label="Κύριο Μενού">
       <div className="max-w-[1120px] mx-auto px-6">
         {/* Desktop */}
-        <ul className="hidden sm:flex items-center gap-4 md:gap-5 lg:gap-6 h-10 whitespace-nowrap">
+        <ul className="hidden sm:flex items-center gap-3 md:gap-4 lg:gap-5 h-10 whitespace-nowrap text-sm tracking-tight">
           {/* 1) Home */}
           <li>
             <Link href="/" className="flex items-center gap-2 font-semibold hover:opacity-90" aria-label="Αρχική">

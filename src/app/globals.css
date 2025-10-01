@@ -33,4 +33,10 @@ main, article, .prose {
   @apply prose-zinc max-w-none;
 }
 
+/* Smaller fonts in the mobile drawer + landscape small screens */
+@media (max-width: 640px) {
+  .mobile-drawer { font-size: 11px !important; line-height: 1.15 !important; }
+  .mobile-drawer .lvl1 { font-size: 11px !important; }
+  .mobile-drawer .lvl2 { font-size: 10px !important; }
+}
 

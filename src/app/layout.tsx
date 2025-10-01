@@ -38,7 +38,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <TopBar />
         <MainNav />
         <Ticker speedSec={24} /> {/* adjust if you want slower/faster */}
-        <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">
+        <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6">
           {children}
         </main>
       </body>

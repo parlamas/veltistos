@@ -154,9 +154,8 @@ export default function MainNav() {
         {/* Mobile panel */}
         <div className="sm:hidden py-2">
           {mobileOpen && (
-              <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[13px] leading-tight">
-
-
+              
+          <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[13px] leading-tight [text-size-adjust:100%] [-webkit-text-size-adjust:100%]">
               <ul className="py-2">
                 <li><Link href="/" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">Αρχική</Link></li>
 

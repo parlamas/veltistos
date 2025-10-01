@@ -1,7 +1,7 @@
 // src/app/page.tsx
 import SiteGrid from "@/components/SiteGrid";
 import LeftStory from "@/components/LeftStory";
-import LeadCard from "@/components/LeadCard";    // if you’re using center leads
+import LeadCard from "@/components/LeadCard"; // if you’re using center leads
 
 export default function HomePage() {
   return (
@@ -9,9 +9,9 @@ export default function HomePage() {
       left={
         <aside className="space-y-2 lg:sticky lg:top-16">
           <LeftStory
-            href="/story/ellada-1"
-            title="Αριστερά: Νεότερη ενημέρωση για το κύριο θέμα"
-            img="/placeholder.jpg"
+            href="/stories/sidewalk"
+            title="Νέα για τα πεζοδρόμια"
+            img="/sidewalk.jpeg"
             kicker="Ελλάδα"
           />
           <LeftStory
@@ -43,5 +43,4 @@ export default function HomePage() {
     </SiteGrid>
   );
 }
-
 

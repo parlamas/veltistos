@@ -101,12 +101,13 @@ export default function TopBar() {
 
   // (Optional) hook this to your drawer later
   function openMenu() {
-    // e.g., setIsMenuOpen(true)
-    console.log("Open mobile menu");
-  }
+  document.dispatchEvent(new CustomEvent("toggle-mainnav"));
+}
+
 
   return (
-    <header className="w-full bg-white border-b border-zinc-200" role="banner">
+      <header className="w-full bg-white border-b border-zinc-200 z-40 relative" role="banner">
+
       <div className="max-w-[1120px] mx-auto px-6">
         {/* ───────────────── MOBILE: two rows ───────────────── */}
         <div className="sm:hidden py-2">

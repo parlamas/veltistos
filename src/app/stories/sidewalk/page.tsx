@@ -1,4 +1,6 @@
 // src/app/stories/sidewalk/page.tsx
+import ShareBar from "@/components/ShareBar";
+import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/sidewalk";

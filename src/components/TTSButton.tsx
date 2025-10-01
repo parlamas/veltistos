@@ -5,74 +5,78 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import { Volume2, Pause, Square } from "lucide-react";
 
 type Status = "idle" | "speaking" | "paused" | "unavailable";
+type LangKey = "el" | "es" | "zh" | "en";
 
 export default function TTSButton({
   targetSelector,
   rate = 1,
   label = "Ακρόαση",
+  defaultLang, // ← optional: "el" | "es" | "zh" | "en"
 }: {
-  targetSelector: string;   // e.g. "#story-content"
-  rate?: number;            // 0.5–1.5 comfy range
-  label?: string;           // empty string => icon-only
+  targetSelector: string;
+  rate?: number;
+  label?: string;
+  defaultLang?: LangKey;
 }) {
   const synth = typeof window !== "undefined" ? window.speechSynthesis : null;
   const [status, setStatus] = useState<Status>("idle");
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const queueRef = useRef<SpeechSynthesisUtterance[] | null>(null);
 
-  // Load voices (Chrome/Safari populate them async)
+  // Load voices (Chrome populates async)
   useEffect(() => {
     if (!synth) { setStatus("unavailable"); return; }
-
     const load = () => {
       const v = synth.getVoices();
       if (v && v.length) setVoices(v);
     };
-
     load();
     synth.onvoiceschanged = load;
-
     return () => {
       try { synth.cancel(); } catch {}
       if (synth) synth.onvoiceschanged = null;
     };
   }, [synth]);
 
-  // Build quick lookups by primary code ("el", "zh", "es", etc.)
+  // Map first voice per primary language key
   const voiceMap = useMemo(() => {
     const map = new Map<string, SpeechSynthesisVoice>();
     for (const v of voices) {
-      const lang = (v.lang || "").toLowerCase();   // e.g. "el-gr"
-      const key = lang.split("-")[0];              // "el"
+      const lang = (v.lang || "").toLowerCase();   // e.g. "es-es"
+      const key = lang.split("-")[0];              // "es"
       if (!map.has(key)) map.set(key, v);
     }
     return map;
   }, [voices]);
 
-  function detectLang(text: string): "el" | "zh" | "es" | "en" {
-    // CJK block → Chinese
-    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";
-    // Greek block
-    if (/[\u0370-\u03FF]/.test(text)) return "el";
-    // Heuristic for Spanish (accents/ñ/ü)
-    if (/[áéíóúñüÁÉÍÓÚÑÜ]/.test(text)) return "es";
+  // Heuristic language detection (Greek, Chinese, Spanish, else English)
+  function detectLang(text: string): LangKey {
+    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";           // CJK
+    if (/[\u0370-\u03FF]/.test(text)) return "el";           // Greek
+    if (/[¡¿]/.test(text)) return "es";                      // Spanish punctuation
+
+    // Spanish stopwords (ASCII, no accents). Require at least 2 hits.
+    const esStop = /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
+    let hits = 0;
+    text.split(/\s+/).forEach(w => { if (esStop.test(w)) hits++; });
+    if (hits >= 2) return "es";
+
     return "en";
   }
 
   function getText() {
     const el = document.querySelector<HTMLElement>(targetSelector);
     if (!el) return "";
-    return el.innerText.trim();
+    // Clone and drop anything marked as "skip" (e.g., share bars)
+    const clone = el.cloneNode(true) as HTMLElement;
+    clone.querySelectorAll("[data-tts-skip]").forEach(n => n.remove());
+    return clone.innerText.trim();
   }
 
-  // Split into manageable chunks (sentence-ish, supports Chinese “。！？” too)
   function chunk(text: string, maxLen = 300) {
-    const parts = text
-      .replace(/\s+/g, " ")
-      .split(/(?<=[\.\!\?…。！？])\s+/);
+    const parts = text.replace(/\s+/g, " ").split(/(?<=[\.\!\?…。！？])\s+/);
     const out: string[] = [];
     let buf = "";
-
     for (const s of parts) {
       const next = (buf ? buf + " " : "") + s;
       if (next.length > maxLen) {
@@ -93,24 +97,25 @@ export default function TTSButton({
 
   function speakChunks(chunks: string[]) {
     if (!synth) return;
-
-    // Build utterances with per-chunk language when a voice exists
     queueRef.current = chunks.map((t) => {
       const u = new SpeechSynthesisUtterance(t);
       u.rate = rate;
 
-      const langKey = detectLang(t);                 // "el" | "zh" | "es" | "en"
-      const v = voiceMap.get(langKey);               // matching voice if present
+      let key: LangKey = detectLang(t);               // detected
+      // If detection says "en" but you prefer Spanish (or another), use defaultLang when available
+      if (key === "en" && defaultLang && voiceMap.get(defaultLang)) {
+        key = defaultLang;
+      }
+
+      const v =
+        voiceMap.get(key) ||
+        null;
 
       if (v) {
         u.voice = v;
-        u.lang = v.lang;                             // e.g. "el-GR"
-      } else {
-        // No matching voice → DO NOT force u.lang.
-        // Let the default engine speak it so it doesn’t go silent.
-        // (Optional) nudge with navigator.language if you want:
-        // u.lang = navigator.language;
+        u.lang = v.lang;
       }
+      // else: don’t force u.lang → let default engine speak so it never goes silent
       return u;
     });
 
@@ -123,7 +128,7 @@ export default function TTSButton({
       const u = queueRef.current[i++];
       u.onend = next;
       u.onerror = next;
-      synth.speak(u);
+      synth!.speak(u);
     };
 
     setStatus("speaking");
@@ -132,39 +137,18 @@ export default function TTSButton({
 
   function play() {
     if (!synth) return;
-
-    if (status === "paused") {
-      try { synth.resume(); } catch {}
-      setStatus("speaking");
-      return;
-    }
-
+    if (status === "paused") { try { synth.resume(); } catch {} setStatus("speaking"); return; }
     const text = getText();
     if (!text) return;
-
     try { synth.cancel(); } catch {}
-
-    const chunks = chunk(text);
-    speakChunks(chunks);
+    speakChunks(chunk(text));
   }
 
-  function pause() {
-    if (!synth) return;
-    if (status === "speaking") {
-      try { synth.pause(); } catch {}
-      setStatus("paused");
-    }
-  }
-
-  function stop() {
-    if (!synth) return;
-    try { synth.cancel(); } catch {}
-    queueRef.current = null;
-    setStatus("idle");
-  }
+  function pause() { if (synth && status === "speaking") { try { synth.pause(); } catch {} setStatus("paused"); } }
+  function stop()  { if (synth) { try { synth.cancel(); } catch {} queueRef.current = null; setStatus("idle"); } }
 
   const isSpeaking = status === "speaking";
-  const isPaused = status === "paused";
+  const isPaused   = status === "paused";
 
   return (
     <div className="not-prose flex items-center gap-1 text-zinc-700">
@@ -192,11 +176,7 @@ export default function TTSButton({
         </button>
       )}
 
-      {/* Optional hint if no Greek voice is present */}
-      {!voiceMap.get("el") && (
-        <span className="ml-2 text-xs text-zinc-500">(Δεν βρέθηκε ελληνική φωνή)</span>
-      )}
+      {!voiceMap.get("el") && <span className="ml-2 text-xs text-zinc-500">(Δεν βρέθηκε ελληνική φωνή)</span>}
     </div>
   );
 }
-

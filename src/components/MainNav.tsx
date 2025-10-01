@@ -72,16 +72,19 @@ export default function MainNav() {
           {/* 4) ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ */}
           <li><Link href="/isidoros-parlamas" className="font-semibold hover:opacity-90">Ι. ΠΑΡΛΑΜΑΣ</Link></li>
 
-          {/* 5) γονείς/μαθητές */}
+          {/* 5) ΓΝΩΣΕΙΣ */}
+          <li><Link href="/gnoseis" className="font-semibold hover:opacity-90">γνώσεις</Link></li>
+
+          {/* 6) γονείς/μαθητές */}
           <li><Link href="/parents-students" className="font-semibold hover:opacity-90">γονείς / μαθητές</Link></li>
 
-          {/* 6) ΑΙ */}
+          {/* 7) ΑΙ */}
           <li><Link href="/ai" className="font-semibold hover:opacity-90">ΑΙ</Link></li>
 
-          {/* 7) VIDEOS */}
+          {/* 8) VIDEOS */}
           <li><Link href="/videos" className="font-semibold hover:opacity-90">VIDEOS</Link></li>
 
-          {/* 8) Greek–Israeli Relations (flags, slightly smaller, with white ring) */}
+          {/* 9) Greek–Israeli Relations (flags, slightly smaller, with white ring) */}
           <li>
             <Link
               href="/greek-israeli-relations"
@@ -126,6 +129,7 @@ export default function MainNav() {
                 </ul>
                 <li><Link href="/diethni" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΔΙΕΘΝΗ</Link></li>
                 <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
+                <li><Link href="/gnoseis" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">γνώσεις</Link></li>
                 <li><Link href="/parents-students" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">γονείς / μαθητές</Link></li>
                 <li><Link href="/ai" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΑΙ</Link></li>
                 <li><Link href="/videos" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">VIDEOS</Link></li>

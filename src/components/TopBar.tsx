@@ -5,15 +5,74 @@
 import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
-import { Search, Facebook, Linkedin, Instagram } from "lucide-react";
+import {
+  Search,
+  Facebook,
+  Linkedin,
+  Instagram,
+  Sun,
+  Cloud,
+  CloudSun,
+  CloudDrizzle,
+  CloudRain,
+  CloudSnow,
+  CloudFog,
+  CloudLightning,
+  Wind,
+} from "lucide-react";
+
+// Map Open-Meteo weathercode -> Lucide icon
+function iconForOpenMeteo(code: number) {
+  if (code === 0) return Sun; // clear
+  if (code === 1 || code === 2 || code === 3) return CloudSun; // mainly clear → overcast
+  if (code === 45 || code === 48) return CloudFog; // fog
+  if (code >= 51 && code <= 57) return CloudDrizzle; // drizzle
+  if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return CloudRain; // rain
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return CloudSnow; // snow
+  if (code === 95 || code === 96 || code === 99) return CloudLightning; // thunder
+  return Cloud; // fallback
+}
+
+type CurrentWeather = {
+  temp: number;       // °C
+  code: number;       // Open-Meteo weather code
+};
 
 export default function TopBar() {
   const [searchOpen, setSearchOpen] = useState(false);
   const [now, setNow] = useState<Date>(() => new Date());
+  const [weather, setWeather] = useState<CurrentWeather | null>(null);
 
+  // live clock
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
+  }, []);
+
+  // fetch weather for Athens (no key needed)
+  useEffect(() => {
+    let cancelled = false;
+    async function load() {
+      try {
+        const url =
+          "https://api.open-meteo.com/v1/forecast?latitude=37.98&longitude=23.72&current=temperature_2m,weather_code&timezone=Europe%2FAthens";
+        const res = await fetch(url, { cache: "no-store" });
+        const data = await res.json();
+        const temp = data?.current?.temperature_2m;
+        const code = data?.current?.weather_code;
+        if (!cancelled && typeof temp === "number" && typeof code === "number") {
+          setWeather({ temp, code });
+        }
+      } catch {
+        // swallow – we'll just show the fallback icon/temperature if fetch fails
+      }
+    }
+    load();
+    const id = setInterval(load, 10 * 60 * 1000); // refresh every 10 min
+    return () => {
+      cancelled = true;
+      clearInterval(id);
+    };
   }, []);
 
   const tz = "Europe/Athens";
@@ -31,30 +90,30 @@ export default function TopBar() {
     return { weekday: weekdayStr, date: dateStr, time: timeStr };
   }, [now]);
 
+  const WeatherIcon = weather ? iconForOpenMeteo(weather.code) : Cloud;
+
   return (
     <header className="w-full bg-white border-b border-zinc-200" role="banner">
-      {/* py-0 removes vertical padding; no extra height from the container */}
       <div className="max-w-[1120px] mx-auto flex items-center justify-between gap-6 px-6 py-0">
         {/* LEFT: logo + weather */}
         <div className="flex items-center gap-4">
           <Link href="/" aria-label="Veltistos - Αρχική" className="block">
-            {/* block removes baseline gap; width controls final size */}
             <Image
-  src="/logo.svg"
-  alt="Veltistos"
-  width={148}
-  height={60}
-  priority
-  className="block w-[148px] h-[60px] shrink-0"
-/>
-
+              src="/logo.svg"
+              alt="Veltistos"
+              width={148}
+              height={60}
+              priority
+              className="block w-[148px] h-[60px] shrink-0"
+            />
           </Link>
 
           <div className="hidden sm:flex items-start gap-2 text-sm" aria-label="Καιρός και ώρα">
-            <Image src="/cloud.png" alt="" width={28} height={28} className="block" aria-hidden="true" />
+            <WeatherIcon className="w-5 h-5 text-zinc-800" aria-hidden="true" />
             <div className="leading-tight">
               <div className="font-semibold text-zinc-900">
-                26°C <span className="text-zinc-500 font-medium">Αθήνα</span>
+                {typeof weather?.temp === "number" ? Math.round(weather.temp) : "—"}°C{" "}
+                <span className="text-zinc-500 font-medium">Αθήνα</span>
               </div>
               <div className="text-xs text-zinc-500">
                 {weekday} {date} | {time}
@@ -96,18 +155,46 @@ export default function TopBar() {
             Support Veltistos
           </button>
           <div className="flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
-            <a href="https://x.com/" target="_blank" rel="noopener noreferrer" title="X"
-               className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs"
-               aria-label="X">X</a>
-            <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn"
-               className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-               aria-label="LinkedIn"><Linkedin className="w-4 h-4" aria-hidden="true" /></a>
-            <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook"
-               className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-               aria-label="Facebook"><Facebook className="w-4 h-4" aria-hidden="true" /></a>
-            <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram"
-               className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-               aria-label="Instagram"><Instagram className="w-4 h-4" aria-hidden="true" /></a>
+            <a
+              href="https://x.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="X"
+              className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs"
+              aria-label="X"
+            >
+              X
+            </a>
+            <a
+              href="https://www.linkedin.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="LinkedIn"
+              className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
+              aria-label="LinkedIn"
+            >
+              <Linkedin className="w-4 h-4" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.facebook.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Facebook"
+              className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
+              aria-label="Facebook"
+            >
+              <Facebook className="w-4 h-4" aria-hidden="true" />
+            </a>
+            <a
+              href="https://www.instagram.com/"
+              target="_blank"
+              rel="noopener noreferrer"
+              title="Instagram"
+              className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
+              aria-label="Instagram"
+            >
+              <Instagram className="w-4 h-4" aria-hidden="true" />
+            </a>
           </div>
         </div>
       </div>

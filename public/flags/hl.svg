@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20">
+  <rect width="30" height="20" fill="#001F5B"></rect>
+  <!-- white stripes -->
+  <rect y="2.222" width="30" height="2.222" fill="#fff"></rect>
+  <rect y="6.667" width="30" height="2.222" fill="#fff"></rect>
+  <rect y="11.111" width="30" height="2.222" fill="#fff"></rect>
+  <rect y="15.556" width="30" height="2.222" fill="#fff"></rect>
+  <!-- canton -->
+  <rect width="11.111" height="11.111" fill="#001F5B"></rect>
+  <!-- cross -->
+  <rect x="4.444" width="2.222" height="11.111" fill="#fff"></rect>
+  <rect y="4.444" width="11.111" height="2.222" fill="#fff"></rect>
+</svg>

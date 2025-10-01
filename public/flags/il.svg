@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="30" height="20" viewBox="0 0 30 20">
+  <rect width="30" height="20" fill="#fff"></rect>
+  <rect y="2" width="30" height="3" fill="#0038B8"></rect>
+  <rect y="15" width="30" height="3" fill="#0038B8"></rect>
+  <!-- Star of David -->
+  <g fill="none" stroke="#0038B8" stroke-width="1.8" transform="translate(15 10)">
+    <polygon points="0,-4.8 4.156,2.4 -4.156,2.4"></polygon>
+    <polygon points="0,4.8 -4.156,-2.4 4.156,-2.4"></polygon>
+  </g>
+</svg>

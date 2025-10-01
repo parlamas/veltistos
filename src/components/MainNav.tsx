@@ -4,6 +4,8 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { Home, ChevronDown } from "lucide-react";
+import Image from "next/image";
+
 
 export default function MainNav() {
   const [elladaOpen, setElladaOpen] = useState(false);
@@ -86,6 +88,31 @@ export default function MainNav() {
 
           {/* 6) VIDEOS */}
           <li><Link href="/videos" className="font-semibold hover:opacity-90">VIDEOS</Link></li>
+
+          {/* 7) Greek–Israeli Relations (flags) */}
+<li>
+  <Link
+    href="/greek-israeli-relations"
+    className="hover:opacity-90 flex items-center gap-1"
+    aria-label="Greek–Israeli Relations"
+  >
+    <Image src="/flags/hl.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+    <Image src="/flags/il.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+  </Link>
+</li>
+
+{/* 8) Greek–Turkish Relations (flags) */}
+<li>
+  <Link
+    href="/greek-turkish-relations"
+    className="hover:opacity-90 flex items-center gap-1"
+    aria-label="Greek–Turkish Relations"
+  >
+    <Image src="/flags/hl.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+    <Image src="/flags/tr.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+  </Link>
+</li>
+
         </ul>
 
         {/* Mobile collapsible menu (opens from TopBar burger) */}
@@ -108,6 +135,9 @@ export default function MainNav() {
                 <li><Link href="/isidoros-parlamas" className="block px-4 py-2 hover:bg-zinc-50">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
                 <li><Link href="/ai" className="block px-4 py-2 hover:bg-zinc-50">ΑΙ</Link></li>
                 <li><Link href="/videos" className="block px-4 py-2 hover:bg-zinc-50">VIDEOS</Link></li>
+                <li><Link href="/greek-israeli-relations" className="block px-4 py-2 hover:bg-zinc-50">Ελληνοϊσραηλινές Σχέσεις</Link></li>
+                <li><Link href="/greek-turkish-relations" className="block px-4 py-2 hover:bg-zinc-50">Ελληνοτουρκικές Σχέσεις</Link></li>
+
               </ul>
             </div>
           )}

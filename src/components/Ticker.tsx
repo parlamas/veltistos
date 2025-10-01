@@ -6,7 +6,7 @@ import { useEffect, useMemo, useState } from "react";
 
 type TickerItem = { title: string; url: string };
 
-export default function Ticker({ speedSec = 15 }: { speedSec?: number }) {
+export default function Ticker({ speedSec = 36 }: { speedSec?: number }) {
   const [items, setItems] = useState<TickerItem[]>([]);
 
   useEffect(() => {
@@ -62,9 +62,15 @@ export default function Ticker({ speedSec = 15 }: { speedSec?: number }) {
           {/* Ticker track */}
           <div className="relative overflow-hidden flex-1">
             <div
-              className="inline-flex items-center gap-8 whitespace-nowrap will-change-transform"
-              style={{ animation: `ticker ${speedSec}s linear infinite` }}
-            >
+  className="inline-flex items-center gap-8 whitespace-nowrap will-change-transform"
+  style={{
+    animationName: "ticker",
+    animationDuration: `${speedSec}s`,
+    animationTimingFunction: "linear",
+    animationIterationCount: "infinite",
+  }}
+>
+
               {loop.map((it, i) => (
                 <Link
                   href={it.url || "#"}
@@ -79,13 +85,10 @@ export default function Ticker({ speedSec = 15 }: { speedSec?: number }) {
             {/* keyframes local to this component */}
             <style jsx>{`
               @keyframes ticker {
-                0% {
-                  transform: translateX(0);
-                }
-                100% {
-                  transform: translateX(-50%);
-                }
-              }
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
             `}</style>
           </div>
         </div>

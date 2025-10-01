@@ -5,6 +5,7 @@ import TopBar from "@/components/TopBar";
 import MainNav from "@/components/MainNav";
 import { Noto_Sans, Noto_Serif } from "next/font/google";
 import "./globals.css";
+import Ticker from "@/components/Ticker";
 
 const notoSans = Noto_Sans({
   subsets: ["greek", "latin"],
@@ -35,8 +36,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased text-zinc-900 bg-white">
         <TopBar />
         <MainNav />
-        <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">
-          {children}
+
+<Ticker speedSec={12} /> {/* quick scroll */}
+        <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">{children}</main>
         </main>
       </body>
     </html>

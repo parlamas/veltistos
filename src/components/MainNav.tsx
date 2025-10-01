@@ -9,6 +9,10 @@ import { Home, ChevronDown } from "lucide-react";
 export default function MainNav() {
   const [elladaOpen, setElladaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [gnoseisOpen, setGnoseisOpen] = useState(false); // ← add this
+  ...
+}
+
 
   // Toggle from TopBar burger
   useEffect(() => {

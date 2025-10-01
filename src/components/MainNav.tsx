@@ -52,7 +52,7 @@ export default function MainNav() {
     aria-expanded={elladaOpen}
     onClick={() => setElladaOpen(v => !v)} // tap/click fallback
   >
-    ΕΛΛΑΔΑ<Image src="/flags/helkyp.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+    ΕΛΛΑΔΑ<Image src="/flags/hel-kyp.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
 
     <ChevronDown className="w-4 h-4" aria-hidden="true" />
   </button>

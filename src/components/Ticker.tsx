@@ -2,12 +2,16 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 
 type TickerItem = { title: string; url: string };
 
 export default function Ticker({ speedSec = 36 }: { speedSec?: number }) {
   const [items, setItems] = useState<TickerItem[]>([]);
+
+  // measure-driven animation timing
+  const trackRef = useRef<HTMLDivElement>(null);
+  const [durationSec, setDurationSec] = useState(speedSec);
 
   useEffect(() => {
     let cancelled = false;
@@ -35,8 +39,31 @@ export default function Ticker({ speedSec = 36 }: { speedSec?: number }) {
 
   const data = items.length ? items : fallback;
 
-  // Duplicate once so the animation can loop seamlessly (-50% translate)
+  // Duplicate once so the animation can loop seamlessly.
+  // (Keyframes below move -100%, so the travel distance is the full width.)
   const loop = [...data, ...data];
+
+  // Recalculate duration based on actual rendered width, so pixel speed stays constant
+  useEffect(() => {
+    function recalc() {
+      const el = trackRef.current;
+      if (!el) return;
+
+      // With translateX(-100%) we travel the full element width per loop.
+      const travelPx = el.scrollWidth;
+
+      // Tweak these two to your taste:
+      const PX_PER_SEC = 60; // smaller = slower overall (try 50–70)
+      const MIN_SEC = 16;    // never faster than this (seconds per loop)
+
+      const sec = Math.max(MIN_SEC, travelPx / PX_PER_SEC);
+      setDurationSec(sec);
+    }
+
+    recalc();
+    window.addEventListener("resize", recalc);
+    return () => window.removeEventListener("resize", recalc);
+  }, [data.length]); // rerun when feed size changes
 
   const now = useMemo(() => {
     const d = new Date();
@@ -62,15 +89,15 @@ export default function Ticker({ speedSec = 36 }: { speedSec?: number }) {
           {/* Ticker track */}
           <div className="relative overflow-hidden flex-1">
             <div
-  className="inline-flex items-center gap-8 whitespace-nowrap will-change-transform"
-  style={{
-    animationName: "ticker",
-    animationDuration: `${speedSec}s`,
-    animationTimingFunction: "linear",
-    animationIterationCount: "infinite",
-  }}
->
-
+              ref={trackRef}
+              className="inline-flex items-center gap-8 whitespace-nowrap will-change-transform"
+              style={{
+                animationName: "ticker",
+                animationDuration: `${durationSec}s`,
+                animationTimingFunction: "linear",
+                animationIterationCount: "infinite",
+              }}
+            >
               {loop.map((it, i) => (
                 <Link
                   href={it.url || "#"}
@@ -85,10 +112,9 @@ export default function Ticker({ speedSec = 36 }: { speedSec?: number }) {
             {/* keyframes local to this component */}
             <style jsx>{`
               @keyframes ticker {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(-100%); }
-}
-
+                0%   { transform: translateX(0); }
+                100% { transform: translateX(-100%); }
+              }
             `}</style>
           </div>
         </div>

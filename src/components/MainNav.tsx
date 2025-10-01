@@ -98,8 +98,23 @@ export default function MainNav() {
     className="hover:opacity-90 flex items-center gap-1"
     aria-label="Greek–Israeli Relations"
   >
-    <Image src="/flags/hl.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
-    <Image src="/flags/il.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+    <Image
+  src="/flags/hl.svg"             // if your file is still hl.svg, keep it as "/flags/hl.svg"
+  alt=""
+  width={18}
+  height={12}
+  className="block rounded-[2px] ring-1 ring-white/95 ring-offset-[1.5px] ring-offset-red-600"
+  aria-hidden="true"
+/>
+<Image
+  src="/flags/il.svg"
+  alt=""
+  width={18}
+  height={12}
+  className="block rounded-[2px] ring-1 ring-white/95 ring-offset-[1.5px] ring-offset-red-600"
+  aria-hidden="true"
+/>
+
   </Link>
 </li>
 
@@ -110,26 +125,39 @@ export default function MainNav() {
     className="hover:opacity-90 flex items-center gap-1"
     aria-label="Greek–Turkish Relations"
   >
-    <Image src="/flags/hl.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
-    <Image src="/flags/tr.svg" alt="" width={18} height={12} className="block" aria-hidden="true" />
+    <Image
+  src="/flags/hl.svg"             // if your file is still hl.svg, keep it as "/flags/hl.svg"
+  alt=""
+  width={18}
+  height={12}
+  className="block rounded-[2px] ring-1 ring-white/95 ring-offset-[1.5px] ring-offset-red-600"
+  aria-hidden="true"
+/>
+<Image
+  src="/flags/tr.svg"
+  alt=""
+  width={18}
+  height={12}
+  className="block rounded-[2px] ring-1 ring-white/95 ring-offset-[1.5px] ring-offset-red-600"
+  aria-hidden="true"
+/>
   </Link>
 </li>
 
         </ul>
 
-        {/* Mobile collapsible menu (opens from TopBar burger) */}
+        
+
+{/* Mobile panel — no socials here */}
         <div className="sm:hidden py-2">
           {mobileOpen && (
             <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200">
               <ul className="py-2">
-                <li>
-                  <Link href="/" className="block px-4 py-2 hover:bg-zinc-50">Αρχική</Link>
-                </li>
+                <li><Link href="/" className="block px-4 py-2 hover:bg-zinc-50">Αρχική</Link></li>
                 <li className="px-4 py-2 font-semibold">ΕΛΛΑΔΑ</li>
                 <ul className="pb-2">
                   <li><Link href="/ellada/kypros" className="block px-8 py-2 hover:bg-zinc-50">Κύπρος</Link></li>
-                  <li><Link href="/ellada/politiki" className="block px-8 py-2 hover:bg-zinc-50">Πολιτική</Link></li>
-                  <li><Link href="/ellada/paideia" className="block px-8 py-2 hover:bg-zinc-50">Παιδεία</Link></li>
+                  <li><Link href="/ellada/politiki-paideia" className="block px-8 py-2 hover:bg-zinc-50">ΠολιτικήΠαιδεία</Link></li>
                   <li><Link href="/ellada/ygeia" className="block px-8 py-2 hover:bg-zinc-50">Υγεία</Link></li>
                   <li><Link href="/ellada/oikonomia" className="block px-8 py-2 hover:bg-zinc-50">Οικονομία</Link></li>
                   <li><Link href="/ellada/athlitismos" className="block px-8 py-2 hover:bg-zinc-50">Αθλητισμός</Link></li>
@@ -140,10 +168,11 @@ export default function MainNav() {
                 <li><Link href="/videos" className="block px-4 py-2 hover:bg-zinc-50">VIDEOS</Link></li>
                 <li><Link href="/greek-israeli-relations" className="block px-4 py-2 hover:bg-zinc-50">Ελληνοϊσραηλινές Σχέσεις</Link></li>
                 <li><Link href="/greek-turkish-relations" className="block px-4 py-2 hover:bg-zinc-50">Ελληνοτουρκικές Σχέσεις</Link></li>
-
               </ul>
             </div>
           )}
+
+
         </div>
       </div>
     </nav>

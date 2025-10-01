@@ -1,6 +1,7 @@
 // src/app/layout.tsx
 
 import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import TopBar from "@/components/TopBar";
 import MainNav from "@/components/MainNav";
 import { Noto_Sans, Noto_Serif } from "next/font/google";
@@ -21,6 +22,12 @@ const notoSerif = Noto_Serif({
 export const metadata: Metadata = {
   title: "Veltistos",
   description: "News site",
+};
+
+export const viewport: Viewport = {
+  width: "device-width",
+  initialScale: 1,
+  viewportFit: "cover",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

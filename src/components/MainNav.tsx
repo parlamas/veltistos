@@ -70,15 +70,18 @@ export default function MainNav() {
           <li><Link href="/diethni" className="font-semibold hover:opacity-90">ΔΙΕΘΝΗ</Link></li>
 
           {/* 4) ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ */}
-          <li><Link href="/isidoros-parlamas" className="font-semibold hover:opacity-90">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
+          <li><Link href="/isidoros-parlamas" className="font-semibold hover:opacity-90">Ι. ΠΑΡΛΑΜΑΣ</Link></li>
 
-          {/* 5) ΑΙ */}
+          {/* 5) γονείς/μαθητές */}
+          <li><Link href="/parents-students" className="font-semibold hover:opacity-90">γονείς / μαθητές</Link></li>
+
+          {/* 6) ΑΙ */}
           <li><Link href="/ai" className="font-semibold hover:opacity-90">ΑΙ</Link></li>
 
-          {/* 6) VIDEOS */}
+          {/* 7) VIDEOS */}
           <li><Link href="/videos" className="font-semibold hover:opacity-90">VIDEOS</Link></li>
 
-          {/* 7) Greek–Israeli Relations (flags, slightly smaller, with white ring) */}
+          {/* 8) Greek–Israeli Relations (flags, slightly smaller, with white ring) */}
           <li>
             <Link
               href="/greek-israeli-relations"

@@ -21,7 +21,7 @@ export default function Page() {
   return (
     <article className="prose prose-zinc max-w-none">
       <header className="mb-4">
-        <h1 className="font-serif text-3xl font-bold leading-tight">{title}</h1>
+        <h1 className="font-serif text-2xl font-bold leading-tight">{title}</h1>
         <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
       </header>
 

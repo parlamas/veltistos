@@ -27,11 +27,11 @@ export default function MainNav() {
         <ul className="hidden sm:flex items-center gap-3 md:gap-4 lg:gap-5 h-10 whitespace-nowrap text-sm tracking-tight">
           {/* 1) Home */}
           <li>
-            <Link href="/" className="flex items-center gap-2 font-semibold hover:opacity-90" aria-label="Αρχική">
-              <Home className="w-5 h-5" aria-hidden="true" />
-              <span className="hidden sm:inline">Αρχική</span>
-            </Link>
-          </li>
+  <Link href="/" className="flex items-center hover:opacity-90" aria-label="Αρχική" title="Αρχική">
+    <Home className="w-5 h-5" aria-hidden="true" />
+  </Link>
+</li>
+
 
           {/* 2) ΕΛΛΑΔΑ with dropdown (white panel, no hover gap) */}
           <li
@@ -157,7 +157,18 @@ export default function MainNav() {
               
           <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[12px] leading-[1.2] [text-size-adjust:100%] [-webkit-text-size-adjust:100%]">
               <ul className="py-2">
-                <li><Link href="/" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">Αρχική</Link></li>
+                <li>
+  <Link
+    href="/"
+    onClick={closeMobile}
+    className="block p-2 hover:bg-zinc-50"
+    aria-label="Αρχική"
+    title="Αρχική"
+  >
+    <Home className="w-5 h-5" aria-hidden="true" />
+  </Link>
+</li>
+
 
                 {/* ΕΛΛΑΔΑ subtree */}
                 <li className="px-3 py-1.5 font-semibold text-[12px]">ΕΛΛΑΔΑ</li>

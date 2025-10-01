@@ -1,5 +1,4 @@
 // src/components/TopBar.tsx
-
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
@@ -99,15 +98,13 @@ export default function TopBar() {
 
   const WeatherIcon = weather ? iconForOpenMeteo(weather.code) : Cloud;
 
-  // (Optional) hook this to your drawer later
+  // Hook for your main nav drawer (burger)
   function openMenu() {
-  document.dispatchEvent(new CustomEvent("toggle-mainnav"));
-}
-
+    document.dispatchEvent(new CustomEvent("toggle-mainnav"));
+  }
 
   return (
-      <header className="w-full bg-white border-b border-zinc-200 z-40 relative" role="banner">
-
+    <header className="w-full bg-white border-b border-zinc-200 z-40 relative" role="banner">
       <div className="max-w-[1120px] mx-auto px-6">
         {/* ───────────────── MOBILE: two rows ───────────────── */}
         <div className="sm:hidden py-2">
@@ -128,7 +125,7 @@ export default function TopBar() {
             </button>
           </div>
 
-          {/* Row 2: either compact controls OR the search field (when open) */}
+          {/* Row 2: compact controls OR search field */}
           {!searchOpen ? (
             <div className="mt-2 flex items-center justify-between gap-3">
               {/* 1) Magnifying glass only */}
@@ -151,7 +148,7 @@ export default function TopBar() {
                 </div>
               </div>
 
-              {/* 3) Date (weekday + DD/MM/YYYY) */}
+              {/* 3) Date */}
               <div className="min-w-0 flex-1 text-right text-xs text-zinc-500">
                 {weekday} {date}
               </div>
@@ -173,7 +170,8 @@ export default function TopBar() {
                 autoFocus
                 type="text"
                 placeholder="Αναζήτηση…"
-                className="text-sm outline-none border-none flex-1 bg-transparent"
+                // 16px on small screens prevents iOS auto-zoom
+                className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
                 onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
                 aria-label="Πεδίο αναζήτησης"
               />
@@ -188,7 +186,7 @@ export default function TopBar() {
           )}
         </div>
 
-        {/* ───────────────── DESKTOP: original single row ───────────────── */}
+        {/* ───────────────── DESKTOP: single row ───────────────── */}
         <div className="hidden sm:flex items-center justify-between gap-6 py-0">
           {/* LEFT: logo + weather */}
           <div className="flex items-center gap-4">
@@ -235,7 +233,8 @@ export default function TopBar() {
                   autoFocus
                   type="text"
                   placeholder="Αναζήτηση…"
-                  className="text-sm outline-none border-none min-w-[260px] bg-transparent"
+                  // keep >=16px on small screens to prevent iOS zoom, fall back to sm size on desktop
+                  className="text-[16px] sm:text-sm outline-none border-none min-w-[260px] bg-transparent"
                   onBlur={() => setSearchOpen(false)}
                   onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
                   aria-label="Πεδίο αναζήτησης"
@@ -249,7 +248,7 @@ export default function TopBar() {
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
               Support Veltistos
             </button>
-            <div className="flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
+            <div className="hidden sm:flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
               <a
                 href="https://x.com/"
                 target="_blank"
@@ -297,4 +296,5 @@ export default function TopBar() {
     </header>
   );
 }
+
 

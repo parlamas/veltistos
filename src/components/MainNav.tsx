@@ -155,42 +155,42 @@ export default function MainNav() {
         <div className="sm:hidden py-2">
           {mobileOpen && (
               
-          <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[13px] leading-tight [text-size-adjust:100%] [-webkit-text-size-adjust:100%]">
+          <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[12px] leading-[1.2] [text-size-adjust:100%] [-webkit-text-size-adjust:100%]">
               <ul className="py-2">
-                <li><Link href="/" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">Αρχική</Link></li>
+                <li><Link href="/" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">Αρχική</Link></li>
 
                 {/* ΕΛΛΑΔΑ subtree */}
-                <li className="px-4 py-2 font-semibold text-[13px]">ΕΛΛΑΔΑ</li>
+                <li className="px-3 py-1.5 font-semibold text-[12px]">ΕΛΛΑΔΑ</li>
 
                 <li>
                   <ul className="pb-2 text-xs">
-                    <li><Link href="/ellada/kypros" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Κύπρος</Link></li>
-                    <li><Link href="/ellada/politiki-paideia" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">ΠολιτικήΠαιδεία</Link></li>
-                    <li><Link href="/ellada/ygeia" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Υγεία</Link></li>
-                    <li><Link href="/ellada/oikonomia" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Οικονομία</Link></li>
-                    <li><Link href="/ellada/athlitismos" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Αθλητισμός</Link></li>
+                    <li><Link href="/ellada/kypros" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Κύπρος</Link></li>
+                    <li><Link href="/ellada/politiki-paideia" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">ΠολιτικήΠαιδεία</Link></li>
+                    <li><Link href="/ellada/ygeia" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Υγεία</Link></li>
+                    <li><Link href="/ellada/oikonomia" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Οικονομία</Link></li>
+                    <li><Link href="/ellada/athlitismos" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Αθλητισμός</Link></li>
                   </ul>
                 </li>
 
                 {/* γνώσεις subtree */}
-                <li className="px-4 py-2 font-semibold text-[13px]">γνώσεις</li>
+                <li className="px-3 py-1.5 font-semibold text-[12px]">γνώσεις</li>
 
                 <li>
                   <ul className="pb-2 text-xs">
-                    <li><Link href="/gnoseis/dialektiki" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Διαλεκτική</Link></li>
-                    <li><Link href="/gnoseis/oristiki"   onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Οριστική</Link></li>
-                    <li><Link href="/gnoseis/grammatiki" onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Γραμματική</Link></li>
-                    <li><Link href="/gnoseis/glosses"    onClick={closeMobile} className="block px-6 py-1.5 hover:bg-zinc-50 text-[12px]">Γλώσσες</Link></li>
+                    <li><Link href="/gnoseis/dialektiki" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Διαλεκτική</Link></li>
+                    <li><Link href="/gnoseis/oristiki"   onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Οριστική</Link></li>
+                    <li><Link href="/gnoseis/grammatiki" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Γραμματική</Link></li>
+                    <li><Link href="/gnoseis/glosses"    onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Γλώσσες</Link></li>
                   </ul>
                 </li>
 
-                <li><Link href="/diethni" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">ΔΙΕΘΝΗ</Link></li>
-                <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
-                <li><Link href="/parents-students" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">γονείς/μαθητές</Link></li>
-                <li><Link href="/ai" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">ΑΙ</Link></li>
-                <li><Link href="/videos" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">VIDEOS</Link></li>
-                <li><Link href="/greek-israeli-relations" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">Ελληνοϊσραηλινές Σχέσεις</Link></li>
-                <li><Link href="/greek-turkish-relations" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50 text-[13px]">Ελληνοτουρκικές Σχέσεις</Link></li>
+                <li><Link href="/diethni" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">ΔΙΕΘΝΗ</Link></li>
+                <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
+                <li><Link href="/parents-students" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">γονείς/μαθητές</Link></li>
+                <li><Link href="/ai" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">ΑΙ</Link></li>
+                <li><Link href="/videos" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">VIDEOS</Link></li>
+                <li><Link href="/greek-israeli-relations" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">Ελληνοϊσραηλινές Σχέσεις</Link></li>
+                <li><Link href="/greek-turkish-relations" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">Ελληνοτουρκικές Σχέσεις</Link></li>
               </ul>
             </div>
           )}

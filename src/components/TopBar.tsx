@@ -40,13 +40,14 @@ export default function TopBar() {
           <Link href="/" aria-label="Veltistos - Αρχική" className="block">
             {/* block removes baseline gap; width controls final size */}
             <Image
-              src="/logo.png"
-              alt="Veltistos"
-              width={640}
-              height={160}
-              priority
-              className="block w-[320px] h-auto"
-            />
+  src="/logo.svg"
+  alt="Veltistos"
+  width={148}
+  height={60}
+  priority
+  className="block w-[148px] h-[60px] shrink-0"
+/>
+
           </Link>
 
           <div className="hidden sm:flex items-start gap-2 text-sm" aria-label="Καιρός και ώρα">

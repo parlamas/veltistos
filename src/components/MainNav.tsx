@@ -73,7 +73,38 @@ export default function MainNav() {
           <li><Link href="/isidoros-parlamas" className="font-semibold hover:opacity-90">Ι. ΠΑΡΛΑΜΑΣ</Link></li>
 
           {/* 5) ΓΝΩΣΕΙΣ */}
-          <li><Link href="/gnoseis" className="font-semibold hover:opacity-90">γνώσεις</Link></li>
+          <li
+  className="relative group before:absolute before:left-0 before:right-0 before:top-full before:h-2 before:content-['']"
+  onMouseEnter={() => setGnoseisOpen(true)}
+  onMouseLeave={() => setGnoseisOpen(false)}
+>
+  <button
+    type="button"
+    className="flex items-center gap-1 font-semibold hover:opacity-90"
+    aria-haspopup="menu"
+    aria-expanded={gnoseisOpen}
+    onClick={() => setGnoseisOpen(v => !v)} // click/tap fallback
+  >
+    γνώσεις
+    <ChevronDown className="w-4 h-4" aria-hidden="true" />
+  </button>
+
+  {/* White dropdown panel with dark text (no hover gap) */}
+  <div
+    className={`absolute left-0 top-full z-20 min-w-[220px] rounded-lg bg-white text-zinc-900 shadow-lg ring-1 ring-zinc-200
+                ${gnoseisOpen ? "block" : "hidden"} group-hover:block`}
+    role="menu"
+    aria-label="Υπομενού: γνώσεις"
+  >
+    <ul className="py-1">
+      <li><Link href="/gnoseis/dialektiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Διαλεκτική</Link></li>
+      <li><Link href="/gnoseis/oristiki"   className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Οριστική</Link></li>
+      <li><Link href="/gnoseis/grammatiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γραμματική</Link></li>
+      <li><Link href="/gnoseis/glosses"    className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γλώσσες</Link></li>
+    </ul>
+  </div>
+</li>
+
 
           {/* 6) γονείς/μαθητές */}
           <li><Link href="/parents-students" className="font-semibold hover:opacity-90">γονείς / μαθητές</Link></li>
@@ -129,7 +160,14 @@ export default function MainNav() {
                 </ul>
                 <li><Link href="/diethni" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΔΙΕΘΝΗ</Link></li>
                 <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
-                <li><Link href="/gnoseis" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">γνώσεις</Link></li>
+                <li className="px-4 py-2 font-semibold">γνώσεις</li>
+<ul className="pb-2">
+  <li><Link href="/gnoseis/dialektiki" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Διαλεκτική</Link></li>
+  <li><Link href="/gnoseis/oristiki"   onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Οριστική</Link></li>
+  <li><Link href="/gnoseis/grammatiki" onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Γραμματική</Link></li>
+  <li><Link href="/gnoseis/glosses"    onClick={closeMobile} className="block px-8 py-2 hover:bg-zinc-50">Γλώσσες</Link></li>
+</ul>
+
                 <li><Link href="/parents-students" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">γονείς/μαθητές</Link></li>
                 <li><Link href="/ai" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">ΑΙ</Link></li>
                 <li><Link href="/videos" onClick={closeMobile} className="block px-4 py-2 hover:bg-zinc-50">VIDEOS</Link></li>

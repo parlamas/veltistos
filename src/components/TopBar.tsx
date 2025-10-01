@@ -42,8 +42,8 @@ export default function TopBar() {
             <Image
               src="/logo.png"
               alt="Veltistos"
-              width={148}
-              height={60}
+              width={640}
+              height={160}
               priority
               className="block w-[320px] h-auto"
             />

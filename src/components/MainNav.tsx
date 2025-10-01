@@ -126,7 +126,8 @@ export default function MainNav() {
                 <li className="px-4 py-2 font-semibold">ΕΛΛΑΔΑ</li>
                 <ul className="pb-2">
                   <li><Link href="/ellada/kypros" className="block px-8 py-2 hover:bg-zinc-50">Κύπρος</Link></li>
-                  <li><Link href="/ellada/politiki-paideia" className="block px-8 py-2 hover:bg-zinc-50">ΠολιτικήΠαιδεία</Link></li>
+                  <li><Link href="/ellada/politiki" className="block px-8 py-2 hover:bg-zinc-50">Πολιτική</Link></li>
+                  <li><Link href="/ellada/paideia" className="block px-8 py-2 hover:bg-zinc-50">Παιδεία</Link></li>
                   <li><Link href="/ellada/ygeia" className="block px-8 py-2 hover:bg-zinc-50">Υγεία</Link></li>
                   <li><Link href="/ellada/oikonomia" className="block px-8 py-2 hover:bg-zinc-50">Οικονομία</Link></li>
                   <li><Link href="/ellada/athlitismos" className="block px-8 py-2 hover:bg-zinc-50">Αθλητισμός</Link></li>

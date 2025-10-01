@@ -38,38 +38,42 @@ export default function MainNav() {
           </li>
 
           {/* 2) ΕΛΛΑΔΑ with dropdown (desktop) */}
-          <li
-            className="relative group"
-            onMouseEnter={() => setElladaOpen(true)}
-            onMouseLeave={() => setElladaOpen(false)}
-          >
-            <button
-              type="button"
-              className="flex items-center gap-1 font-semibold hover:opacity-90"
-              aria-haspopup="menu"
-              aria-expanded={elladaOpen}
-              onClick={() => setElladaOpen((v) => !v)} // tap/click fallback
-            >
-              ΕΛΛΑΔΑ
-              <ChevronDown className="w-4 h-4" aria-hidden="true" />
-            </button>
+<li
+  className="relative group before:absolute before:left-0 before:right-0 before:top-full before:h-2 before:content-['']"
+  onMouseEnter={() => setElladaOpen(true)}
+  onMouseLeave={() => setElladaOpen(false)}
+>
+  <button
+    type="button"
+    className="flex items-center gap-1 font-semibold hover:opacity-90"
+    aria-haspopup="menu"
+    aria-expanded={elladaOpen}
+    onClick={() => setElladaOpen(v => !v)} // tap/click fallback
+  >
+    ΕΛΛΑΔΑ
+    <ChevronDown className="w-4 h-4" aria-hidden="true" />
+  </button>
 
-            {/* White dropdown panel with dark text */}
-            <div
-              className={`absolute left-0 top-full z-20 mt-2 min-w-[240px] rounded-lg bg-white text-zinc-900 shadow-lg ring-1 ring-zinc-200
-                          ${elladaOpen ? "block" : "hidden"} group-hover:block`}
-              role="menu"
-              aria-label="Υπομενού: ΕΛΛΑΔΑ"
-            >
-              <ul className="py-1">
-                <li><Link href="/ellada/kypros" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Κύπρος</Link></li>
-                <li><Link href="/ellada/politiki-paideia" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">ΠολιτικήΠαιδεία</Link></li>
-                <li><Link href="/ellada/ygeia" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Υγεία</Link></li>
-                <li><Link href="/ellada/oikonomia" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Οικονομία</Link></li>
-                <li><Link href="/ellada/athlitismos" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Αθλητισμός</Link></li>
-              </ul>
-            </div>
-          </li>
+  {/* NOTE: removed mt-2 to eliminate the hover gap */}
+  <div
+    className={`absolute left-0 top-full z-20 min-w-[240px] rounded-lg bg-white text-zinc-900 shadow-lg ring-1 ring-zinc-200
+                ${elladaOpen ? "block" : "hidden"} group-hover:block`}
+    role="menu"
+    aria-label="Υπομενού: ΕΛΛΑΔΑ"
+  >
+    <ul className="py-1">
+      <li><Link href="/ellada/kypros" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Κύπρος</Link></li>
+      <li><Link href="/ellada/politiki-paideia" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">ΠολιτικήΠαιδεία</Link></li>
+      <li><Link href="/ellada/ygeia" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Υγεία</Link></li>
+      <li><Link href="/ellada/oikonomia" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Οικονομία</Link></li>
+      <li><Link href="/ellada/athlitismos" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Αθλητισμός</Link></li>
+    </ul>
+  </div>
+</li>
+
+
+
+
 
           {/* 3) ΔΙΕΘΝΗ */}
           <li><Link href="/diethni" className="font-semibold hover:opacity-90">ΔΙΕΘΝΗ</Link></li>

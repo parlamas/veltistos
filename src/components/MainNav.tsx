@@ -46,16 +46,16 @@ export default function MainNav() {
   onMouseLeave={() => setElladaOpen(false)}
 >
   <button
-    type="button"
-    className="flex items-center gap-1 font-semibold hover:opacity-90"
-    aria-haspopup="menu"
-    aria-expanded={elladaOpen}
-    onClick={() => setElladaOpen(v => !v)} // tap/click fallback
-  >
-    ΕΛΛΑΔΑ<Image src="/flags/30x20-hel-kyp.png" alt="" width={30} height={20} className="block" aria-hidden="true" />
+  type="button"
+  className="flex items-center gap-1 font-semibold hover:opacity-90"
+  aria-haspopup="menu"
+  aria-expanded={elladaOpen}
+  onClick={() => setElladaOpen(v => !v)}
+>
+  ΕΛΛΑΔΑ
+  <ChevronDown className="w-4 h-4" aria-hidden="true" />
+</button>
 
-    <ChevronDown className="w-4 h-4" aria-hidden="true" />
-  </button>
 
   {/* NOTE: removed mt-2 to eliminate the hover gap */}
   <div
@@ -145,8 +145,6 @@ export default function MainNav() {
 </li>
 
         </ul>
-
-        
 
 {/* Mobile panel — no socials here */}
         <div className="sm:hidden py-2">

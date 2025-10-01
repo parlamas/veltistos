@@ -4,7 +4,15 @@
 import { useEffect, useState } from "react";
 import { X, Linkedin, Facebook, Instagram } from "lucide-react";
 
-export default function ShareBar({ href, title }: { href: string; title: string }) {
+export default function ShareBar({
+  href,
+  title,
+  label = "SHARE ON:",
+}: {
+  href: string;
+  title: string;
+  label?: string;
+}) {
   const site = process.env.NEXT_PUBLIC_SITE_URL ?? "";
   const url = href.startsWith("http") ? href : `${site}${href}`;
   const encUrl = encodeURIComponent(url);
@@ -21,7 +29,6 @@ export default function ShareBar({ href, title }: { href: string; title: string 
       await navigator.clipboard.writeText(url);
       setCopied(true);
     } catch {
-      // fallback: prompt
       window.prompt("Copy link", url);
     }
   }
@@ -33,13 +40,19 @@ export default function ShareBar({ href, title }: { href: string; title: string 
   }, [copied]);
 
   return (
-    <div className="mt-2 flex items-center gap-2 text-zinc-500">
+    // not-prose prevents Typography plugin from underlining the links
+    <div className="not-prose mt-2 flex items-center gap-2 text-zinc-500">
+      {/* Label once, before the icons */}
+      <span className="mr-2 text-[11px] uppercase tracking-wide text-zinc-600">
+        {label}
+      </span>
+
       <a
         href={xUrl}
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on X"
-        className="p-1.5 rounded hover:bg-zinc-100"
+        className="p-1.5 rounded hover:bg-zinc-100 no-underline"
       >
         <X className="w-4 h-4" />
       </a>
@@ -48,7 +61,7 @@ export default function ShareBar({ href, title }: { href: string; title: string 
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on LinkedIn"
-        className="p-1.5 rounded hover:bg-zinc-100"
+        className="p-1.5 rounded hover:bg-zinc-100 no-underline"
       >
         <Linkedin className="w-4 h-4" />
       </a>
@@ -57,12 +70,11 @@ export default function ShareBar({ href, title }: { href: string; title: string 
         target="_blank"
         rel="noopener noreferrer"
         aria-label="Share on Facebook"
-        className="p-1.5 rounded hover:bg-zinc-100"
+        className="p-1.5 rounded hover:bg-zinc-100 no-underline"
       >
         <Facebook className="w-4 h-4" />
       </a>
-
-      {/* Instagram doesn't have a web share URL. Copy the link for users to paste in the app. */}
+      {/* Instagram has no web share; we copy the link */}
       <button
         type="button"
         onClick={copyLink}
@@ -73,7 +85,11 @@ export default function ShareBar({ href, title }: { href: string; title: string 
         <Instagram className="w-4 h-4" />
       </button>
 
-      {copied && <span className="ml-1 text-[11px] text-zinc-600">Αντιγράφηκε</span>}
+      {copied && (
+        <span className="ml-1 text-[11px] text-zinc-600">Αντιγράφηκε</span>
+      )}
     </div>
   );
 }
+
+

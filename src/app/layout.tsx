@@ -1,20 +1,21 @@
 // src/app/layout.tsx
+
 import type { Metadata } from "next";
 import TopBar from "@/components/TopBar";
 import MainNav from "@/components/MainNav";
-// keep your font imports & globals as before
-import localFont from "next/font/local";
+import { Noto_Sans, Noto_Serif } from "next/font/google";
 import "./globals.css";
 
-const notoSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
+const notoSans = Noto_Sans({
+  subsets: ["greek", "latin"],
+  variable: "--font-noto-sans",
+  weight: ["400", "700"],
 });
-const notoSerif = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
+
+const notoSerif = Noto_Serif({
+  subsets: ["greek", "latin"],
+  variable: "--font-noto-serif",
+  weight: ["400", "700"],
 });
 
 export const metadata: Metadata = {
@@ -28,7 +29,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className="font-sans antialiased text-zinc-900 bg-white">
         <TopBar />
         <MainNav />
-        {/* Zero top padding below the header */}
         <main className="mx-auto max-w-[1120px] px-6 pt-0 pb-6 overflow-hidden">
           {children}
         </main>

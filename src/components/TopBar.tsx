@@ -7,6 +7,8 @@ import Link from "next/link";
 import Image from "next/image";
 import {
   Search,
+  X,
+  Menu,
   Facebook,
   Linkedin,
   Instagram,
@@ -97,6 +99,12 @@ export default function TopBar() {
 
   const WeatherIcon = weather ? iconForOpenMeteo(weather.code) : Cloud;
 
+  // (Optional) hook this to your drawer later
+  function openMenu() {
+    // e.g., setIsMenuOpen(true)
+    console.log("Open mobile menu");
+  }
+
   return (
     <header className="w-full bg-white border-b border-zinc-200" role="banner">
       <div className="max-w-[1120px] mx-auto px-6">
@@ -119,93 +127,64 @@ export default function TopBar() {
             </button>
           </div>
 
-          {/* Row 2: weather + search + socials */}
-          <div className="mt-2 flex flex-wrap items-center gap-3 justify-between">
-            {/* Weather */}
-            <div className="flex items-start gap-2 text-sm" aria-label="Καιρός και ώρα">
-              <WeatherIcon className="w-5 h-5 text-zinc-800" aria-hidden="true" />
-              <div className="leading-tight">
-                <div className="font-semibold text-zinc-900">
-                  {typeof weather?.temp === "number" ? Math.round(weather.temp) : "—"}°C{" "}
-                  <span className="text-zinc-500 font-medium">Αθήνα</span>
-                </div>
-                <div className="text-xs text-zinc-500">
-                  {weekday} {date} | {time}
+          {/* Row 2: either compact controls OR the search field (when open) */}
+          {!searchOpen ? (
+            <div className="mt-2 flex items-center justify-between gap-3">
+              {/* 1) Magnifying glass only */}
+              <button
+                onClick={() => setSearchOpen(true)}
+                className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
+                aria-label="Άνοιγμα αναζήτησης"
+              >
+                <Search className="w-4 h-4" aria-hidden="true" />
+              </button>
+
+              {/* 2) Weather */}
+              <div className="flex items-center gap-2 text-sm" aria-label="Καιρός">
+                <WeatherIcon className="w-5 h-5 text-zinc-800" aria-hidden="true" />
+                <div className="leading-tight">
+                  <div className="font-semibold text-zinc-900">
+                    {typeof weather?.temp === "number" ? Math.round(weather.temp) : "—"}°C{" "}
+                    <span className="text-zinc-500 font-medium">Αθήνα</span>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            {/* Search */}
-            <div className="flex-1 min-w-[200px] flex justify-center">
-              {!searchOpen ? (
-                <button
-                  className="flex items-center gap-2 text-sm px-3 py-1 rounded-full border border-zinc-200 text-zinc-700 hover:bg-zinc-50"
-                  onClick={() => setSearchOpen(true)}
-                  aria-label="Άνοιγμα αναζήτησης"
-                >
-                  <Search className="w-4 h-4" aria-hidden="true" />
-                  <span>Αναζήτηση</span>
-                </button>
-              ) : (
-                <div className="flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1 w-full max-w-[360px]" role="search">
-                  <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
-                  <input
-                    autoFocus
-                    type="text"
-                    placeholder="Αναζήτηση…"
-                    className="text-sm outline-none border-none flex-1 bg-transparent"
-                    onBlur={() => setSearchOpen(false)}
-                    onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
-                    aria-label="Πεδίο αναζήτησης"
-                  />
-                </div>
-              )}
-            </div>
+              {/* 3) Date (weekday + DD/MM/YYYY) */}
+              <div className="min-w-0 flex-1 text-right text-xs text-zinc-500">
+                {weekday} {date}
+              </div>
 
-            {/* Socials */}
-            <div className="flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
-              <a
-                href="https://x.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="X"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs"
-                aria-label="X"
+              {/* 4) Burger menu */}
+              <button
+                onClick={openMenu}
+                className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
+                aria-label="Μενού"
               >
-                X
-              </a>
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="LinkedIn"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" aria-hidden="true" />
-              </a>
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Facebook"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-4 h-4" aria-hidden="true" />
-              </a>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Instagram"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" aria-hidden="true" />
-              </a>
+                <Menu className="w-4 h-4" aria-hidden="true" />
+              </button>
             </div>
-          </div>
+          ) : (
+            // Search field replaces the second row on mobile when open
+            <div className="mt-2 flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1" role="search">
+              <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
+              <input
+                autoFocus
+                type="text"
+                placeholder="Αναζήτηση…"
+                className="text-sm outline-none border-none flex-1 bg-transparent"
+                onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
+                aria-label="Πεδίο αναζήτησης"
+              />
+              <button
+                onClick={() => setSearchOpen(false)}
+                className="grid place-items-center w-7 h-7 rounded-md hover:bg-zinc-100"
+                aria-label="Κλείσιμο αναζήτησης"
+              >
+                <X className="w-4 h-4" aria-hidden="true" />
+              </button>
+            </div>
+          )}
         </div>
 
         {/* ───────────────── DESKTOP: original single row ───────────────── */}
@@ -237,7 +216,7 @@ export default function TopBar() {
             </div>
           </div>
 
-          {/* CENTER: search */}
+          {/* CENTER: search (button → field) */}
           <div className="flex-1 flex justify-center">
             {!searchOpen ? (
               <button

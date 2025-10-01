@@ -38,7 +38,10 @@ export default function Page() {
         με παραγράφους, υποτίτλους, λίστες κ.λπ. 今天是雨天。Me voy a la escuela.
       </p>
 
-      <ShareBar href={href} title={title} />
+      <div data-tts-skip className="not-prose mt-4">
+  <ShareBar href={href} title={title} />
+</div>
+
     </article>
   );
 }

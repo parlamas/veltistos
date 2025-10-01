@@ -1,6 +1,5 @@
 // src/app/layout.tsx
 
-import type { Metadata } from "next";
 import type { Metadata, Viewport } from "next";
 import TopBar from "@/components/TopBar";
 import MainNav from "@/components/MainNav";

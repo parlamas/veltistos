@@ -1,5 +1,4 @@
-// ✅ Step 1 — Drop-in search box component inside your TopBar
-// File: src/components/TopBar.tsx (replace your existing file with this version)
+// src/components/TopBar.tsx
 "use client";
 
 import { useEffect, useMemo, useState, useRef } from "react";
@@ -223,7 +222,6 @@ export default function TopBar() {
 
   const WeatherIcon = weather ? iconForOpenMeteo(weather.code) : Cloud;
 
-  // Hook for your main nav drawer (burger)
   function openMenu() {
     document.dispatchEvent(new CustomEvent("toggle-mainnav"));
   }
@@ -253,7 +251,6 @@ export default function TopBar() {
           {/* Row 2: compact controls OR search field */}
           {!searchOpen ? (
             <div className="mt-2 flex items-center justify-between gap-3">
-              {/* 1) Magnifying glass only */}
               <button
                 onClick={() => setSearchOpen(true)}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -262,7 +259,6 @@ export default function TopBar() {
                 <Search className="w-4 h-4" aria-hidden="true" />
               </button>
 
-              {/* 2) Weather */}
               <div className="flex items-center gap-2 text-sm" aria-label="Καιρός">
                 <WeatherIcon className="w-5 h-5 text-zinc-800" aria-hidden="true" />
                 <div className="leading-tight">
@@ -273,12 +269,10 @@ export default function TopBar() {
                 </div>
               </div>
 
-              {/* 3) Date */}
               <div className="min-w-0 flex-1 text-right text-xs text-zinc-500">
                 {weekday} {date}
               </div>
 
-              {/* 4) Burger menu */}
               <button
                 onClick={openMenu}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -288,13 +282,14 @@ export default function TopBar() {
               </button>
             </div>
           ) : (
-            <div className="mt-2"><SearchBox onClose={() => setSearchOpen(false)} /></div>
+            <div className="mt-2">
+              <SearchBox onClose={() => setSearchOpen(false)} />
+            </div>
           )}
         </div>
 
         {/* ───────────────── DESKTOP: single row ───────────────── */}
         <div className="hidden sm:flex items-center justify-between gap-6 py-0">
-          {/* LEFT: logo + weather */}
           <div className="flex items-center gap-4">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
               <Image
@@ -321,7 +316,6 @@ export default function TopBar() {
             </div>
           </div>
 
-          {/* CENTER: search (button → field) */}
           <div className="flex-1 flex justify-center">
             {!searchOpen ? (
               <button
@@ -333,11 +327,12 @@ export default function TopBar() {
                 <span>Αναζήτηση</span>
               </button>
             ) : (
-              <div className="min-w-[360px] max-w-[560px] w-full"><SearchBox onClose={() => setSearchOpen(false)} /></div>
+              <div className="min-w-[360px] max-w-[560px] w-full">
+                <SearchBox onClose={() => setSearchOpen(false)} />
+              </div>
             )}
           </div>
 
-          {/* RIGHT: support + socials */}
           <div className="flex items-center gap-3">
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
               Support Veltistos
@@ -390,115 +385,3 @@ export default function TopBar() {
     </header>
   );
 }
-
-
-// ✅ Step 2 — Add a results page at /search that uses the same index
-// File: src/app/search/page.tsx
-
-import fs from "fs/promises";
-import path from "path";
-import Link from "next/link";
-
-export type SearchItem = {
-  title: string;
-  url: string;
-  excerpt?: string;
-  date?: string;
-  tags?: string[];
-};
-
-async function readIndex(): Promise<SearchItem[]> {
-  try {
-    const p = path.join(process.cwd(), "public", "search-index.json");
-    const raw = await fs.readFile(p, "utf8");
-    const data = JSON.parse(raw);
-    return Array.isArray(data) ? data : [];
-  } catch {
-    return [];
-  }
-}
-
-function matches(q: string, it: SearchItem) {
-  const s = q.toLowerCase();
-  const hay = (it.title + " " + (it.excerpt ?? "") + " " + (it.tags?.join(" ") ?? "")).toLowerCase();
-  return hay.includes(s);
-}
-
-export default async function SearchPage({
-  searchParams,
-}: {
-  searchParams: { q?: string };
-}) {
-  const q = (searchParams?.q ?? "").toString().trim();
-  const index = await readIndex();
-  const results = q ? index.filter((it) => matches(q, it)) : [];
-
-  return (
-    <main className="max-w-[1120px] mx-auto px-6 py-6">
-      <h1 className="text-xl font-semibold mb-2">Αναζήτηση</h1>
-      <div className="text-sm text-zinc-600 mb-6">
-        {q ? (
-          <span>
-            Αποτελέσματα για <span className="font-medium text-zinc-900">“{q}”</span> — {results.length} ευρήματα
-          </span>
-        ) : (
-          <span>Πληκτρολογήστε έναν όρο αναζήτησης.</span>
-        )}
-      </div>
-
-      <ul className="space-y-4">
-        {results.map((r) => (
-          <li key={r.url} className="border-b border-zinc-200 pb-4">
-            <Link href={r.url} className="text-zinc-900 font-medium hover:underline">
-              {r.title}
-            </Link>
-            {r.excerpt && <p className="text-sm text-zinc-600 mt-1">{r.excerpt}</p>}
-            {r.date && (
-              <p className="text-xs text-zinc-500 mt-1">
-                {new Date(r.date).toLocaleDateString("el-GR")}
-                {r.tags?.length ? ` · ${r.tags.join(", ")}` : null}
-              </p>
-            )}
-          </li>
-        ))}
-      </ul>
-
-      {q && results.length === 0 && (
-        <div className="mt-8 text-sm text-zinc-600">
-          Δεν βρέθηκαν αποτελέσματα. Μπορείτε επίσης να δοκιμάσετε στο Google:
-          {" "}
-          <a
-            className="underline"
-            href={`https://www.google.com/search?q=site:${process.env.NEXT_PUBLIC_SITE_DOMAIN ?? "veltistos.com"}+${encodeURIComponent(q)}`}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            site:veltistos.com {q}
-          </a>
-        </div>
-      )}
-    </main>
-  );
-}
-
-
-// ✅ Step 3 — Create your index file (minimal format)
-// File: public/search-index.json
-// Put this file in /public with an array of entries. Example minimal content:
-// [
-//   {
-//     "title": "Δοκιμή άρθρου",
-//     "url": "/news/dokimi-arthrou",
-//     "excerpt": "Μικρή περιγραφή του άρθρου για τις δοκιμές.",
-//     "date": "2025-09-24T12:00:00.000Z",
-//     "tags": ["πολιτική", "οικονομία"]
-//   }
-// ]
-// As you add posts, append items to this JSON. The SearchBox will suggest up to 6, and /search shows full results.
-
-
-// (Optional) If you prefer an API endpoint instead of a static file, create:
-// File: src/app/api/search/route.ts
-// and return the same array shape from your DB or MDX parsing, then switch the fetch URL in SearchBox to "/api/search?q=...".
-
-

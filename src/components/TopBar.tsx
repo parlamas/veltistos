@@ -1,9 +1,11 @@
-// src/components/TopBar.tsx
+// ✅ Step 1 — Drop-in search box component inside your TopBar
+// File: src/components/TopBar.tsx (replace your existing file with this version)
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import {
   Search,
   X,
@@ -33,10 +35,133 @@ function iconForOpenMeteo(code: number) {
   return Cloud; // fallback
 }
 
-type CurrentWeather = {
-  temp: number; // °C
-  code: number; // Open-Meteo weather code
+type CurrentWeather = { temp: number; code: number };
+
+type SearchItem = {
+  title: string;
+  url: string; // absolute or site-relative
+  excerpt?: string;
+  date?: string; // ISO
+  tags?: string[];
 };
+
+function useOutsideClick<T extends HTMLElement>(onClickOutside: () => void) {
+  const ref = useRef<T | null>(null);
+  useEffect(() => {
+    function handler(e: MouseEvent) {
+      if (ref.current && !ref.current.contains(e.target as Node)) onClickOutside();
+    }
+    document.addEventListener("mousedown", handler);
+    return () => document.removeEventListener("mousedown", handler);
+  }, [onClickOutside]);
+  return ref;
+}
+
+function SearchBox({ onClose }: { onClose: () => void }) {
+  const router = useRouter();
+  const [q, setQ] = useState("");
+  const [index, setIndex] = useState<SearchItem[] | null>(null);
+  const [hits, setHits] = useState<SearchItem[]>([]);
+  const [open, setOpen] = useState(true);
+
+  const wrapRef = useOutsideClick<HTMLDivElement>(() => setOpen(false));
+
+  // lazy-load index (from public/search-index.json)
+  useEffect(() => {
+    let mounted = true;
+    if (index === null) {
+      fetch("/search-index.json", { cache: "force-cache" })
+        .then((r) => (r.ok ? r.json() : []))
+        .then((data) => {
+          if (!mounted) return;
+          setIndex(Array.isArray(data) ? data : []);
+        })
+        .catch(() => setIndex([]));
+    }
+    return () => {
+      mounted = false;
+    };
+  }, [index]);
+
+  // client-side filter for quick suggestions
+  useEffect(() => {
+    if (!index) return;
+    const s = q.trim().toLowerCase();
+    if (s.length < 2) {
+      setHits([]);
+      return;
+    }
+    const res = index
+      .filter((it) => (it.title + " " + (it.excerpt ?? "")).toLowerCase().includes(s))
+      .slice(0, 6);
+    setHits(res);
+  }, [q, index]);
+
+  function submit() {
+    const term = q.trim();
+    if (!term) {
+      onClose();
+      return;
+    }
+    router.push(`/search?q=${encodeURIComponent(term)}`);
+    onClose();
+  }
+
+  return (
+    <div className="relative w-full" ref={wrapRef} role="search">
+      <div className="flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1">
+        <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
+        <input
+          autoFocus
+          type="text"
+          placeholder="Αναζήτηση…"
+          className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
+          value={q}
+          onChange={(e) => setQ(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") submit();
+            if (e.key === "Escape") onClose();
+          }}
+          aria-label="Πεδίο αναζήτησης"
+        />
+        <button
+          onClick={onClose}
+          className="grid place-items-center w-7 h-7 rounded-md hover:bg-zinc-100"
+          aria-label="Κλείσιμο αναζήτησης"
+        >
+          <X className="w-4 h-4" aria-hidden="true" />
+        </button>
+      </div>
+
+      {open && hits.length > 0 && (
+        <div
+          role="listbox"
+          className="absolute left-0 right-0 mt-1 rounded-lg border border-zinc-200 bg-white shadow-lg overflow-hidden z-50"
+        >
+          {hits.map((h, i) => (
+            <Link
+              key={h.url + i}
+              href={h.url}
+              className="block px-3 py-2 hover:bg-zinc-50"
+              onClick={() => onClose()}
+            >
+              <div className="text-sm font-medium text-zinc-900 line-clamp-1">{h.title}</div>
+              {h.excerpt && (
+                <div className="text-xs text-zinc-600 line-clamp-1">{h.excerpt}</div>
+              )}
+            </Link>
+          ))}
+          <button
+            className="w-full text-left px-3 py-2 text-xs text-zinc-600 hover:bg-zinc-50 border-t"
+            onClick={submit}
+          >
+            Προβολή περισσότερων για “{q}”
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 export default function TopBar() {
   const [searchOpen, setSearchOpen] = useState(false);
@@ -163,26 +288,7 @@ export default function TopBar() {
               </button>
             </div>
           ) : (
-            // Search field replaces the second row on mobile when open
-            <div className="mt-2 flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1" role="search">
-              <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
-              <input
-                autoFocus
-                type="text"
-                placeholder="Αναζήτηση…"
-                // 16px on small screens prevents iOS auto-zoom
-                className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
-                onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
-                aria-label="Πεδίο αναζήτησης"
-              />
-              <button
-                onClick={() => setSearchOpen(false)}
-                className="grid place-items-center w-7 h-7 rounded-md hover:bg-zinc-100"
-                aria-label="Κλείσιμο αναζήτησης"
-              >
-                <X className="w-4 h-4" aria-hidden="true" />
-              </button>
-            </div>
+            <div className="mt-2"><SearchBox onClose={() => setSearchOpen(false)} /></div>
           )}
         </div>
 
@@ -227,19 +333,7 @@ export default function TopBar() {
                 <span>Αναζήτηση</span>
               </button>
             ) : (
-              <div className="flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1" role="search">
-                <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
-                <input
-                  autoFocus
-                  type="text"
-                  placeholder="Αναζήτηση…"
-                  // keep >=16px on small screens to prevent iOS zoom, fall back to sm size on desktop
-                  className="text-[16px] sm:text-sm outline-none border-none min-w-[260px] bg-transparent"
-                  onBlur={() => setSearchOpen(false)}
-                  onKeyDown={(e) => e.key === "Escape" && setSearchOpen(false)}
-                  aria-label="Πεδίο αναζήτησης"
-                />
-              </div>
+              <div className="min-w-[360px] max-w-[560px] w-full"><SearchBox onClose={() => setSearchOpen(false)} /></div>
             )}
           </div>
 
@@ -296,5 +390,115 @@ export default function TopBar() {
     </header>
   );
 }
+
+
+// ✅ Step 2 — Add a results page at /search that uses the same index
+// File: src/app/search/page.tsx
+
+import fs from "fs/promises";
+import path from "path";
+import Link from "next/link";
+
+export type SearchItem = {
+  title: string;
+  url: string;
+  excerpt?: string;
+  date?: string;
+  tags?: string[];
+};
+
+async function readIndex(): Promise<SearchItem[]> {
+  try {
+    const p = path.join(process.cwd(), "public", "search-index.json");
+    const raw = await fs.readFile(p, "utf8");
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function matches(q: string, it: SearchItem) {
+  const s = q.toLowerCase();
+  const hay = (it.title + " " + (it.excerpt ?? "") + " " + (it.tags?.join(" ") ?? "")).toLowerCase();
+  return hay.includes(s);
+}
+
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = (searchParams?.q ?? "").toString().trim();
+  const index = await readIndex();
+  const results = q ? index.filter((it) => matches(q, it)) : [];
+
+  return (
+    <main className="max-w-[1120px] mx-auto px-6 py-6">
+      <h1 className="text-xl font-semibold mb-2">Αναζήτηση</h1>
+      <div className="text-sm text-zinc-600 mb-6">
+        {q ? (
+          <span>
+            Αποτελέσματα για <span className="font-medium text-zinc-900">“{q}”</span> — {results.length} ευρήματα
+          </span>
+        ) : (
+          <span>Πληκτρολογήστε έναν όρο αναζήτησης.</span>
+        )}
+      </div>
+
+      <ul className="space-y-4">
+        {results.map((r) => (
+          <li key={r.url} className="border-b border-zinc-200 pb-4">
+            <Link href={r.url} className="text-zinc-900 font-medium hover:underline">
+              {r.title}
+            </Link>
+            {r.excerpt && <p className="text-sm text-zinc-600 mt-1">{r.excerpt}</p>}
+            {r.date && (
+              <p className="text-xs text-zinc-500 mt-1">
+                {new Date(r.date).toLocaleDateString("el-GR")}
+                {r.tags?.length ? ` · ${r.tags.join(", ")}` : null}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      {q && results.length === 0 && (
+        <div className="mt-8 text-sm text-zinc-600">
+          Δεν βρέθηκαν αποτελέσματα. Μπορείτε επίσης να δοκιμάσετε στο Google:
+          {" "}
+          <a
+            className="underline"
+            href={`https://www.google.com/search?q=site:${process.env.NEXT_PUBLIC_SITE_DOMAIN ?? "veltistos.com"}+${encodeURIComponent(q)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            site:veltistos.com {q}
+          </a>
+        </div>
+      )}
+    </main>
+  );
+}
+
+
+// ✅ Step 3 — Create your index file (minimal format)
+// File: public/search-index.json
+// Put this file in /public with an array of entries. Example minimal content:
+// [
+//   {
+//     "title": "Δοκιμή άρθρου",
+//     "url": "/news/dokimi-arthrou",
+//     "excerpt": "Μικρή περιγραφή του άρθρου για τις δοκιμές.",
+//     "date": "2025-09-24T12:00:00.000Z",
+//     "tags": ["πολιτική", "οικονομία"]
+//   }
+// ]
+// As you add posts, append items to this JSON. The SearchBox will suggest up to 6, and /search shows full results.
+
+
+// (Optional) If you prefer an API endpoint instead of a static file, create:
+// File: src/app/api/search/route.ts
+// and return the same array shape from your DB or MDX parsing, then switch the fetch URL in SearchBox to "/api/search?q=...".
 
 

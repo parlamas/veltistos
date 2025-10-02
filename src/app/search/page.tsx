@@ -1,0 +1,85 @@
+// src/app/search/page.tsx
+import fs from "fs/promises";
+import path from "path";
+import Link from "next/link";
+
+export type SearchItem = {
+  title: string;
+  url: string;
+  excerpt?: string;
+  date?: string;
+  tags?: string[];
+};
+
+async function readIndex(): Promise<SearchItem[]> {
+  try {
+    const p = path.join(process.cwd(), "public", "search-index.json");
+    const raw = await fs.readFile(p, "utf8");
+    const data = JSON.parse(raw);
+    return Array.isArray(data) ? data : [];
+  } catch {
+    return [];
+  }
+}
+
+function matches(q: string, it: SearchItem) {
+  const s = q.toLowerCase();
+  const hay = (it.title + " " + (it.excerpt ?? "") + " " + (it.tags?.join(" ") ?? "")).toLowerCase();
+  return hay.includes(s);
+}
+
+export default async function SearchPage({
+  searchParams,
+}: {
+  searchParams: { q?: string };
+}) {
+  const q = (searchParams?.q ?? "").toString().trim();
+  const index = await readIndex();
+  const results = q ? index.filter((it) => matches(q, it)) : [];
+
+  return (
+    <main className="max-w-[1120px] mx-auto px-6 py-6">
+      <h1 className="text-xl font-semibold mb-2">Αναζήτηση</h1>
+      <div className="text-sm text-zinc-600 mb-6">
+        {q ? (
+          <span>
+            Αποτελέσματα για <span className="font-medium text-zinc-900">“{q}”</span> — {results.length} ευρήματα
+          </span>
+        ) : (
+          <span>Πληκτρολογήστε έναν όρο αναζήτησης.</span>
+        )}
+      </div>
+
+      <ul className="space-y-4">
+        {results.map((r) => (
+          <li key={r.url} className="border-b border-zinc-200 pb-4">
+            <Link href={r.url} className="text-zinc-900 font-medium hover:underline">
+              {r.title}
+            </Link>
+            {r.excerpt && <p className="text-sm text-zinc-600 mt-1">{r.excerpt}</p>}
+            {r.date && (
+              <p className="text-xs text-zinc-500 mt-1">
+                {new Date(r.date).toLocaleDateString("el-GR")}
+                {r.tags?.length ? ` · ${r.tags.join(", ")}` : null}
+              </p>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      {q && results.length === 0 && (
+        <div className="mt-8 text-sm text-zinc-600">
+          Δεν βρέθηκαν αποτελέσματα. Μπορείτε επίσης να δοκιμάσετε στο Google:{" "}
+          <a
+            className="underline"
+            href={`https://www.google.com/search?q=site:${process.env.NEXT_PUBLIC_SITE_DOMAIN ?? "veltistos.com"}+${encodeURIComponent(q)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            site:veltistos.com {q}
+          </a>
+        </div>
+      )}
+    </main>
+  );
+}

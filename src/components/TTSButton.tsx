@@ -1,4 +1,3 @@
-// src/components/TTSButton.tsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -36,9 +35,7 @@ export default function TTSButton({
     loadVoices();
     synth.onvoiceschanged = loadVoices;
     return () => {
-      try {
-        synth.cancel();
-      } catch {}
+      try { synth.cancel(); } catch {}
       synth.onvoiceschanged = null;
     };
   }, [synth]);
@@ -47,8 +44,8 @@ export default function TTSButton({
   const voiceMap = useMemo(() => {
     const map = new Map<string, SpeechSynthesisVoice>();
     for (const v of voices) {
-      const lang = (v.lang || "").toLowerCase(); // e.g., "es-ES"
-      const key = lang.split("-")[0]; // "es"
+      const lang = (v.lang || "").toLowerCase();
+      const key = lang.split("-")[0];
       if (!map.has(key)) map.set(key, v);
     }
     return map;
@@ -66,26 +63,13 @@ export default function TTSButton({
 
   // Detect language per text chunk
   function detectLang(text: string): LangKey {
-    // Chinese CJK
-    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";
-
-    // Greek (basic + extended/polytonic)
-    if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "el";
-
-    // Quick Spanish signs
-    if (/[¡¿]/.test(text)) return "es";
-
-    // Light Spanish heuristic
-    const esStop =
-      /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
+    if (/[\u4E00-\u9FFF]/.test(text)) return "zh"; // CJK
+    if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "el"; // Greek basic + extended
+    if (/[¡¿]/.test(text)) return "es"; // quick Spanish
+    const esStop = /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
     let hits = 0;
-    text
-      .split(/\s+/)
-      .forEach((w) => {
-        if (esStop.test(w)) hits++;
-      });
+    text.split(/\s+/).forEach((w) => { if (esStop.test(w)) hits++; });
     if (hits >= 2) return "es";
-
     return "en";
   }
 
@@ -94,7 +78,7 @@ export default function TTSButton({
     if (!el) return "";
     const clone = el.cloneNode(true) as HTMLElement;
     clone.querySelectorAll("[data-tts-skip]").forEach((n) => n.remove());
-    return (clone as any).innerText?.trim() || clone.textContent?.trim() || "";
+    return (clone as HTMLElement).innerText?.trim() || clone.textContent?.trim() || "";
   }
 
   // Split text into manageable utterances (includes Greek punctuation)
@@ -122,7 +106,7 @@ export default function TTSButton({
     return out.filter(Boolean);
   }
 
-  // Prefer exact el-GR, then any Greek, then name match (Edge/Chrome differences)
+  // Prefer exact el-GR, then any Greek, then name match
   function pickVoiceForKey(key: LangKey): SpeechSynthesisVoice | null {
     const lc = (s: string | undefined) => (s || "").toLowerCase();
     if (key === "el") {
@@ -149,7 +133,6 @@ export default function TTSButton({
         null
       );
     }
-    // en
     return (
       voices.find((v) => lc(v.lang) === "en-us") ||
       voices.find((v) => lc(v.lang).startsWith("en")) ||
@@ -161,7 +144,7 @@ export default function TTSButton({
   function speakChunks(chunks: string[]) {
     if (!synth) return;
 
-    // Bias to Greek if most of the article is Greek, even if small Latin bits exist
+    // Bias to Greek if most of the article is Greek
     const whole = getText();
     const greekChars = (whole.match(/[\u0370-\u03FF\u1F00-\u1FFF]/g) || []).length;
     const latinChars = (whole.match(/[A-Za-z]/g) || []).length;
@@ -197,7 +180,6 @@ export default function TTSButton({
         );
       }
 
-      // continue through errors
       u.onerror = () => {};
       return u;
     });
@@ -221,34 +203,26 @@ export default function TTSButton({
   function play() {
     if (!synth) return;
     if (status === "paused") {
-      try {
-        synth.resume();
-      } catch {}
+      try { synth.resume(); } catch {}
       setStatus("speaking");
       return;
     }
     const text = getText();
     if (!text) return;
-    try {
-      synth.cancel();
-    } catch {}
+    try { synth.cancel(); } catch {}
     speakChunks(chunk(text));
   }
 
   function pause() {
     if (synth && status === "speaking") {
-      try {
-        synth.pause();
-      } catch {}
+      try { synth.pause(); } catch {}
       setStatus("paused");
     }
   }
 
   function stop() {
     if (synth) {
-      try {
-        synth.cancel();
-      } catch {}
+      try { synth.cancel(); } catch {}
       queueRef.current = null;
       setStatus("idle");
     }

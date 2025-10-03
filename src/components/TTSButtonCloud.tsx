@@ -61,9 +61,10 @@ export default function TTSButtonCloud({
       const audio = new Audio(url);
       audio.play();
       audio.onended = () => URL.revokeObjectURL(url);
-    } catch (e: any) {
-      alert("TTS failed: " + (e?.message || e));
-    } finally {
+} catch (e: unknown) {
+  const msg = e instanceof Error ? e.message : String(e);
+  alert("TTS failed: " + msg);
+} finally {
       setLoading(false);
     }
   }

@@ -1,4 +1,3 @@
-// src/components/TopBar.tsx
 "use client";
 
 import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
@@ -118,28 +117,6 @@ function highlightAI(text: string, query: string) {
   return out;
 }
 
-// Relevance scoring
-function scoreItem(q: string, it: SearchItem) {
-  const s = fold(q);
-  const titleF = fold(it.title ?? "");
-  const bodyF = fold(((it.excerpt ?? "") + " " + (it.tags ?? []).join(" ")).trim());
-
-  let score = 0;
-  if (titleF.includes(s)) score += 100;
-  if (titleF.startsWith(s)) score += 60;
-  if (bodyF.includes(s)) score += 40;
-
-  if (it.date) {
-    const t = new Date(it.date).getTime();
-    if (!Number.isNaN(t)) {
-      const days = (Date.now() - t) / 86_400_000;
-      const recencyBoost = Math.max(0, 60 - Math.min(365, days)); // up to +60 for very recent
-      score += recencyBoost;
-    }
-  }
-  return score;
-}
-
 function SearchBox({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const [q, setQ] = useState("");
@@ -166,29 +143,24 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     };
   }, [index]);
 
+  // client-side filter for quick suggestions
+  useEffect(() => {
+    if (!index) return;
+    const s = q.trim().toLowerCase();
 
-// client-side filter for quick suggestions (open dropdown while typing)
-useEffect(() => {
-  if (!index) return;
-  const s = q.trim().toLowerCase();
+    if (s.length < 1) {
+      setHits([]);
+      setOpen(false);
+      return;
+    }
 
-  if (s.length < 1) {
-    setHits([]);
-    setOpen(false);           // hide when empty
-    return;
-  }
+    const res = index
+      .filter((it) => (it.title + " " + (it.excerpt ?? "")).toLowerCase().includes(s))
+      .slice(0, 6);
 
-  const res = index
-    .filter((it) => (it.title + " " + (it.excerpt ?? "")).toLowerCase().includes(s))
-    .slice(0, 6);
-
-  setHits(res);
-  setOpen(res.length > 0);    // show dropdown if we have results
-}, [q, index]);
-
-
-
-
+    setHits(res);
+    setOpen(res.length > 0);
+  }, [q, index]);
 
   function submit() {
     const term = q.trim();
@@ -236,23 +208,20 @@ useEffect(() => {
       <div className="flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1">
         <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
 
-<input
-  autoFocus
-  type="text"
-  placeholder="Αναζήτηση…"
-  className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
-  value={q}
-  onChange={(e) => {
-    setQ(e.target.value);
-    setOpen(true);        // keep suggestions open while typing (optional but recommended)
-  }}
-  onKeyDown={(e) => {
-    if (e.key === "Enter") submit();
-    if (e.key === "Escape") onClose();
-  }}
-  onFocus={() => setOpen(true)}       // ← add this line
-  aria-label="Πεδίο αναζήτησης"
-/>
+        <input
+          autoFocus
+          type="text"
+          placeholder="Αναζήτηση…"
+          className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
+          value={q}
+          onChange={(e) => {
+            setQ(e.target.value);
+            setOpen(true);
+          }}
+          onKeyDown={onKeyDown}
+          onFocus={() => setOpen(true)}
+          aria-label="Πεδίο αναζήτησης"
+        />
 
         <button
           onClick={onClose}

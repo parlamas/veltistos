@@ -11,7 +11,7 @@ type Segment = { text: string; lang: string };
 // Expand common Greek abbreviations for clearer TTS output
 function expandGreekAbbreviations(text: string): string {
   const rules: Array<[RegExp, string]> = [
-    // κλπ. / κ.λπ. / κτλ. / κ.τ.λ. → και τα λοιπά
+    // κλπ. / κ.λ.π. / κτλ. / κ.τ.λ. → και τα λοιπά
     [/\bκ\.?\s*λ\.?\s*π\.?/gi, "και τα λοιπά"],
     [/\bκτλ\.?/gi, "και τα λοιπά"],
     [/\bκ\.?\s*τ\.?\s*λ\.?\.?/gi, "και τα λοιπά"],

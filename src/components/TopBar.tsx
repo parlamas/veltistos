@@ -166,26 +166,29 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     };
   }, [index]);
 
-  useEffect(() => {
-    if (!index) return;
-    const s = fold(q.trim());
-    if (s.length < 2) {
-      setHits([]);
-      setActive(-1);
-      return;
-    }
-    const ranked = index
-      .filter((it) =>
-        (it._folded ?? fold(it.title + " " + (it.excerpt ?? "") + " " + (it.tags ?? []).join(" "))).includes(s)
-      )
-      .map((it) => ({ it, score: scoreItem(q, it) }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 6)
-      .map((x) => x.it);
 
-    setHits(ranked);
-    setActive(ranked.length ? 0 : -1);
-  }, [q, index]);
+// client-side filter for quick suggestions (open dropdown while typing)
+useEffect(() => {
+  if (!index) return;
+  const s = q.trim().toLowerCase();
+
+  if (s.length < 1) {
+    setHits([]);
+    setOpen(false);           // hide when empty
+    return;
+  }
+
+  const res = index
+    .filter((it) => (it.title + " " + (it.excerpt ?? "")).toLowerCase().includes(s))
+    .slice(0, 6);
+
+  setHits(res);
+  setOpen(res.length > 0);    // show dropdown if we have results
+}, [q, index]);
+
+
+
+
 
   function submit() {
     const term = q.trim();
@@ -232,18 +235,25 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     <div className="relative w-full" ref={wrapRef} role="search">
       <div className="flex items-center gap-2 border border-zinc-200 rounded-lg px-3 py-1">
         <Search className="w-4 h-4 text-zinc-400" aria-hidden="true" />
-        <input
-          autoFocus
-          type="text"
-          placeholder="Αναζήτηση…"
-          className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
-          onKeyDown={onKeyDown}
-          aria-label="Πεδίο αναζήτησης"
-          aria-expanded={open && hits.length > 0 ? true : false}
-          aria-activedescendant={active >= 0 ? `search-opt-${active}` : undefined}
-        />
+
+<input
+  autoFocus
+  type="text"
+  placeholder="Αναζήτηση…"
+  className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
+  value={q}
+  onChange={(e) => {
+    setQ(e.target.value);
+    setOpen(true);        // keep suggestions open while typing (optional but recommended)
+  }}
+  onKeyDown={(e) => {
+    if (e.key === "Enter") submit();
+    if (e.key === "Escape") onClose();
+  }}
+  onFocus={() => setOpen(true)}       // ← add this line
+  aria-label="Πεδίο αναζήτησης"
+/>
+
         <button
           onClick={onClose}
           className="grid place-items-center w-7 h-7 rounded-md hover:bg-zinc-100"

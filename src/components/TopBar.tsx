@@ -24,14 +24,14 @@ import {
 
 // Map Open-Meteo weathercode -> Lucide icon
 function iconForOpenMeteo(code: number) {
-  if (code === 0) return Sun; // clear
-  if (code === 1 || code === 2 || code === 3) return CloudSun; // mainly clear → overcast
-  if (code === 45 || code === 48) return CloudFog; // fog
-  if (code >= 51 && code <= 57) return CloudDrizzle; // drizzle
-  if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return CloudRain; // rain
-  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return CloudSnow; // snow
-  if (code === 95 || code === 96 || code === 99) return CloudLightning; // thunder
-  return Cloud; // fallback
+  if (code === 0) return Sun;
+  if (code === 1 || code === 2 || code === 3) return CloudSun;
+  if (code === 45 || code === 48) return CloudFog;
+  if (code >= 51 && code <= 57) return CloudDrizzle;
+  if ((code >= 61 && code <= 67) || (code >= 80 && code <= 82)) return CloudRain;
+  if ((code >= 71 && code <= 77) || code === 85 || code === 86) return CloudSnow;
+  if (code === 95 || code === 96 || code === 99) return CloudLightning;
+  return Cloud;
 }
 
 type CurrentWeather = { temp: number; code: number };
@@ -251,6 +251,7 @@ export default function TopBar() {
           {/* Row 2: compact controls OR search field */}
           {!searchOpen ? (
             <div className="mt-2 flex items-center justify-between gap-3">
+              {/* 1) Magnifying glass only */}
               <button
                 onClick={() => setSearchOpen(true)}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -259,6 +260,7 @@ export default function TopBar() {
                 <Search className="w-4 h-4" aria-hidden="true" />
               </button>
 
+              {/* 2) Weather */}
               <div className="flex items-center gap-2 text-sm" aria-label="Καιρός">
                 <WeatherIcon className="w-5 h-5 text-zinc-800" aria-hidden="true" />
                 <div className="leading-tight">
@@ -269,10 +271,12 @@ export default function TopBar() {
                 </div>
               </div>
 
+              {/* 3) Date */}
               <div className="min-w-0 flex-1 text-right text-xs text-zinc-500">
                 {weekday} {date}
               </div>
 
+              {/* 4) Burger menu */}
               <button
                 onClick={openMenu}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -282,14 +286,13 @@ export default function TopBar() {
               </button>
             </div>
           ) : (
-            <div className="mt-2">
-              <SearchBox onClose={() => setSearchOpen(false)} />
-            </div>
+            <div className="mt-2"><SearchBox onClose={() => setSearchOpen(false)} /></div>
           )}
         </div>
 
         {/* ───────────────── DESKTOP: single row ───────────────── */}
         <div className="hidden sm:flex items-center justify-between gap-6 py-0">
+          {/* LEFT: logo + weather */}
           <div className="flex items-center gap-4">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
               <Image
@@ -316,6 +319,7 @@ export default function TopBar() {
             </div>
           </div>
 
+          {/* CENTER: search (button → field) */}
           <div className="flex-1 flex justify-center">
             {!searchOpen ? (
               <button
@@ -327,12 +331,11 @@ export default function TopBar() {
                 <span>Αναζήτηση</span>
               </button>
             ) : (
-              <div className="min-w-[360px] max-w-[560px] w-full">
-                <SearchBox onClose={() => setSearchOpen(false)} />
-              </div>
+              <div className="min-w-[360px] max-w-[560px] w-full"><SearchBox onClose={() => setSearchOpen(false)} /></div>
             )}
           </div>
 
+          {/* RIGHT: support + socials */}
           <div className="flex items-center gap-3">
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
               Support Veltistos

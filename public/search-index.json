@@ -5,8 +5,9 @@
     "excerpt": "Καλωσήρθατε στο Veltistos"
   },
   {
-    "title": "Sidewalk",
+    "title": "Νέα για τα πεζοδρόμια",
     "url": "/stories/sidewalk",
-    "excerpt": "Η ιστορία 'Sidewalk' στο Veltistos"
+    "excerpt": "Άρθρο για τα πεζοδρόμια στην Αθήνα.",
+    "tags": ["πεζοδρόμιο", "πεζοδρόμια", "Αθήνα"]
   }
 ]

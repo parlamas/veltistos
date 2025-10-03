@@ -3,9 +3,10 @@ import fs from "fs/promises";
 import path from "path";
 import Link from "next/link";
 
+// Ensure this runs on Node and isn't cached
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
-
+export const revalidate = 0;
 
 export type SearchItem = {
   title: string;
@@ -26,9 +27,20 @@ async function readIndex(): Promise<SearchItem[]> {
   }
 }
 
+// Accent-insensitive fold (Greek-friendly)
+function fold(s: string) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 function matches(q: string, it: SearchItem) {
-  const s = q.toLowerCase();
-  const hay = (it.title + " " + (it.excerpt ?? "") + " " + (it.tags?.join(" ") ?? "")).toLowerCase();
+  const s = fold(q);
+  const hay = fold(
+    (it.title ?? "") +
+      " " +
+      (it.excerpt ?? "") +
+      " " +
+      (it.tags?.join(" ") ?? "")
+  );
   return hay.includes(s);
 }
 

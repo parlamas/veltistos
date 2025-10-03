@@ -35,14 +35,7 @@ function iconForOpenMeteo(code: number) {
 }
 
 type CurrentWeather = { temp: number; code: number };
-
-type SearchItem = {
-  title: string;
-  url: string; // absolute or site-relative
-  excerpt?: string;
-  date?: string; // ISO
-  tags?: string[];
-};
+type SearchItem = { title: string; url: string; excerpt?: string; date?: string; tags?: string[] };
 
 function useOutsideClick<T extends HTMLElement>(onClickOutside: () => void) {
   const ref = useRef<T | null>(null);
@@ -56,20 +49,23 @@ function useOutsideClick<T extends HTMLElement>(onClickOutside: () => void) {
   return ref;
 }
 
+function fold(s: string) {
+  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+}
+
 function SearchBox({ onClose }: { onClose: () => void }) {
   const router = useRouter();
   const [q, setQ] = useState("");
   const [index, setIndex] = useState<SearchItem[] | null>(null);
   const [hits, setHits] = useState<SearchItem[]>([]);
   const [open, setOpen] = useState(true);
-
   const wrapRef = useOutsideClick<HTMLDivElement>(() => setOpen(false));
 
-  // lazy-load index (from public/search-index.json)
+  // Load index (from /public). Use no-store during dev to avoid stale JSON.
   useEffect(() => {
     let mounted = true;
     if (index === null) {
-      fetch("/search-index.json", { cache: "force-cache" })
+      fetch("/search-index.json", { cache: "no-store" })
         .then((r) => (r.ok ? r.json() : []))
         .then((data) => {
           if (!mounted) return;
@@ -82,16 +78,18 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     };
   }, [index]);
 
-  // client-side filter for quick suggestions
+  // Client-side suggestions (accent-insensitive)
   useEffect(() => {
     if (!index) return;
-    const s = q.trim().toLowerCase();
+    const s = fold(q.trim());
     if (s.length < 2) {
       setHits([]);
       return;
     }
     const res = index
-      .filter((it) => (it.title + " " + (it.excerpt ?? "")).toLowerCase().includes(s))
+      .filter((it) =>
+        fold(it.title + " " + (it.excerpt ?? "") + " " + (it.tags?.join(" ") ?? "")).includes(s)
+      )
       .slice(0, 6);
     setHits(res);
   }, [q, index]);
@@ -145,9 +143,7 @@ function SearchBox({ onClose }: { onClose: () => void }) {
               onClick={() => onClose()}
             >
               <div className="text-sm font-medium text-zinc-900 line-clamp-1">{h.title}</div>
-              {h.excerpt && (
-                <div className="text-xs text-zinc-600 line-clamp-1">{h.excerpt}</div>
-              )}
+              {h.excerpt && <div className="text-xs text-zinc-600 line-clamp-1">{h.excerpt}</div>}
             </Link>
           ))}
           <button
@@ -167,13 +163,11 @@ export default function TopBar() {
   const [now, setNow] = useState<Date>(() => new Date());
   const [weather, setWeather] = useState<CurrentWeather | null>(null);
 
-  // live clock
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
-  // fetch weather for Athens (fixed for all visitors)
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -187,12 +181,10 @@ export default function TopBar() {
         if (!cancelled && typeof temp === "number" && typeof code === "number") {
           setWeather({ temp, code });
         }
-      } catch {
-        // silent fail → fallback icon/blank temp
-      }
+      } catch {}
     }
     load();
-    const id = setInterval(load, 10 * 60 * 1000); // refresh every 10 min
+    const id = setInterval(load, 10 * 60 * 1000);
     return () => {
       cancelled = true;
       clearInterval(id);
@@ -229,29 +221,19 @@ export default function TopBar() {
   return (
     <header className="w-full bg-white border-b border-zinc-200 z-40 relative" role="banner">
       <div className="max-w-[1120px] mx-auto px-6">
-        {/* ───────────────── MOBILE: two rows ───────────────── */}
+        {/* MOBILE */}
         <div className="sm:hidden py-2">
-          {/* Row 1: logo + support */}
           <div className="flex items-center justify-between gap-3">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
-              <Image
-                src="/logo.svg"
-                alt="Veltistos"
-                width={148}
-                height={60}
-                priority
-                className="block w-[148px] h-[60px] shrink-0"
-              />
+              <Image src="/logo.svg" alt="Veltistos" width={148} height={60} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
               Support Veltistos
             </button>
           </div>
 
-          {/* Row 2: compact controls OR search field */}
           {!searchOpen ? (
-            <div className="mt-2 flex items-center justify-between gap-3">
-              {/* 1) Magnifying glass only */}
+            <div className="mt-2 flex items-center justify_between gap-3">
               <button
                 onClick={() => setSearchOpen(true)}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -260,7 +242,6 @@ export default function TopBar() {
                 <Search className="w-4 h-4" aria-hidden="true" />
               </button>
 
-              {/* 2) Weather */}
               <div className="flex items-center gap-2 text-sm" aria-label="Καιρός">
                 <WeatherIcon className="w-5 h-5 text-zinc-800" aria-hidden="true" />
                 <div className="leading-tight">
@@ -271,12 +252,10 @@ export default function TopBar() {
                 </div>
               </div>
 
-              {/* 3) Date */}
               <div className="min-w-0 flex-1 text-right text-xs text-zinc-500">
                 {weekday} {date}
               </div>
 
-              {/* 4) Burger menu */}
               <button
                 onClick={openMenu}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -290,19 +269,11 @@ export default function TopBar() {
           )}
         </div>
 
-        {/* ───────────────── DESKTOP: single row ───────────────── */}
+        {/* DESKTOP */}
         <div className="hidden sm:flex items-center justify-between gap-6 py-0">
-          {/* LEFT: logo + weather */}
           <div className="flex items-center gap-4">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
-              <Image
-                src="/logo.svg"
-                alt="Veltistos"
-                width={148}
-                height={60}
-                priority
-                className="block w-[148px] h-[60px] shrink-0"
-              />
+              <Image src="/logo.svg" alt="Veltistos" width={148} height={60} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
 
             <div className="flex items-start gap-2 text-sm" aria-label="Καιρός και ώρα">
@@ -319,7 +290,6 @@ export default function TopBar() {
             </div>
           </div>
 
-          {/* CENTER: search (button → field) */}
           <div className="flex-1 flex justify-center">
             {!searchOpen ? (
               <button
@@ -331,56 +301,21 @@ export default function TopBar() {
                 <span>Αναζήτηση</span>
               </button>
             ) : (
-              <div className="min-w-[360px] max-w-[560px] w-full"><SearchBox onClose={() => setSearchOpen(false)} /></div>
+              <div className="min-w-[360px] max-w-[560px] w-full">
+                <SearchBox onClose={() => setSearchOpen(false)} />
+              </div>
             )}
           </div>
 
-          {/* RIGHT: support + socials */}
           <div className="flex items-center gap-3">
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
               Support Veltistos
             </button>
             <div className="hidden sm:flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
-              <a
-                href="https://x.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="X"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs"
-                aria-label="X"
-              >
-                X
-              </a>
-              <a
-                href="https://www.linkedin.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="LinkedIn"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-                aria-label="LinkedIn"
-              >
-                <Linkedin className="w-4 h-4" aria-hidden="true" />
-              </a>
-              <a
-                href="https://www.facebook.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Facebook"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-                aria-label="Facebook"
-              >
-                <Facebook className="w-4 h-4" aria-hidden="true" />
-              </a>
-              <a
-                href="https://www.instagram.com/"
-                target="_blank"
-                rel="noopener noreferrer"
-                title="Instagram"
-                className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full"
-                aria-label="Instagram"
-              >
-                <Instagram className="w-4 h-4" aria-hidden="true" />
-              </a>
+              <a href="https://x.com/" target="_blank" rel="noopener noreferrer" title="X" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs" aria-label="X">X</a>
+              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="LinkedIn"><Linkedin className="w-4 h-4" aria-hidden="true" /></a>
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded_full" aria-label="Facebook"><Facebook className="w-4 h-4" aria-hidden="true" /></a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded_full" aria-label="Instagram"><Instagram className="w-4 h-4" aria-hidden="true" /></a>
             </div>
           </div>
         </div>

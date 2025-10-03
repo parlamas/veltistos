@@ -2,6 +2,8 @@
 import fs from "fs/promises";
 import path from "path";
 import Link from "next/link";
+import type { ReactNode } from "react";
+
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -71,7 +73,7 @@ function highlightAI(text: string, query: string) {
   }
   merged.push([cs, ce]);
 
-  const out: JSX.Element[] = [];
+  const out: ReactNode[] = [];
   let last = 0;
   merged.forEach(([s, e], idx) => {
     if (last < s) out.push(<span key={`r-${idx}-a`}>{text.slice(last, s)}</span>);

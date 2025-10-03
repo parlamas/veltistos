@@ -1,7 +1,7 @@
 // src/components/TopBar.tsx
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -103,7 +103,7 @@ function highlightAI(text: string, query: string) {
   }
   merged.push([cs, ce]);
 
-  const out: JSX.Element[] = [];
+  const out: ReactNode[] = [];
   let last = 0;
   merged.forEach(([s, e], idx) => {
     if (last < s) out.push(<span key={`t-${idx}-a`}>{text.slice(last, s)}</span>);

@@ -34,33 +34,56 @@ export default function TTSButton({
       if (v && v.length) setVoices(v);
     };
     loadVoices();
-    synth.onvoiceschanged = loadVoices; // typed: ((this: SpeechSynthesis, ev: Event) => any) | null
+    synth.onvoiceschanged = loadVoices;
     return () => {
-      try { synth.cancel(); } catch {}
+      try {
+        synth.cancel();
+      } catch {}
       synth.onvoiceschanged = null;
     };
   }, [synth]);
 
-  // Map first voice per primary language key
+  // map first voice per primary language key (en/es/zh/el)
   const voiceMap = useMemo(() => {
     const map = new Map<string, SpeechSynthesisVoice>();
     for (const v of voices) {
-      const lang = (v.lang || "").toLowerCase(); // e.g. "es-es"
-      const key = lang.split("-")[0];            // "es"
+      const lang = (v.lang || "").toLowerCase(); // e.g., "es-ES"
+      const key = lang.split("-")[0]; // "es"
       if (!map.has(key)) map.set(key, v);
     }
     return map;
   }, [voices]);
 
-  // Simple language detection
-  function detectLang(text: string): LangKey {
-    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";   // CJK
-    if (/[\u0370-\u03FF]/.test(text)) return "el";   // Greek
-    if (/[¡¿]/.test(text)) return "es";              // Spanish punctuation
+  const hasGreekVoice = useMemo(
+    () =>
+      voices.some(
+        (v) =>
+          (v.lang || "").toLowerCase().startsWith("el") ||
+          /greek|ελλην/i.test(v.name)
+      ),
+    [voices]
+  );
 
-    const esStop = /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
+  // Detect language per text chunk
+  function detectLang(text: string): LangKey {
+    // Chinese CJK
+    if (/[\u4E00-\u9FFF]/.test(text)) return "zh";
+
+    // Greek (basic + extended/polytonic)
+    if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "el";
+
+    // Quick Spanish signs
+    if (/[¡¿]/.test(text)) return "es";
+
+    // Light Spanish heuristic
+    const esStop =
+      /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
     let hits = 0;
-    text.split(/\s+/).forEach(w => { if (esStop.test(w)) hits++; });
+    text
+      .split(/\s+/)
+      .forEach((w) => {
+        if (esStop.test(w)) hits++;
+      });
     if (hits >= 2) return "es";
 
     return "en";
@@ -70,12 +93,15 @@ export default function TTSButton({
     const el = document.querySelector<HTMLElement>(targetSelector);
     if (!el) return "";
     const clone = el.cloneNode(true) as HTMLElement;
-    clone.querySelectorAll("[data-tts-skip]").forEach(n => n.remove());
-    return clone.innerText.trim();
+    clone.querySelectorAll("[data-tts-skip]").forEach((n) => n.remove());
+    return (clone as any).innerText?.trim() || clone.textContent?.trim() || "";
   }
 
+  // Split text into manageable utterances (includes Greek punctuation)
   function chunk(text: string, maxLen = 300) {
-    const parts = text.replace(/\s+/g, " ").split(/(?<=[\.\!\?…。！？])\s+/);
+    const parts = text
+      .replace(/\s+/g, " ")
+      .split(/(?<=[\.\!\?…。！？;;])\s+/); // includes Greek question mark (;) and ;
     const out: string[] = [];
     let buf = "";
     for (const s of parts) {
@@ -96,8 +122,50 @@ export default function TTSButton({
     return out.filter(Boolean);
   }
 
+  // Prefer exact el-GR, then any Greek, then name match (Edge/Chrome differences)
+  function pickVoiceForKey(key: LangKey): SpeechSynthesisVoice | null {
+    const lc = (s: string | undefined) => (s || "").toLowerCase();
+    if (key === "el") {
+      return (
+        voices.find((v) => lc(v.lang) === "el-gr") ||
+        voices.find((v) => lc(v.lang).startsWith("el")) ||
+        voices.find((v) => /greek|ελλην/i.test(v.name)) ||
+        null
+      );
+    }
+    if (key === "es") {
+      return (
+        voices.find((v) => lc(v.lang) === "es-es") ||
+        voices.find((v) => lc(v.lang).startsWith("es")) ||
+        voiceMap.get("es") ||
+        null
+      );
+    }
+    if (key === "zh") {
+      return (
+        voices.find((v) => lc(v.lang) === "zh-cn") ||
+        voices.find((v) => lc(v.lang).startsWith("zh")) ||
+        voiceMap.get("zh") ||
+        null
+      );
+    }
+    // en
+    return (
+      voices.find((v) => lc(v.lang) === "en-us") ||
+      voices.find((v) => lc(v.lang).startsWith("en")) ||
+      voiceMap.get("en") ||
+      null
+    );
+  }
+
   function speakChunks(chunks: string[]) {
     if (!synth) return;
+
+    // Bias to Greek if most of the article is Greek, even if small Latin bits exist
+    const whole = getText();
+    const greekChars = (whole.match(/[\u0370-\u03FF\u1F00-\u1FFF]/g) || []).length;
+    const latinChars = (whole.match(/[A-Za-z]/g) || []).length;
+    const greekBias = greekChars > latinChars * 0.5;
 
     queueRef.current = chunks.map((t) => {
       const u = new SpeechSynthesisUtterance(t);
@@ -105,6 +173,7 @@ export default function TTSButton({
 
       let key: LangKey = detectLang(t);
       if (key === "en" && defaultLang) key = defaultLang;
+      if (key === "en" && greekBias) key = "el";
 
       const bcp47 =
         key === "el" ? "el-GR" :
@@ -112,13 +181,24 @@ export default function TTSButton({
         key === "zh" ? "zh-CN" :
         "en-US";
 
-      // Prefer a voice whose lang starts with the key (el, es, zh, en)
-      const v = voices.find(v => (v.lang || "").toLowerCase().startsWith(key)) || voiceMap.get(key) || null;
+      const v = pickVoiceForKey(key);
 
-      // Always set lang so the engine attempts the right language even without a dedicated voice
       u.lang = v?.lang || bcp47;
-      if (v) u.voice = v;
+      if (v) {
+        u.voice = v;
+      } else if (key === "el" && !sessionStorage.getItem("noElVoiceWarned")) {
+        sessionStorage.setItem("noElVoiceWarned", "1");
+        const list = voices.map((vv) => `${vv.name} [${vv.lang}]`).join("\n");
+        alert(
+          "Δεν βρέθηκε ελληνική φωνή από τον περιηγητή.\n" +
+            "• Σε Windows, προτίμησε Microsoft Edge (εκθέτει τις φωνές συστήματος καλύτερα από το Chrome).\n" +
+            "• Βεβαιώσου ότι είναι εγκατεστημένη η φωνή Greek (el-GR) στα Windows και κάνε επανεκκίνηση του browser.\n\n" +
+            "Φωνές που βλέπει ο περιηγητής:\n" + list
+        );
+      }
 
+      // continue through errors
+      u.onerror = () => {};
       return u;
     });
 
@@ -140,18 +220,42 @@ export default function TTSButton({
 
   function play() {
     if (!synth) return;
-    if (status === "paused") { try { synth.resume(); } catch {} setStatus("speaking"); return; }
+    if (status === "paused") {
+      try {
+        synth.resume();
+      } catch {}
+      setStatus("speaking");
+      return;
+    }
     const text = getText();
     if (!text) return;
-    try { synth.cancel(); } catch {}
+    try {
+      synth.cancel();
+    } catch {}
     speakChunks(chunk(text));
   }
 
-  function pause() { if (synth && status === "speaking") { try { synth.pause(); } catch {} setStatus("paused"); } }
-  function stop()  { if (synth) { try { synth.cancel(); } catch {} queueRef.current = null; setStatus("idle"); } }
+  function pause() {
+    if (synth && status === "speaking") {
+      try {
+        synth.pause();
+      } catch {}
+      setStatus("paused");
+    }
+  }
+
+  function stop() {
+    if (synth) {
+      try {
+        synth.cancel();
+      } catch {}
+      queueRef.current = null;
+      setStatus("idle");
+    }
+  }
 
   const isSpeaking = status === "speaking";
-  const isPaused   = status === "paused";
+  const isPaused = status === "paused";
 
   return (
     <div className="not-prose flex items-center gap-1 text-zinc-700">
@@ -179,7 +283,9 @@ export default function TTSButton({
         </button>
       )}
 
-      {!voiceMap.get("el") && <span className="ml-2 text-xs text-zinc-500">(Δεν βρέθηκε ελληνική φωνή)</span>}
+      {!hasGreekVoice && (
+        <span className="ml-2 text-xs text-zinc-500">(Δεν βρέθηκε ελληνική φωνή)</span>
+      )}
     </div>
   );
 }

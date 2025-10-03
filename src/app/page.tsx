@@ -2,6 +2,7 @@
 import SiteGrid from "@/components/SiteGrid";
 import LeftStory from "@/components/LeftStory";
 import LeadCard from "@/components/LeadCard";
+import RightStory from "@/components/RightStory";
 import { homeSlots } from "@/content/home";
 
 export default function HomePage() {
@@ -23,11 +24,13 @@ export default function HomePage() {
       right={
         <aside className="space-y-2 lg:sticky lg:top-16">
           {homeSlots.right.map((s) => (
-            <div key={s.href} className="p-2 border-b">
-              <a href={s.href} className="font-medium hover:underline">
-                {s.title}
-              </a>
-            </div>
+            <RightStory
+              key={s.href}
+              href={s.href}
+              title={s.title}
+              img={s.img}
+              kicker={s.kicker}
+            />
           ))}
         </aside>
       }
@@ -47,3 +50,4 @@ export default function HomePage() {
     </SiteGrid>
   );
 }
+

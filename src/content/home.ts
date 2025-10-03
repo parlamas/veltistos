@@ -1,33 +1,73 @@
 // src/content/home.ts
 
-type LeftItem = {
+// Types for each slot
+export type LeftItem = {
   href: string;
   title: string;
-  img?: string;
-  kicker?: string;
+  img: string;
+  kicker: string;
 };
 
-type LeadItem = {
+export type LeadItem = {
   href: string;
   title: string;
-  img?: string;
-  excerpt?: string;
+  img: string;
+  excerpt: string;
 };
 
-// Export a single object you can tweak without touching JSX
-export const homeSlots: {
+export type RightItem = {
+  href: string;
+  title: string;
+  img?: string;     // optional if not always needed
+  kicker?: string;  // optional
+};
+
+// Combined slots type
+export type HomeSlots = {
   left: LeftItem[];
-  middle: LeadItem[]; // center column
-  // right?: RightItem[]; // add later if you wire a right column
-} = {
+  middle: LeadItem[];
+  right: RightItem[];
+};
+
+// Example content
+export const homeSlots: HomeSlots = {
   left: [
-    { href: "/stories/sidewalk", title: "Νέα για τα πεζοδρόμια", img: "/sidewalk.jpeg", kicker: "Ελλάδα" },
-    { href: "/stories/ellada-2", title: "Σύντομη είδηση χωρίς εικόνα για εξοικονόμηση χώρου" },
-    { href: "/stories/ellada-3", title: "Παράδειγμα ιστορίας με μικρή εικόνα", img: "/placeholder.jpg" },
+    {
+      href: "/story-1",
+      title: "Left column story 1",
+      img: "/images/story-1.jpg",
+      kicker: "World",
+    },
+    {
+      href: "/story-2",
+      title: "Left column story 2",
+      img: "/images/story-2.jpg",
+      kicker: "Politics",
+    },
   ],
   middle: [
-    { href: "/stories/lead-1", title: "Κεντρικό θέμα 1", img: "/placeholder.jpg", excerpt: "Σύντομη περιγραφή του κύριου θέματος." },
-    { href: "/stories/lead-2", title: "Κεντρικό θέμα 2", img: "/placeholder.jpg" },
+    {
+      href: "/lead-1",
+      title: "Main story 1",
+      img: "/images/lead-1.jpg",
+      excerpt: "This is the excerpt for the first main story.",
+    },
+    {
+      href: "/lead-2",
+      title: "Main story 2",
+      img: "/images/lead-2.jpg",
+      excerpt: "This is the excerpt for the second main story.",
+    },
+  ],
+  right: [
+    {
+      href: "/widget-1",
+      title: "Right column item 1",
+    },
+    {
+      href: "/widget-2",
+      title: "Right column item 2",
+    },
   ],
 };
 

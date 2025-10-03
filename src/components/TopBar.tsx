@@ -66,7 +66,7 @@ function SearchBox({ onClose }: { onClose: () => void }) {
   useEffect(() => {
     let mounted = true;
     if (index === null) {
-      fetch("/search-index.json", { cache: "no-store" })
+      fetch("/search-index.json", { cache: "force-cache" })
         .then((r) => (r.ok ? r.json() : []))
         .then((data) => {
           if (!mounted) return;

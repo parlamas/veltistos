@@ -72,7 +72,7 @@ export const homeSlots: HomeSlots = {
     },
     href: "/stories/syntagma",         // must match the folder name
   title: "Τό Σύνταγμα τα παλαιά χρόνια...",    // you choose what headline shows
-  img: "/συνταγμα.jpg",             // must match the file in /public
+  img: "/syntagma.jpg",             // must match the file in /public
   kicker: "Πολιτική",                  // short label/category
 },
     {

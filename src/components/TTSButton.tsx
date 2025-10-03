@@ -8,6 +8,27 @@ type Status = "idle" | "speaking" | "paused" | "unavailable";
 
 type Segment = { text: string; lang: string };
 
+// Expand common Greek abbreviations for clearer TTS output
+function expandGreekAbbreviations(text: string): string {
+  const rules: Array<[RegExp, string]> = [
+    // κλπ. / κ.λπ. / κτλ. / κ.τ.λ. → και τα λοιπά
+    [/\bκ\.?\s*λ\.?\s*π\.?/gi, "και τα λοιπά"],
+    [/\bκτλ\.?/gi, "και τα λοιπά"],
+    [/\bκ\.?\s*τ\.?\s*λ\.?\.?/gi, "και τα λοιπά"],
+
+    // π.χ. → παραδείγματος χάριν
+    [/\bπ\.?\s*χ\.?\.?/gi, "παραδείγματος χάριν"],
+
+    // δηλ. → δηλαδή
+    [/\bδηλ\.?\.?/gi, "δηλαδή"],
+  ];
+
+  let out = text;
+  for (const [re, rep] of rules) out = out.replace(re, rep);
+  return out;
+}
+
+
 export default function TTSButton({
   targetSelector,
   label = "Ακρόαση",
@@ -187,9 +208,15 @@ export default function TTSButton({
 
     for (const seg of segments) {
       const lang = normalizeLang(seg.lang);
-      const voice = pickVoice(lang, v);
+const voice = pickVoice(lang, v);
 
-      const chunks = chunkSentences(seg.text, 400);
+// Expand abbreviations for Greek segments only
+const preparedText = lang.toLowerCase().startsWith("el")
+  ? expandGreekAbbreviations(seg.text)
+  : seg.text;
+
+const chunks = chunkSentences(preparedText, 400);
+
       for (const chunk of chunks) {
         const u = new SpeechSynthesisUtterance(chunk);
         u.lang = voice?.lang || lang;   // always set lang

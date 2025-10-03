@@ -1,1 +1,12 @@
-[]
+﻿[
+  {
+    "title": "Αρχική",
+    "url": "/",
+    "excerpt": "Καλωσήρθατε στο Veltistos"
+  },
+  {
+    "title": "Sidewalk",
+    "url": "/stories/sidewalk",
+    "excerpt": "Η ιστορία 'Sidewalk' στο Veltistos"
+  }
+]

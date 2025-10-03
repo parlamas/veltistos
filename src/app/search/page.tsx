@@ -3,6 +3,10 @@ import fs from "fs/promises";
 import path from "path";
 import Link from "next/link";
 
+export const runtime = "nodejs";
+export const dynamic = "force-dynamic";
+
+
 export type SearchItem = {
   title: string;
   url: string;

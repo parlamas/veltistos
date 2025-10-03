@@ -1,46 +1,49 @@
 // src/app/page.tsx
 import SiteGrid from "@/components/SiteGrid";
 import LeftStory from "@/components/LeftStory";
-import LeadCard from "@/components/LeadCard"; // if you’re using center leads
+import LeadCard from "@/components/LeadCard";
+import { homeSlots } from "@/content/home";
 
 export default function HomePage() {
   return (
     <SiteGrid
       left={
         <aside className="space-y-2 lg:sticky lg:top-16">
-          <LeftStory
-            href="/stories/sidewalk"
-            title="Νέα για τα πεζοδρόμια"
-            img="/sidewalk.jpeg"
-            kicker="Ελλάδα"
-          />
-          <LeftStory
-            href="/story/ellada-2"
-            title="Σύντομη είδηση χωρίς εικόνα για εξοικονόμηση χώρου"
-          />
-          <LeftStory
-            href="/story/ellada-3"
-            title="Παράδειγμα ιστορίας με μικρή εικόνα"
-            img="/placeholder.jpg"
-          />
+          {homeSlots.left.map((s) => (
+            <LeftStory
+              key={s.href}
+              href={s.href}
+              title={s.title}
+              img={s.img}
+              kicker={s.kicker}
+            />
+          ))}
+        </aside>
+      }
+      right={
+        <aside className="space-y-2 lg:sticky lg:top-16">
+          {homeSlots.right.map((s) => (
+            <div key={s.href} className="p-2 border-b">
+              <a href={s.href} className="font-medium hover:underline">
+                {s.title}
+              </a>
+            </div>
+          ))}
         </aside>
       }
     >
       {/* center (main stories) */}
       <div className="space-y-6">
-        <LeadCard
-          href="/story/lead-1"
-          title="Κεντρικό θέμα 1"
-          img="/placeholder.jpg"
-          excerpt="Σύντομη περιγραφή του κύριου θέματος."
-        />
-        <LeadCard
-          href="/story/lead-2"
-          title="Κεντρικό θέμα 2"
-          img="/placeholder.jpg"
-        />
+        {homeSlots.middle.map((s) => (
+          <LeadCard
+            key={s.href}
+            href={s.href}
+            title={s.title}
+            img={s.img}
+            excerpt={s.excerpt}
+          />
+        ))}
       </div>
     </SiteGrid>
   );
 }
-

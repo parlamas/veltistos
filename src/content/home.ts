@@ -70,6 +70,7 @@ export const homeSlots: HomeSlots = {
       href: "/widget-1",
       title: "Right column item 1",
     },
+    {
     href: "/stories/syntagma",         // must match the folder name
   title: "Τό Σύνταγμα τα παλαιά χρόνια...",    // you choose what headline shows
   img: "/syntagma.jpg",             // must match the file in /public

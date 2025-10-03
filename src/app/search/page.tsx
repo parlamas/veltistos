@@ -3,7 +3,6 @@ import fs from "fs/promises";
 import path from "path";
 import Link from "next/link";
 
-// Ensure this runs on Node and isn't cached
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 export const revalidate = 0;
@@ -14,6 +13,7 @@ export type SearchItem = {
   excerpt?: string;
   date?: string;
   tags?: string[];
+  _folded?: string; // optional, provided by generator
 };
 
 async function readIndex(): Promise<SearchItem[]> {
@@ -27,28 +27,19 @@ async function readIndex(): Promise<SearchItem[]> {
   }
 }
 
-// Accent-insensitive fold (Greek-friendly)
 function fold(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
 function matches(q: string, it: SearchItem) {
   const s = fold(q);
-  const hay = fold(
-    (it.title ?? "") +
-      " " +
-      (it.excerpt ?? "") +
-      " " +
-      (it.tags?.join(" ") ?? "")
-  );
+  const hay = it._folded
+    ? it._folded
+    : fold((it.title ?? "") + " " + (it.excerpt ?? "") + " " + ((it.tags ?? []).join(" ")));
   return hay.includes(s);
 }
 
-export default async function SearchPage({
-  searchParams,
-}: {
-  searchParams: { q?: string };
-}) {
+export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
   const q = (searchParams?.q ?? "").toString().trim();
   const index = await readIndex();
   const results = q ? index.filter((it) => matches(q, it)) : [];
@@ -99,3 +90,4 @@ export default async function SearchPage({
     </main>
   );
 }
+

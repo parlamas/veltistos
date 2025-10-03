@@ -50,6 +50,7 @@ function useOutsideClick<T extends HTMLElement>(onClickOutside: () => void) {
 }
 
 function fold(s: string) {
+  // accent-insensitive matching (Greek/Latin friendly)
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
@@ -61,7 +62,7 @@ function SearchBox({ onClose }: { onClose: () => void }) {
   const [open, setOpen] = useState(true);
   const wrapRef = useOutsideClick<HTMLDivElement>(() => setOpen(false));
 
-  // Load index (from /public). Use no-store during dev to avoid stale JSON.
+  // Load index (from /public). Use no-store to avoid stale JSON while building/testing.
   useEffect(() => {
     let mounted = true;
     if (index === null) {
@@ -88,7 +89,7 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     }
     const res = index
       .filter((it) =>
-        fold(it.title + " " + (it.excerpt ?? "") + " " + (it.tags?.join(" ") ?? "")).includes(s)
+        fold(it.title + " " + (it.excerpt ?? "") + " " + ((it.tags ?? []).join(" "))).includes(s)
       )
       .slice(0, 6);
     setHits(res);
@@ -163,11 +164,13 @@ export default function TopBar() {
   const [now, setNow] = useState<Date>(() => new Date());
   const [weather, setWeather] = useState<CurrentWeather | null>(null);
 
+  // live clock
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
+  // fetch weather for Athens (fixed for all visitors)
   useEffect(() => {
     let cancelled = false;
     async function load() {
@@ -233,7 +236,7 @@ export default function TopBar() {
           </div>
 
           {!searchOpen ? (
-            <div className="mt-2 flex items-center justify_between gap-3">
+            <div className="mt-2 flex items-center justify-between gap-3">
               <button
                 onClick={() => setSearchOpen(true)}
                 className="grid place-items-center w-9 h-9 rounded-full border border-zinc-200 hover:bg-zinc-50"
@@ -314,8 +317,8 @@ export default function TopBar() {
             <div className="hidden sm:flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
               <a href="https://x.com/" target="_blank" rel="noopener noreferrer" title="X" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs" aria-label="X">X</a>
               <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="LinkedIn"><Linkedin className="w-4 h-4" aria-hidden="true" /></a>
-              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded_full" aria-label="Facebook"><Facebook className="w-4 h-4" aria-hidden="true" /></a>
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded_full" aria-label="Instagram"><Instagram className="w-4 h-4" aria-hidden="true" /></a>
+              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="Facebook"><Facebook className="w-4 h-4" aria-hidden="true" /></a>
+              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="Instagram"><Instagram className="w-4 h-4" aria-hidden="true" /></a>
             </div>
           </div>
         </div>

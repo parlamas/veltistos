@@ -24,7 +24,6 @@ function isEspeakApi(x: unknown): x is EspeakApi {
 /** Import an ES module from a URL at runtime (avoid bundler touching it). */
 async function importFromUrl(url: string): Promise<EsModuleLike> {
   // Using Function avoids Turbopack/Webpack parsing the dynamic import.
-  // eslint-disable-next-line no-new-func
   const importer: (u: string) => Promise<EsModuleLike> = new Function(
     "u",
     "return import(u);"
@@ -158,7 +157,12 @@ export default function TTSButtonAncient({
   }
 
   async function playWav(wavBytes: Uint8Array) {
-    const blob = new Blob([wavBytes], { type: "audio/wav" });
+    // Create a real ArrayBuffer slice (not ArrayBufferLike) for Blob
+    const arrayBuffer = wavBytes.buffer.slice(
+      wavBytes.byteOffset,
+      wavBytes.byteOffset + wavBytes.byteLength
+    ) as ArrayBuffer;
+    const blob = new Blob([arrayBuffer], { type: "audio/wav" });
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
     audioRef.current = audio;

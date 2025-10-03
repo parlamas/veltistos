@@ -1,91 +1,102 @@
+// src/components/TTSButton.tsx
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Volume2, Pause, Square } from "lucide-react";
 
 type Status = "idle" | "speaking" | "paused" | "unavailable";
-type LangKey = "el" | "es" | "zh" | "en";
+
+type Segment = { text: string; lang: string };
 
 export default function TTSButton({
   targetSelector,
-  rate = 1,
   label = "Ακρόαση",
-  defaultLang,
+  rate = 1,
 }: {
   targetSelector: string;
-  rate?: number;
   label?: string;
-  defaultLang?: LangKey;
+  rate?: number;
 }) {
   const synth = typeof window !== "undefined" ? window.speechSynthesis : null;
-  const [status, setStatus] = useState<Status>("idle");
+  const [status, setStatus] = useState<Status>(synth ? "idle" : "unavailable");
   const [voices, setVoices] = useState<SpeechSynthesisVoice[]>([]);
   const queueRef = useRef<SpeechSynthesisUtterance[] | null>(null);
 
-  // Load voices (Chrome populates async)
-  useEffect(() => {
-    if (!synth) {
-      setStatus("unavailable");
-      return;
-    }
-    const loadVoices = () => {
-      const v = synth.getVoices();
-      if (v && v.length) setVoices(v);
-    };
-    loadVoices();
-    synth.onvoiceschanged = loadVoices;
-    return () => {
-      try { synth.cancel(); } catch {}
-      synth.onvoiceschanged = null;
-    };
-  }, [synth]);
+  // --- Utilities -------------------------------------------------------------
 
-  // map first voice per primary language key (en/es/zh/el)
-  const voiceMap = useMemo(() => {
-    const map = new Map<string, SpeechSynthesisVoice>();
-    for (const v of voices) {
-      const lang = (v.lang || "").toLowerCase();
-      const key = lang.split("-")[0];
-      if (!map.has(key)) map.set(key, v);
-    }
-    return map;
-  }, [voices]);
+  function awaitVoices(timeoutMs = 3000): Promise<SpeechSynthesisVoice[]> {
+    if (!synth) return Promise.resolve([]);
+    const existing = synth.getVoices();
+    if (existing.length) return Promise.resolve(existing);
 
-  const hasGreekVoice = useMemo(
-    () =>
-      voices.some(
-        (v) =>
-          (v.lang || "").toLowerCase().startsWith("el") ||
-          /greek|ελλην/i.test(v.name)
-      ),
-    [voices]
-  );
-
-  // Detect language per text chunk
-  function detectLang(text: string): LangKey {
-    if (/[\u4E00-\u9FFF]/.test(text)) return "zh"; // CJK
-    if (/[\u0370-\u03FF\u1F00-\u1FFF]/.test(text)) return "el"; // Greek basic + extended
-    if (/[¡¿]/.test(text)) return "es"; // quick Spanish
-    const esStop = /\b(?:el|la|los|las|un|una|unos|unas|y|o|de|del|al|que|por|para|con|sin|pero|muy|mas|como|cuando|donde|porque|hola|gracias|voy|vas|va|vamos|van|escuela|hoy|ayer|manana)\b/i;
-    let hits = 0;
-    text.split(/\s+/).forEach((w) => { if (esStop.test(w)) hits++; });
-    if (hits >= 2) return "es";
-    return "en";
+    return new Promise((resolve) => {
+      const start = Date.now();
+      const handle = () => {
+        const v = synth.getVoices();
+        if (v.length || Date.now() - start > timeoutMs) {
+          synth.onvoiceschanged = null;
+          resolve(v);
+        }
+      };
+      synth.onvoiceschanged = handle;
+      // Safety timer in case voiceschanged never fires
+      const id = setInterval(() => {
+        const v = synth.getVoices();
+        if (v.length || Date.now() - start > timeoutMs) {
+          clearInterval(id);
+          synth.onvoiceschanged = null;
+          resolve(v);
+        }
+      }, 150);
+    });
   }
 
-  function getText() {
-    const el = document.querySelector<HTMLElement>(targetSelector);
-    if (!el) return "";
-    const clone = el.cloneNode(true) as HTMLElement;
-    clone.querySelectorAll("[data-tts-skip]").forEach((n) => n.remove());
-    return (clone as HTMLElement).innerText?.trim() || clone.textContent?.trim() || "";
+  function textNodesWithLang(root: HTMLElement, defaultLang = "el-GR"): Segment[] {
+    const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
+    const out: Segment[] = [];
+    let node: Node | null;
+    while ((node = walker.nextNode())) {
+      const raw = node.nodeValue || "";
+      const text = raw.replace(/\s+/g, " ").trim();
+      if (!text) continue;
+
+      const parent = (node.parentElement || root) as HTMLElement;
+      if (parent.closest("[data-tts-skip]")) continue;
+
+      const elWithLang = parent.closest("[lang]") as HTMLElement | null;
+      const lang =
+        elWithLang?.getAttribute("lang") ||
+        root.getAttribute("lang") ||
+        document.documentElement.getAttribute("lang") ||
+        defaultLang;
+
+      out.push({ text, lang });
+    }
+
+    // merge adjacent same-lang segments to reduce utterance count
+    const merged: Segment[] = [];
+    for (const seg of out) {
+      const last = merged[merged.length - 1];
+      if (last && sameLang(last.lang, seg.lang)) {
+        last.text += " " + seg.text;
+      } else {
+        merged.push(seg);
+      }
+    }
+    return merged;
   }
 
-  // Split text into manageable utterances (includes Greek punctuation)
-  function chunk(text: string, maxLen = 300) {
+  function sameLang(a: string, b: string) {
+    const na = (a || "").toLowerCase();
+    const nb = (b || "").toLowerCase();
+    if (na === nb) return true;
+    return na.split("-")[0] === nb.split("-")[0]; // el == el-GR
+  }
+
+  function chunkSentences(text: string, maxLen = 300): string[] {
     const parts = text
       .replace(/\s+/g, " ")
-      .split(/(?<=[\.\!\?…。！？;;])\s+/); // includes Greek question mark (;) and ;
+      .split(/(?<=[\.\!\?…。！？;;])\s+/); // includes Greek question mark ; and ;
     const out: string[] = [];
     let buf = "";
     for (const s of parts) {
@@ -106,84 +117,103 @@ export default function TTSButton({
     return out.filter(Boolean);
   }
 
-  // Prefer exact el-GR, then any Greek, then name match
-  function pickVoiceForKey(key: LangKey): SpeechSynthesisVoice | null {
-    const lc = (s: string | undefined) => (s || "").toLowerCase();
-    if (key === "el") {
-      return (
-        voices.find((v) => lc(v.lang) === "el-gr") ||
-        voices.find((v) => lc(v.lang).startsWith("el")) ||
-        voices.find((v) => /greek|ελλην/i.test(v.name)) ||
-        null
-      );
+  function pickVoice(lang: string, list: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
+    const lc = (s?: string) => (s || "").toLowerCase();
+    const L = lc(lang);
+
+    // Prefer exact locale
+    const exact = list.find(v => lc(v.lang) === L);
+    if (exact) return exact;
+
+    // Prefer base language (el, es, zh, en)
+    const base = L.split("-")[0];
+    const byBase = list.find(v => lc(v.lang).startsWith(base));
+    if (byBase) return byBase;
+
+    // Greek: try name substrings (Edge/Chrome often expose long names)
+    if (base === "el") {
+      const byName =
+        list.find(v => /greek|ελλην/i.test(v.name)) ||
+        list.find(v => /el[-_ ]?gr/i.test(v.name));
+      if (byName) return byName;
     }
-    if (key === "es") {
-      return (
-        voices.find((v) => lc(v.lang) === "es-es") ||
-        voices.find((v) => lc(v.lang).startsWith("es")) ||
-        voiceMap.get("es") ||
-        null
-      );
-    }
-    if (key === "zh") {
-      return (
-        voices.find((v) => lc(v.lang) === "zh-cn") ||
-        voices.find((v) => lc(v.lang).startsWith("zh")) ||
-        voiceMap.get("zh") ||
-        null
-      );
-    }
-    return (
-      voices.find((v) => lc(v.lang) === "en-us") ||
-      voices.find((v) => lc(v.lang).startsWith("en")) ||
-      voiceMap.get("en") ||
-      null
-    );
+
+    return null;
   }
 
-  function speakChunks(chunks: string[]) {
+  // --- Effects ---------------------------------------------------------------
+
+  useEffect(() => {
+    if (!synth) {
+      setStatus("unavailable");
+      return;
+    }
+    let mounted = true;
+    (async () => {
+      const v = await awaitVoices(3000);
+      if (!mounted) return;
+      setVoices(v);
+    })();
+    return () => {
+      mounted = false;
+    };
+  }, [synth]);
+
+  // --- Controls --------------------------------------------------------------
+
+  async function play() {
     if (!synth) return;
+    if (status === "paused") {
+      try { synth.resume(); } catch {}
+      setStatus("speaking");
+      return;
+    }
 
-    // Bias to Greek if most of the article is Greek
-    const whole = getText();
-    const greekChars = (whole.match(/[\u0370-\u03FF\u1F00-\u1FFF]/g) || []).length;
-    const latinChars = (whole.match(/[A-Za-z]/g) || []).length;
-    const greekBias = greekChars > latinChars * 0.5;
+    // Ensure voices are there before we build utterances
+    const v = voices.length ? voices : await awaitVoices(3000);
+    if (!v.length) {
+      alert("Δεν φορτώθηκαν φωνές από τον περιηγητή. Δοκίμασε Microsoft Edge ή κάνε επανεκκίνηση του browser.");
+      return;
+    }
 
-    queueRef.current = chunks.map((t) => {
-      const u = new SpeechSynthesisUtterance(t);
-      u.rate = rate;
+    const root = document.querySelector(targetSelector) as HTMLElement | null;
+    if (!root) return;
 
-      let key: LangKey = detectLang(t);
-      if (key === "en" && defaultLang) key = defaultLang;
-      if (key === "en" && greekBias) key = "el";
+    const segments = textNodesWithLang(root, "el-GR");
+    if (!segments.length) return;
 
-      const bcp47 =
-        key === "el" ? "el-GR" :
-        key === "es" ? "es-ES" :
-        key === "zh" ? "zh-CN" :
-        "en-US";
+    // Build utterances per segment, chunked by sentence
+    const queue: SpeechSynthesisUtterance[] = [];
 
-      const v = pickVoiceForKey(key);
+    for (const seg of segments) {
+      const lang = normalizeLang(seg.lang);
+      const voice = pickVoice(lang, v);
 
-      u.lang = v?.lang || bcp47;
-      if (v) {
-        u.voice = v;
-      } else if (key === "el" && !sessionStorage.getItem("noElVoiceWarned")) {
-        sessionStorage.setItem("noElVoiceWarned", "1");
-        const list = voices.map((vv) => `${vv.name} [${vv.lang}]`).join("\n");
-        alert(
-          "Δεν βρέθηκε ελληνική φωνή από τον περιηγητή.\n" +
-            "• Σε Windows, προτίμησε Microsoft Edge (εκθέτει τις φωνές συστήματος καλύτερα από το Chrome).\n" +
-            "• Βεβαιώσου ότι είναι εγκατεστημένη η φωνή Greek (el-GR) στα Windows και κάνε επανεκκίνηση του browser.\n\n" +
-            "Φωνές που βλέπει ο περιηγητής:\n" + list
-        );
+      const chunks = chunkSentences(seg.text, 400);
+      for (const chunk of chunks) {
+        const u = new SpeechSynthesisUtterance(chunk);
+        u.lang = voice?.lang || lang;   // always set lang
+        if (voice) u.voice = voice;     // prefer explicit voice if found
+        u.rate = rate;
+        // Fail/finish handlers
+        u.onerror = () => {};
+        queue.push(u);
       }
+    }
 
-      u.onerror = () => {};
-      return u;
-    });
+    // If we have no Greek voice specifically, warn once (but still try)
+    const hasGreek = v.some(vv => (vv.lang || "").toLowerCase().startsWith("el") || /greek|ελλην/i.test(vv.name));
+    if (!hasGreek && !sessionStorage.getItem("noElVoiceWarned")) {
+      sessionStorage.setItem("noElVoiceWarned", "1");
+      const list = v.map(vv => `${vv.name} [${vv.lang}]`).join("\n");
+      alert("Δεν βρέθηκε ελληνική φωνή από τον περιηγητή.\n" +
+            "• Σε Windows, προτίμησε Microsoft Edge.\n" +
+            "• Βεβαιώσου ότι το el-GR είναι εγκατεστημένο και κάνε επανεκκίνηση του browser.\n\n" +
+            "Φωνές που βλέπει ο περιηγητής:\n" + list);
+    }
 
+    // Speak sequentially
+    queueRef.current = queue;
     let i = 0;
     const next = () => {
       if (!queueRef.current || i >= queueRef.current.length) {
@@ -193,40 +223,30 @@ export default function TTSButton({
       const u = queueRef.current[i++];
       u.onend = next;
       u.onerror = next;
-      synth!.speak(u);
+      synth.speak(u);
     };
 
+    try { synth.cancel(); } catch {}
     setStatus("speaking");
     next();
   }
 
-  function play() {
-    if (!synth) return;
-    if (status === "paused") {
-      try { synth.resume(); } catch {}
-      setStatus("speaking");
-      return;
-    }
-    const text = getText();
-    if (!text) return;
-    try { synth.cancel(); } catch {}
-    speakChunks(chunk(text));
-  }
-
   function pause() {
-    if (synth && status === "speaking") {
+    if (!synth) return;
+    if (status === "speaking") {
       try { synth.pause(); } catch {}
       setStatus("paused");
     }
   }
 
   function stop() {
-    if (synth) {
-      try { synth.cancel(); } catch {}
-      queueRef.current = null;
-      setStatus("idle");
-    }
+    if (!synth) return;
+    try { synth.cancel(); } catch {}
+    queueRef.current = null;
+    setStatus("idle");
   }
+
+  // --- Render ----------------------------------------------------------------
 
   const isSpeaking = status === "speaking";
   const isPaused = status === "paused";
@@ -256,10 +276,16 @@ export default function TTSButton({
           <Square className="w-4 h-4" />
         </button>
       )}
-
-      {!hasGreekVoice && (
-        <span className="ml-2 text-xs text-zinc-500">(Δεν βρέθηκε ελληνική φωνή)</span>
-      )}
     </div>
   );
+}
+
+// Helpers
+function normalizeLang(input?: string) {
+  const l = (input || "el-GR").toLowerCase();
+  if (l === "el") return "el-GR";
+  if (l === "es") return "es-ES";
+  if (l === "en") return "en-US";
+  if (l.startsWith("zh")) return "zh-CN";
+  return input || "el-GR";
 }

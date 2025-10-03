@@ -1,7 +1,7 @@
 // src/app/stories/syntagma/page.tsx
 import Image from "next/image";
 import ShareBar from "@/components/ShareBar";
-import TTSButtonCloud from "@/components/TTSButtonCloud";
+import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/syntagma";
@@ -15,18 +15,8 @@ export default function Page() {
           <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
         </div>
 
-        <TTSButtonCloud
-          targetSelector="#story-content"
-          label="🔊"
-          defaultLang="el-GR"
-          // (optional) voiceOverrides to pick specific voices per language:
-          // voiceOverrides={{
-          //   "el-gr": "el-GR-AthinaNeural",
-          //   "es-es": "es-ES-ElviraNeural",
-          //   "zh-cn": "zh-CN-XiaoyiNeural",
-          //   "en-us": "en-US-JennyNeural",
-          // }}
-        />
+        {/* Read the entire article (browser TTS) */}
+        <TTSButton targetSelector="#story-content" label="" />
       </header>
 
       <figure className="my-4">
@@ -57,4 +47,3 @@ export default function Page() {
     </article>
   );
 }
-

@@ -8,14 +8,20 @@ export default function Page() {
   const title = "Νέα για τα πεζοδρόμια";
 
   return (
-    <article id="story-content" className="prose prose-zinc max-w-none">
+    <article
+      id="story-content"
+      lang="el"
+      className="prose prose-zinc max-w-none"
+    >
       <header className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <h1 className="font-serif text-2xl font-bold leading-tight">{title}</h1>
+          <h1 className="font-serif text-2xl font-bold leading-tight">
+            {title}
+          </h1>
           <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
         </div>
 
-        {/* Read the entire article */}
+        {/* Read the entire article (browser TTS) */}
         <TTSButton targetSelector="#story-content" label="" />
       </header>
 
@@ -34,16 +40,18 @@ export default function Page() {
       </figure>
 
       <p>
-        Εισαγωγική παράγραφος… Γράψε εδώ το περιεχόμενο του άρθρου σου
-        με παραγράφους, υποτίτλους, λίστες κ.λπ. 今天是雨天。Me voy a la escuela.
+        Εισαγωγική παράγραφος… Γράψε εδώ το περιεχόμενο του άρθρου σου με
+        παραγράφους, υποτίτλους, λίστες κ.λπ.{" "}
+        <span lang="zh-CN">今天是雨天。</span>{" "}
+        <span lang="es-ES">Me voy a la escuela.</span>
       </p>
 
       <div data-tts-skip className="not-prose mt-4">
-  <ShareBar href={href} title={title} />
-</div>
-
+        <ShareBar href={href} title={title} />
+      </div>
     </article>
   );
 }
+
 
 

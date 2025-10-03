@@ -2,6 +2,7 @@
 import Image from "next/image";
 import ShareBar from "@/components/ShareBar";
 import TTSButton from "@/components/TTSButton";
+import TTSButtonAncient from "@/components/TTSButtonAncient";
 
 export default function Page() {
   const href = "/stories/sidewalk";
@@ -21,8 +22,13 @@ export default function Page() {
           <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
         </div>
 
-        {/* Read the entire article (browser TTS) */}
-        <TTSButton targetSelector="#story-content" label="" />
+        {/* TTS controls */}
+        <div className="not-prose flex items-center gap-2">
+          {/* Modern Greek / browser voices (reads the whole article) */}
+          <TTSButton targetSelector="#story-content" label="" />
+          {/* Ancient Greek (reads only lang="grc" spans) */}
+          <TTSButtonAncient targetSelector="#story-content" label="🏺" />
+        </div>
       </header>
 
       <figure className="my-4">
@@ -44,9 +50,13 @@ export default function Page() {
         παραγράφους, υποτίτλους, λίστες κ.λ.π.{" "}
         <span lang="zh-CN">今天是雨天。</span>{" "}
         <span lang="es-ES">Me voy a la escuela.</span>
-        <span lang="el-GR">Σωκράτης
-κατέβην χθὲς εἰς Πειραιᾶ μετὰ Γλαύκωνος τοῦ Ἀρίστωνος προσευξόμενός τε τῇ θεῷ καὶ ἅμα τὴν ἑορτὴν βουλόμενος θεάσασθαι τίνα τρόπον ποιήσουσιν ἅτε νῦν πρῶτον ἄγοντες. 
-καλὴ μὲν οὖν μοι καὶ ἡ τῶν ἐπιχωρίων πομπὴ ἔδοξεν εἶναι, οὐ μέντοι ἧττον ἐφαίνετο πρέπειν ἣν οἱ Θρᾷκες ἔπεμπον.</span>
+        <span lang="grc">
+          Σωκράτης κατέβην χθὲς εἰς Πειραιᾶ μετὰ Γλαύκωνος τοῦ Ἀρίστωνος
+          προσευξόμενός τε τῇ θεῷ καὶ ἅμα τὴν ἑορτὴν βουλόμενος θεάσασθαι
+          τίνα τρόπον ποιήσουσιν ἅτε νῦν πρῶτον ἄγοντες. καλὴ μὲν οὖν μοι καὶ ἡ
+          τῶν ἐπιχωρίων πομπὴ ἔδοξεν εἶναι, οὐ μέντοι ἧττον ἐφαίνετο πρέπειν ἣν
+          οἱ Θρᾷκες ἔπεμπον.
+        </span>
       </p>
 
       <div data-tts-skip className="not-prose mt-4">
@@ -55,6 +65,7 @@ export default function Page() {
     </article>
   );
 }
+
 
 
 

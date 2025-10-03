@@ -9,27 +9,54 @@ type Status = "idle" | "speaking" | "paused" | "unavailable";
 type EspeakApi = {
   speak: (t: string, o?: { voice?: string; rate?: number; pitch?: number }) => Uint8Array;
 };
-
-type EspeakModule = {
+type EsModuleLike = Record<string, unknown> & {
+  default?: unknown;
   init?: () => Promise<EspeakApi>;
-  default?: { init?: () => Promise<EspeakApi> };
 };
 
+function isFn(x: unknown): x is () => Promise<EspeakApi> {
+  return typeof x === "function";
+}
 function isEspeakApi(x: unknown): x is EspeakApi {
   return !!x && typeof (x as Record<string, unknown>).speak === "function";
 }
-function isEspeakModule(x: unknown): x is EspeakModule {
-  if (!x) return false;
-  const r = x as Record<string, unknown>;
-  const init = r.init;
-  const dinit = (r.default as Record<string, unknown> | undefined)?.init;
-  return typeof init === "function" || typeof dinit === "function";
+
+/** Import an ES module from a URL at runtime (avoid bundler touching it). */
+async function importFromUrl(url: string): Promise<EsModuleLike> {
+  // Using Function avoids Turbopack/Webpack parsing the dynamic import.
+  // eslint-disable-next-line no-new-func
+  const importer: (u: string) => Promise<EsModuleLike> = new Function(
+    "u",
+    "return import(u);"
+  ) as unknown as (u: string) => Promise<EsModuleLike>;
+  return importer(url);
+}
+
+async function loadEspeak(): Promise<EspeakApi> {
+  const CDN_JS = "https://cdn.jsdelivr.net/npm/espeak-ng@1.0.2/dist/espeak-ng.js";
+  const mod = await importFromUrl(CDN_JS);
+
+  // Try common shapes: { init }, { default: { init } }, or default() returning API.
+  if (isFn(mod.init)) {
+    const api = await mod.init();
+    if (isEspeakApi(api)) return api;
+  }
+  const d = mod.default as EsModuleLike | undefined;
+  if (d && isFn(d.init)) {
+    const api = await d.init();
+    if (isEspeakApi(api)) return api;
+  }
+  if (typeof mod.default === "function") {
+    const api = await (mod.default as () => Promise<EspeakApi>)();
+    if (isEspeakApi(api)) return api;
+  }
+  throw new Error("espeak-ng: could not obtain API");
 }
 
 export default function TTSButtonAncient({
   targetSelector,
   label = "🏺",
-  rate = 160,  // eSpeak-ng “wpm-ish”
+  rate = 160,  // eSpeak-ish
   pitch = 50,  // 0–99
 }: {
   targetSelector: string;
@@ -53,24 +80,17 @@ export default function TTSButtonAncient({
     }
 
     const root = document.querySelector<HTMLElement>(targetSelector);
-    if (!root) {
-      alert("Ancient TTS: target element not found.");
-      return;
-    }
+    if (!root) { alert("Ancient TTS: target element not found."); return; }
 
     const text = collectAncientText(root);
-    if (!text) {
-      alert('Δεν βρέθηκε κείμενο με lang="grc".');
-      return;
-    }
+    if (!text) { alert('Δεν βρέθηκε κείμενο με lang="grc".'); return; }
 
-    // Try eSpeak NG (WASM)
     try {
-      const wav = await synthesizeWithEspeak(text, { voice: "grc", rate, pitch });
-      await playWav(wav);
-      return;
+      const api = await loadEspeak();                 // load from CDN at runtime
+      const bytes = api.speak(text, { voice: "grc", rate, pitch });
+      await playWav(bytes);
     } catch (err) {
-      console.warn("eSpeak-NG import/synthesis failed; falling back to browser TTS.", err);
+      console.warn("eSpeak-NG load/synthesis failed; fallback to browser TTS.", err);
       fallbackBrowserTTS(text);
     }
   }
@@ -116,7 +136,7 @@ export default function TTSButtonAncient({
     </div>
   );
 
-  // ---------- helpers ----------
+  // ---- helpers ----
 
   function collectAncientText(root: HTMLElement): string {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
@@ -137,41 +157,14 @@ export default function TTSButtonAncient({
     return parts.join(" ").trim();
   }
 
-  async function synthesizeWithEspeak(
-    text: string,
-    opts: { voice: string; rate: number; pitch: number }
-  ): Promise<Uint8Array> {
-    // dynamic import keeps it client-only
-    const mod: unknown = await import("espeak-ng");
-    if (!isEspeakModule(mod)) throw new Error("espeak-ng: invalid module shape");
-
-    const maybeInit =
-      (mod as EspeakModule).init ||
-      (mod as EspeakModule).default?.init;
-
-    if (!maybeInit) throw new Error("espeak-ng: init() not found");
-
-    const api = await maybeInit();
-    if (!isEspeakApi(api)) throw new Error("espeak-ng: invalid API from init()");
-    const bytes = api.speak(text, { voice: opts.voice, rate: opts.rate, pitch: opts.pitch });
-    if (!(bytes instanceof Uint8Array)) throw new Error("espeak-ng: speak() did not return Uint8Array");
-    return bytes;
-  }
-
   async function playWav(wavBytes: Uint8Array) {
     const blob = new Blob([wavBytes], { type: "audio/wav" });
     const url = URL.createObjectURL(blob);
     const audio = new Audio(url);
     audioRef.current = audio;
 
-    audio.onended = () => {
-      URL.revokeObjectURL(url);
-      setStatus("idle");
-    };
-    audio.onerror = () => {
-      URL.revokeObjectURL(url);
-      setStatus("idle");
-    };
+    audio.onended = () => { URL.revokeObjectURL(url); setStatus("idle"); };
+    audio.onerror = () => { URL.revokeObjectURL(url); setStatus("idle"); };
 
     setStatus("speaking");
     await audio.play();
@@ -184,8 +177,7 @@ export default function TTSButtonAncient({
     }
     try { window.speechSynthesis.cancel(); } catch {}
     const u = new SpeechSynthesisUtterance(text);
-    // Fallback is Modern Greek (approximation)
-    u.lang = "el-GR";
+    u.lang = "el-GR"; // modern-Greek fallback
     u.rate = 1.0;
     u.onerror = () => setStatus("idle");
     u.onend = () => setStatus("idle");

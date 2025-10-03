@@ -1,7 +1,7 @@
 // src/components/TopBar.tsx
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -22,6 +22,7 @@ import {
   CloudLightning,
 } from "lucide-react";
 
+// Map Open-Meteo weathercode -> Lucide icon
 function iconForOpenMeteo(code: number) {
   if (code === 0) return Sun;
   if (code === 1 || code === 2 || code === 3) return CloudSun;
@@ -34,14 +35,7 @@ function iconForOpenMeteo(code: number) {
 }
 
 type CurrentWeather = { temp: number; code: number };
-type SearchItem = {
-  title: string;
-  url: string;
-  excerpt?: string;
-  date?: string;
-  tags?: string[];
-  _folded?: string;
-};
+type SearchItem = { title: string; url: string; excerpt?: string; date?: string; tags?: string[] };
 
 function useOutsideClick<T extends HTMLElement>(onClickOutside: () => void) {
   const ref = useRef<T | null>(null);
@@ -56,88 +50,8 @@ function useOutsideClick<T extends HTMLElement>(onClickOutside: () => void) {
 }
 
 function fold(s: string) {
+  // accent-insensitive matching (Greek/Latin friendly)
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-}
-
-// Build a mapping from folded indices back to original indices
-function buildFoldMap(text: string) {
-  let folded = "";
-  const mapFoldToOrig: number[] = [];
-  for (let i = 0; i < text.length; i++) {
-    const f = text[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    if (f.length === 0) continue;
-    folded += f;
-    for (let k = 0; k < f.length; k++) mapFoldToOrig.push(i);
-  }
-  return { folded, mapFoldToOrig };
-}
-
-// Accent-insensitive highlighter using the fold map
-function highlightAI(text: string, query: string) {
-  const q = fold(query);
-  if (!q) return text;
-  const { folded, mapFoldToOrig } = buildFoldMap(text);
-  const ranges: Array<[number, number]> = [];
-  let pos = 0;
-  while (true) {
-    const i = folded.indexOf(q, pos);
-    if (i === -1) break;
-    const start = mapFoldToOrig[i];
-    const end = mapFoldToOrig[Math.min(i + q.length - 1, mapFoldToOrig.length - 1)] + 1; // exclusive
-    ranges.push([start, end]);
-    pos = i + q.length;
-  }
-  if (ranges.length === 0) return text;
-
-  // merge overlapping ranges
-  ranges.sort((a, b) => a[0] - b[0]);
-  const merged: Array<[number, number]> = [];
-  let [cs, ce] = ranges[0];
-  for (let r = 1; r < ranges.length; r++) {
-    const [s, e] = ranges[r];
-    if (s <= ce) ce = Math.max(ce, e);
-    else {
-      merged.push([cs, ce]);
-      cs = s; ce = e;
-    }
-  }
-  merged.push([cs, ce]);
-
-  const out: JSX.Element[] = [];
-  let last = 0;
-  merged.forEach(([s, e], idx) => {
-    if (last < s) out.push(<span key={`t-${idx}-a`}>{text.slice(last, s)}</span>);
-    out.push(
-      <mark key={`t-${idx}-b`} className="bg-yellow-100 rounded px-0.5">
-        {text.slice(s, e)}
-      </mark>
-    );
-    last = e;
-  });
-  if (last < text.length) out.push(<span key="t-end">{text.slice(last)}</span>);
-  return out;
-}
-
-// Relevance scoring
-function scoreItem(q: string, it: SearchItem) {
-  const s = fold(q);
-  const titleF = fold(it.title ?? "");
-  const bodyF = fold(((it.excerpt ?? "") + " " + (it.tags ?? []).join(" ")).trim());
-
-  let score = 0;
-  if (titleF.includes(s)) score += 100;
-  if (titleF.startsWith(s)) score += 60;
-  if (bodyF.includes(s)) score += 40;
-
-  if (it.date) {
-    const t = new Date(it.date).getTime();
-    if (!Number.isNaN(t)) {
-      const days = (Date.now() - t) / 86_400_000;
-      const recencyBoost = Math.max(0, 60 - Math.min(365, days)); // up to +60 for very recent
-      score += recencyBoost;
-    }
-  }
-  return score;
 }
 
 function SearchBox({ onClose }: { onClose: () => void }) {
@@ -146,10 +60,9 @@ function SearchBox({ onClose }: { onClose: () => void }) {
   const [index, setIndex] = useState<SearchItem[] | null>(null);
   const [hits, setHits] = useState<SearchItem[]>([]);
   const [open, setOpen] = useState(true);
-  const [active, setActive] = useState<number>(-1);
   const wrapRef = useOutsideClick<HTMLDivElement>(() => setOpen(false));
-  const listRef = useRef<HTMLDivElement | null>(null);
 
+  // Load index (from /public). Use no-store to avoid stale JSON while building/testing.
   useEffect(() => {
     let mounted = true;
     if (index === null) {
@@ -166,25 +79,20 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     };
   }, [index]);
 
+  // Client-side suggestions (accent-insensitive)
   useEffect(() => {
     if (!index) return;
     const s = fold(q.trim());
     if (s.length < 2) {
       setHits([]);
-      setActive(-1);
       return;
     }
-    const ranked = index
+    const res = index
       .filter((it) =>
-        (it._folded ?? fold(it.title + " " + (it.excerpt ?? "") + " " + (it.tags ?? []).join(" "))).includes(s)
+        fold(it.title + " " + (it.excerpt ?? "") + " " + ((it.tags ?? []).join(" "))).includes(s)
       )
-      .map((it) => ({ it, score: scoreItem(q, it) }))
-      .sort((a, b) => b.score - a.score)
-      .slice(0, 6)
-      .map((x) => x.it);
-
-    setHits(ranked);
-    setActive(ranked.length ? 0 : -1);
+      .slice(0, 6);
+    setHits(res);
   }, [q, index]);
 
   function submit() {
@@ -195,37 +103,6 @@ function SearchBox({ onClose }: { onClose: () => void }) {
     }
     router.push(`/search?q=${encodeURIComponent(term)}`);
     onClose();
-  }
-
-  function goTo(url: string) {
-    router.push(url);
-    onClose();
-  }
-
-  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (!hits.length) {
-      if (e.key === "Enter") submit();
-      if (e.key === "Escape") onClose();
-      return;
-    }
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setActive((i) => (i + 1) % hits.length);
-      listRef.current?.querySelector<HTMLElement>(`[data-idx="${(active + 1) % hits.length}"]`)?.scrollIntoView({ block: "nearest" });
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setActive((i) => (i - 1 + hits.length) % hits.length);
-      listRef.current?.querySelector<HTMLElement>(`[data-idx="${(active - 1 + hits.length) % hits.length}"]`)?.scrollIntoView({ block: "nearest" });
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      if (active >= 0 && active < hits.length) {
-        goTo(hits[active].url);
-      } else {
-        submit();
-      }
-    } else if (e.key === "Escape") {
-      onClose();
-    }
   }
 
   return (
@@ -239,10 +116,11 @@ function SearchBox({ onClose }: { onClose: () => void }) {
           className="text-[16px] sm:text-sm outline-none border-none flex-1 bg-transparent"
           value={q}
           onChange={(e) => setQ(e.target.value)}
-          onKeyDown={onKeyDown}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") submit();
+            if (e.key === "Escape") onClose();
+          }}
           aria-label="Πεδίο αναζήτησης"
-          aria-expanded={open && hits.length > 0 ? true : false}
-          aria-activedescendant={active >= 0 ? `search-opt-${active}` : undefined}
         />
         <button
           onClick={onClose}
@@ -255,34 +133,20 @@ function SearchBox({ onClose }: { onClose: () => void }) {
 
       {open && hits.length > 0 && (
         <div
-          ref={listRef}
           role="listbox"
-          className="absolute left-0 right-0 mt-1 max-h-80 overflow-auto rounded-lg border border-zinc-200 bg-white shadow-lg z-50"
+          className="absolute left-0 right-0 mt-1 rounded-lg border border-zinc-200 bg-white shadow-lg overflow-hidden z-50"
         >
-          {hits.map((h, i) => {
-            const activeCls = i === active ? "bg-zinc-100" : "hover:bg-zinc-50";
-            return (
-              <button
-                key={h.url + i}
-                id={`search-opt-${i}`}
-                data-idx={i}
-                role="option"
-                aria-selected={i === active}
-                className={`w-full text-left px-3 py-2 ${activeCls}`}
-                onMouseEnter={() => setActive(i)}
-                onClick={() => goTo(h.url)}
-              >
-                <div className="text-sm font-medium text-zinc-900 line-clamp-1">
-                  {highlightAI(h.title, q)}
-                </div>
-                {h.excerpt && (
-                  <div className="text-xs text-zinc-600 line-clamp-1">
-                    {highlightAI(h.excerpt, q)}
-                  </div>
-                )}
-              </button>
-            );
-          })}
+          {hits.map((h, i) => (
+            <Link
+              key={h.url + i}
+              href={h.url}
+              className="block px-3 py-2 hover:bg-zinc-50"
+              onClick={() => onClose()}
+            >
+              <div className="text-sm font-medium text-zinc-900 line-clamp-1">{h.title}</div>
+              {h.excerpt && <div className="text-xs text-zinc-600 line-clamp-1">{h.excerpt}</div>}
+            </Link>
+          ))}
           <button
             className="w-full text-left px-3 py-2 text-xs text-zinc-600 hover:bg-zinc-50 border-t"
             onClick={submit}
@@ -300,11 +164,13 @@ export default function TopBar() {
   const [now, setNow] = useState<Date>(() => new Date());
   const [weather, setWeather] = useState<CurrentWeather | null>(null);
 
+  // live clock
   useEffect(() => {
     const id = setInterval(() => setNow(new Date()), 1000);
     return () => clearInterval(id);
   }, []);
 
+  // fetch weather for Athens (fixed for all visitors)
   useEffect(() => {
     let cancelled = false;
     async function load() {

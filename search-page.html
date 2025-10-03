@@ -13,7 +13,7 @@ export type SearchItem = {
   excerpt?: string;
   date?: string;
   tags?: string[];
-  _folded?: string;
+  _folded?: string; // optional, provided by generator
 };
 
 async function readIndex(): Promise<SearchItem[]> {
@@ -31,78 +31,6 @@ function fold(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
 }
 
-function buildFoldMap(text: string) {
-  let folded = "";
-  const mapFoldToOrig: number[] = [];
-  for (let i = 0; i < text.length; i++) {
-    const f = text[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    if (f.length === 0) continue;
-    folded += f;
-    for (let k = 0; k < f.length; k++) mapFoldToOrig.push(i);
-  }
-  return { folded, mapFoldToOrig };
-}
-
-function highlightAI(text: string, query: string) {
-  const q = fold(query);
-  if (!q) return text;
-  const { folded, mapFoldToOrig } = buildFoldMap(text);
-  const ranges: Array<[number, number]> = [];
-  let pos = 0;
-  while (true) {
-    const i = folded.indexOf(q, pos);
-    if (i === -1) break;
-    const start = mapFoldToOrig[i];
-    const end = mapFoldToOrig[Math.min(i + q.length - 1, mapFoldToOrig.length - 1)] + 1;
-    ranges.push([start, end]);
-    pos = i + q.length;
-  }
-  if (ranges.length === 0) return text;
-
-  ranges.sort((a, b) => a[0] - b[0]);
-  const merged: Array<[number, number]> = [];
-  let [cs, ce] = ranges[0];
-  for (let r = 1; r < ranges.length; r++) {
-    const [s, e] = ranges[r];
-    if (s <= ce) ce = Math.max(ce, e);
-    else {
-      merged.push([cs, ce]); cs = s; ce = e;
-    }
-  }
-  merged.push([cs, ce]);
-
-  const out: JSX.Element[] = [];
-  let last = 0;
-  merged.forEach(([s, e], idx) => {
-    if (last < s) out.push(<span key={`r-${idx}-a`}>{text.slice(last, s)}</span>);
-    out.push(<mark key={`r-${idx}-b`} className="bg-yellow-100 rounded px-0.5">{text.slice(s, e)}</mark>);
-    last = e;
-  });
-  if (last < text.length) out.push(<span key="r-end">{text.slice(last)}</span>);
-  return out;
-}
-
-function scoreItem(q: string, it: SearchItem) {
-  const s = fold(q);
-  const titleF = fold(it.title ?? "");
-  const bodyF = fold(((it.excerpt ?? "") + " " + (it.tags ?? []).join(" ")).trim());
-
-  let score = 0;
-  if (titleF.includes(s)) score += 100;
-  if (titleF.startsWith(s)) score += 60;
-  if (bodyF.includes(s)) score += 40;
-
-  if (it.date) {
-    const t = new Date(it.date).getTime();
-    if (!Number.isNaN(t)) {
-      const days = (Date.now() - t) / 86_400_000;
-      const recencyBoost = Math.max(0, 60 - Math.min(365, days));
-      score += recencyBoost;
-    }
-  }
-  return score;
-}
-
 function matches(q: string, it: SearchItem) {
   const s = fold(q);
   const hay = it._folded
@@ -114,11 +42,7 @@ function matches(q: string, it: SearchItem) {
 export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
   const q = (searchParams?.q ?? "").toString().trim();
   const index = await readIndex();
-  const filtered = q ? index.filter((it) => matches(q, it)) : [];
-  const results = filtered
-    .map((it) => ({ it, score: scoreItem(q, it) }))
-    .sort((a, b) => b.score - a.score)
-    .map((x) => x.it);
+  const results = q ? index.filter((it) => matches(q, it)) : [];
 
   return (
     <main className="max-w-[1120px] mx-auto px-6 py-6">
@@ -137,9 +61,9 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
         {results.map((r) => (
           <li key={r.url} className="border-b border-zinc-200 pb-4">
             <Link href={r.url} className="text-zinc-900 font-medium hover:underline">
-              {highlightAI(r.title, q)}
+              {r.title}
             </Link>
-            {r.excerpt && <p className="text-sm text-zinc-600 mt-1">{highlightAI(r.excerpt, q)}</p>}
+            {r.excerpt && <p className="text-sm text-zinc-600 mt-1">{r.excerpt}</p>}
             {r.date && (
               <p className="text-xs text-zinc-500 mt-1">
                 {new Date(r.date).toLocaleDateString("el-GR")}

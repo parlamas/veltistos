@@ -22,25 +22,34 @@ async function walk(dir) {
 
 function isPageTsx(file) {
   if (!file.endsWith(path.sep + "page.tsx")) return false;
+  // skip API and the search page itself
   if (file.includes(path.sep + "api" + path.sep)) return false;
   if (file.endsWith(path.normalize("src/app/search/page.tsx"))) return false;
-  if (file.split(path.sep).some((seg) => /^\[.+\]$/.test(seg))) return false; // skip [slug]
+  // skip dynamic segments like [slug]
+  if (file.split(path.sep).some((seg) => /^\[.+\]$/.test(seg))) return false;
   return true;
 }
 
 function routeFrom(file) {
+  // src/app/page.tsx -> /
+  // src/app/stories/sidewalk/page.tsx -> /stories/sidewalk
   const rel = path.relative(APP_DIR, path.dirname(file));
   if (!rel || rel === ".") return "/";
   return "/" + rel.replace(/\\/g, "/");
 }
 
 function stripJsxAndTags(s) {
-  s = s.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/[^\n]*/g, " "); // comments
-  s = s.replace(/\{[^{}]*\}/g, " "); // simple JSX braces
-  s = s.replace(/<[^>]+>/g, " "); // tags
+  // remove TS/JS comments
+  s = s.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/[^\n]*/g, " ");
+  // remove simple JSX expressions { ... }
+  s = s.replace(/\{[^{}]*\}/g, " ");
+  // collapse tags (keep text)
+  s = s.replace(/<[^>]+>/g, " ");
+  // normalize whitespace
   return s.replace(/\s+/g, " ").trim();
 }
 
+// Prefer `const title = "..."` or <h1>...</h1>; fallback to route fragment
 function extractTitle(src, route) {
   let m = src.match(/const\s+title\s*=\s*["'`](.*?)["'`]/s);
   if (m && m[1]) return m[1].trim();
@@ -50,33 +59,11 @@ function extractTitle(src, route) {
   return route.split("/").filter(Boolean).slice(-1)[0].replace(/[-_]/g, " ");
 }
 
+// Pull first ~240 chars from inside <article> if present; else whole file
 function extractExcerpt(src) {
   const art = src.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
   const body = art ? art[1] : src;
   return stripJsxAndTags(body).slice(0, 240);
-}
-
-// Try to extract a date from the source:
-// - ISO: 2025-10-01
-// - Dots/slashes/dashes: 01.10.25, 01/10/2025, 1-10-25, etc.
-function extractDateISO(src) {
-  // ISO yyyy-mm-dd
-  let m = src.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
-  if (m) return new Date(m[1] + "T00:00:00Z").toISOString();
-
-  // dd.mm.yyyy or dd.mm.yy (also / or -)
-  m = src.match(/\b(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})\b/);
-  if (m) {
-    let d = parseInt(m[1], 10);
-    let mo = parseInt(m[2], 10);
-    let y = parseInt(m[3], 10);
-    if (y < 100) y += 2000; // "25" -> 2025
-    if (mo >= 1 && mo <= 12 && d >= 1 && d <= 31) {
-      const dt = new Date(Date.UTC(y, mo - 1, d));
-      if (!isNaN(dt.getTime())) return dt.toISOString();
-    }
-  }
-  return undefined;
 }
 
 function fold(s) {
@@ -93,12 +80,10 @@ function fold(s) {
     const raw = await readFile(file, "utf8");
     const title = extractTitle(raw, route);
     const excerpt = extractExcerpt(raw);
-    const date = extractDateISO(raw); // may be undefined
     items.push({
       title,
       url: route,
       excerpt,
-      date,
       _folded: fold(`${title} ${excerpt}`),
     });
   }

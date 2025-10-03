@@ -23,7 +23,6 @@ function isEspeakApi(x: unknown): x is EspeakApi {
 
 /** Import an ES module from a URL at runtime (avoid bundler touching it). */
 async function importFromUrl(url: string): Promise<EsModuleLike> {
-  // Using Function avoids Turbopack/Webpack parsing the dynamic import.
   const importer: (u: string) => Promise<EsModuleLike> = new Function(
     "u",
     "return import(u);"
@@ -35,7 +34,6 @@ async function loadEspeak(): Promise<EspeakApi> {
   const CDN_JS = "https://cdn.jsdelivr.net/npm/espeak-ng@1.0.2/dist/espeak-ng.js";
   const mod = await importFromUrl(CDN_JS);
 
-  // Try common shapes: { init }, { default: { init } }, or default() returning API.
   if (isFn(mod.init)) {
     const api = await mod.init();
     if (isEspeakApi(api)) return api;
@@ -55,13 +53,15 @@ async function loadEspeak(): Promise<EspeakApi> {
 export default function TTSButtonAncient({
   targetSelector,
   label = "🏺",
-  rate = 160,  // eSpeak-ish
-  pitch = 50,  // 0–99
+  rate = 120,   // slower default
+  pitch = 45,   // a bit flatter
+  breakMs = 180 // pause between phrases
 }: {
   targetSelector: string;
   label?: string;
   rate?: number;
   pitch?: number;
+  breakMs?: number;
 }) {
   const [status, setStatus] = useState<Status>("idle");
   const audioRef = useRef<HTMLAudioElement | null>(null);
@@ -85,9 +85,20 @@ export default function TTSButtonAncient({
     if (!text) { alert('Δεν βρέθηκε κείμενο με lang="grc".'); return; }
 
     try {
-      const api = await loadEspeak();                 // load from CDN at runtime
-      const bytes = api.speak(text, { voice: "grc", rate, pitch });
-      await playWav(bytes);
+      const api = await loadEspeak();
+
+      // chunk into short, punctuated phrases
+      const phrases = phraseChunks(text, 220);
+      setStatus("speaking");
+
+      for (let i = 0; i < phrases.length; i++) {
+        if (status === "idle") break; // stopped
+        const bytes = api.speak(phrases[i], { voice: "grc", rate, pitch });
+        await playWav(bytes);          // wait until it finishes
+        if (i < phrases.length - 1) await sleep(breakMs);
+      }
+
+      setStatus("idle");
     } catch (err) {
       console.warn("eSpeak-NG load/synthesis failed; fallback to browser TTS.", err);
       fallbackBrowserTTS(text);
@@ -98,11 +109,10 @@ export default function TTSButtonAncient({
     if (audioRef.current) {
       audioRef.current.pause();
       audioRef.current.currentTime = 0;
-      setStatus("idle");
     } else {
       try { window.speechSynthesis.cancel(); } catch {}
-      setStatus("idle");
     }
+    setStatus("idle");
   }
 
   const isSpeaking = status === "speaking";
@@ -137,6 +147,10 @@ export default function TTSButtonAncient({
 
   // ---- helpers ----
 
+  function sleep(ms: number) {
+    return new Promise<void>(res => setTimeout(res, ms));
+  }
+
   function collectAncientText(root: HTMLElement): string {
     const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
     const parts: string[] = [];
@@ -156,8 +170,32 @@ export default function TTSButtonAncient({
     return parts.join(" ").trim();
   }
 
+  function phraseChunks(text: string, maxLen = 220): string[] {
+    // keep punctuation with the segment; include . ! ? Greek ; (question) and ano teleia (·, ·)
+    const units = (text.replace(/\s+/g, " ").match(/[^\.!\?··;,:—–-]+[\.!\?··;,:—–-]?/gu)) || [text];
+    const out: string[] = [];
+    let buf = "";
+    for (const u of units) {
+      const next = (buf ? buf + " " : "") + u.trim();
+      if (next.length > maxLen) {
+        if (buf) out.push(buf);
+        if (u.length > maxLen) {
+          // hard split very long unit
+          for (let i = 0; i < u.length; i += maxLen) out.push(u.slice(i, i + maxLen));
+          buf = "";
+        } else {
+          buf = u.trim();
+        }
+      } else {
+        buf = next;
+      }
+    }
+    if (buf) out.push(buf);
+    return out;
+  }
+
   async function playWav(wavBytes: Uint8Array) {
-    // Create a real ArrayBuffer slice (not ArrayBufferLike) for Blob
+    // convert to a real ArrayBuffer slice before Blob (type-safe)
     const arrayBuffer = wavBytes.buffer.slice(
       wavBytes.byteOffset,
       wavBytes.byteOffset + wavBytes.byteLength
@@ -167,11 +205,11 @@ export default function TTSButtonAncient({
     const audio = new Audio(url);
     audioRef.current = audio;
 
-    audio.onended = () => { URL.revokeObjectURL(url); setStatus("idle"); };
-    audio.onerror = () => { URL.revokeObjectURL(url); setStatus("idle"); };
-
-    setStatus("speaking");
-    await audio.play();
+    await new Promise<void>((resolve) => {
+      audio.onended = () => { URL.revokeObjectURL(url); resolve(); };
+      audio.onerror = () => { URL.revokeObjectURL(url); resolve(); };
+      audio.play().catch(() => resolve());
+    });
   }
 
   function fallbackBrowserTTS(text: string) {
@@ -182,7 +220,7 @@ export default function TTSButtonAncient({
     try { window.speechSynthesis.cancel(); } catch {}
     const u = new SpeechSynthesisUtterance(text);
     u.lang = "el-GR"; // modern-Greek fallback
-    u.rate = 1.0;
+    u.rate = 0.9;     // slightly slower
     u.onerror = () => setStatus("idle");
     u.onend = () => setStatus("idle");
     setStatus("speaking");

@@ -31,7 +31,7 @@ export default function ParentsFormModal({ open, onClose }: Props) {
   const [level, setLevel] = useState<Level | "">("");
   const [grade, setGrade] = useState("");    // τάξη
   const [subject, setSubject] = useState(""); // μάθημα
-  const [book, setBook] = useState("");       // βιβλίο
+  const [book, setBook] = useState("");       // βιβλίο και σελίδα
   const [question, setQuestion] = useState(""); // ερώτηση
 
   // reset when closed
@@ -172,21 +172,27 @@ export default function ParentsFormModal({ open, onClose }: Props) {
           {/* level + grade */}
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="block text-xs font-medium text-zinc-800">Το παιδί φοιτά στο *</label>
-              <select
-                value={level}
-                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
-                  const v = e.target.value;
-                  setLevel(isLevel(v) ? v : "");
-                }}
-                required
-                className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-600 bg-white"
-              >
-                <option value="">— Επιλέξτε —</option>
-                {LEVELS.map((l) => (
-                  <option key={l} value={l}>{l}</option>
-                ))}
-              </select>
+              <label className="block text-xs font-medium text-zinc-800">
+  Το παιδί φοιτά στο *
+</label>
+<select
+  value={level}
+  onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+    const v = e.target.value;
+    setLevel(isLevel(v) ? v : "");
+  }}
+  required
+  className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-600 bg-white"
+>
+  <option value="">— Επιλέξτε —</option>
+  <option value="Δημοτικό">Δημοτικό</option>
+  <option value="Γυμνάσιο">Γυμνάσιο</option>
+  <option value="Λύκειο">Λύκειο</option>
+</select>
+<p className="mt-1 text-[11px] text-zinc-600">
+  Ενδεικτικά: Δημοτικό, Γυμνάσιο, Λύκειο.
+</p>
+
             </div>
             <div>
               <label className="block text-xs font-medium text-zinc-800">Τάξη</label>

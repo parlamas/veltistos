@@ -126,7 +126,7 @@ export default function ParentsFormModal({ open, onClose }: Props) {
       >
         <div className="px-5 py-3 border-b border-zinc-200">
           <h2 id={titleId} className="text-base font-semibold text-zinc-900">
-            Επικοινωνία για γονείς / μαθητές
+            Επικοινωνία για γονείς
           </h2>
           <p className="mt-1 text-[11px] text-zinc-600">
             Συμπληρώστε τα στοιχεία και την ερώτησή σας (μέχρι {MAX_CHARS} χαρακτήρες).

@@ -5,17 +5,21 @@ import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 function checkMissing() {
-  const mustHave = ["EMAIL_HOST","EMAIL_PORT","EMAIL_SECURE","EMAIL_USER","EMAIL_PASS"] as const;
+  const mustHave = ["EMAIL_HOST", "EMAIL_PORT", "EMAIL_SECURE", "EMAIL_USER", "EMAIL_PASS"] as const;
   const missing = mustHave.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
   return { mustHave, missing };
 }
 
-// GET: quick env check (safe, redacts secrets)
+function toStr(v: unknown): string {
+  return typeof v === "string" ? v : "";
+}
+
+// GET: quick env check (safe; redacts secrets)
 export async function GET() {
   const { missing } = checkMissing();
   return NextResponse.json({
     ok: missing.length === 0,
-    missing,                                   // tells you which keys are empty/missing
+    missing,
     present: {
       EMAIL_HOST: !!process.env.EMAIL_HOST,
       EMAIL_PORT: !!process.env.EMAIL_PORT,
@@ -27,37 +31,56 @@ export async function GET() {
   });
 }
 
-// POST: send email (unchanged except clearer error if envs are missing)
 export async function POST(req: NextRequest) {
   try {
+    // 1) Ensure required envs exist
     const { missing } = checkMissing();
     if (missing.length) {
       console.error("Missing SMTP env:", missing.join(", "));
-      return NextResponse.json(
-        { error: "Server email not configured.", missing },
-        { status: 500 }
-      );
+      return NextResponse.json({ error: "Server email not configured.", missing }, { status: 500 });
     }
 
+    // 2) Parse envs
     const host = String(process.env.EMAIL_HOST);
-    const port = Number(process.env.EMAIL_PORT) || 465;
+    const port = Number(process.env.EMAIL_PORT || 465);
     const secure = String(process.env.EMAIL_SECURE).toLowerCase() === "true";
     const user = String(process.env.EMAIL_USER);
     const pass = String(process.env.EMAIL_PASS);
     const from = String(process.env.EMAIL_FROM || process.env.EMAIL_USER);
 
-    const body = await req.json().catch(() => ({} as any));
+    // 3) Read and validate body (no `any`)
+    let raw: unknown;
+    try {
+      raw = await req.json();
+    } catch {
+      raw = {};
+    }
+    const body = (raw && typeof raw === "object" && raw !== null) ? (raw as Record<string, unknown>) : {};
 
-    // honeypot
-    if (typeof body.website === "string" && body.website.trim() !== "") {
+    // Honeypot
+    if (toStr(body.website).trim() !== "") {
       return NextResponse.json({ ok: true });
     }
 
-    const { name = "", email = "", level = "", grade = "", subject = "", book = "", question = "" } = body || {};
-    if (!name || !email || !level || !question) return new NextResponse("Missing required fields.", { status: 400 });
-    if (String(question).length > 500) return new NextResponse("Question too long.", { status: 400 });
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return new NextResponse("Invalid email.", { status: 400 });
+    const name = toStr(body.name);
+    const email = toStr(body.email);
+    const level = toStr(body.level);
+    const grade = toStr(body.grade);
+    const subject = toStr(body.subject);
+    const book = toStr(body.book);
+    const question = toStr(body.question);
 
+    if (!name || !email || !level || !question) {
+      return new NextResponse("Missing required fields.", { status: 400 });
+    }
+    if (question.length > 500) {
+      return new NextResponse("Question too long.", { status: 400 });
+    }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      return new NextResponse("Invalid email.", { status: 400 });
+    }
+
+    // 4) Build message
     const text = [
       `Ονοματεπώνυμο: ${name}`,
       `Email: ${email}`,
@@ -68,15 +91,23 @@ export async function POST(req: NextRequest) {
       "",
       "Ερώτηση:",
       question,
-    ].filter(Boolean).join("\n");
+    ]
+      .filter(Boolean)
+      .join("\n");
 
-    const transporter = nodemailer.createTransport({ host, port, secure, auth: { user, pass } });
+    // 5) Send via SMTP
+    const transporter = nodemailer.createTransport({
+      host,
+      port,
+      secure, // true: 465 SSL, false: 587 STARTTLS
+      auth: { user, pass },
+    });
 
-    // Optional: uncomment to verify auth before sending
+    // Optional: uncomment to test auth only
     // await transporter.verify();
 
     await transporter.sendMail({
-      from,
+      from, // e.g. "Veltistos" <mind@veltistos.com>
       to: "mind@veltistos.com",
       replyTo: `"${name}" <${email}>`,
       subject: "Νέα ερώτηση από γονέα/μαθητή",
@@ -85,7 +116,8 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error("parents-question error:", err);
+    const msg = err instanceof Error ? err.message : String(err);
+    console.error("parents-question error:", msg);
     return new NextResponse("Internal error.", { status: 500 });
   }
 }

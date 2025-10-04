@@ -1,11 +1,11 @@
-// src/app/stories/syntagma/page.tsx
+﻿// src/app/stories/syntagma/page.tsx
 import Image from "next/image";
 import ShareBar from "@/components/ShareBar";
 import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/syntagma";
-  const title = "Σύνταγμα";
+  const title = "Νέα για το Σύνταγμα";
 
   return (
     <article
@@ -18,17 +18,16 @@ export default function Page() {
           <h1 className="font-serif text-2xl font-bold leading-tight">
             {title}
           </h1>
-          <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
+          <p className="text-sm text-zinc-500">04.10.25 • Ελλάδα</p>
         </div>
 
-        {/* Read the entire article (browser TTS) */}
-        <TTSButton targetSelector="#story-content" label="" />
+        
       </header>
 
       <figure className="my-4">
         <Image
           src="/syntagma.jpg"
-          alt="Πλατεία Συντάγματος στην Αθήνα"
+          alt="Σύνταγμα στο κέντρο της Αθήνας"
           width={1200}
           height={675}
           className="w-full h-auto rounded-lg"
@@ -41,16 +40,15 @@ export default function Page() {
 
       <p>
         Εισαγωγική παράγραφος… Γράψε εδώ το περιεχόμενο του άρθρου σου με
-        παραγράφους, υποτίτλους, λίστες κ.λπ.{" "}
+        παραγράφους, υποτίτλους, λίστες κ.λ.π.{" "}
         <span lang="zh-CN">今天是雨天。</span>{" "}
         <span lang="es-ES">Me voy a la escuela.</span>
       </p>
-      <p>Το Σύνταγμα βρίσκεται στο Ψυχικό.</p>
-
+{/* TTS (browser voices only) */}
+        <TTSButton targetSelector="#story-content" label="" />
       <div data-tts-skip className="not-prose mt-4">
         <ShareBar href={href} title={title} />
       </div>
     </article>
   );
 }
-

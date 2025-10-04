@@ -24,13 +24,16 @@ export const metadata: Metadata = {
   description: "News site",
   icons: {
     icon: [
+      // Ensure a standard root favicon for Safari/iOS
+      { url: "/favicon.ico", sizes: "any" },
+      // Keep your existing explicit icons
       { url: "/favicon-red.ico", sizes: "16x16 32x32 48x48" },
       { url: "/favicon-red-32.png", type: "image/png", sizes: "32x32" },
       { url: "/favicon-red-192.png", type: "image/png", sizes: "192x192" },
     ],
-    apple: [
-      { url: "/favicon-red-180.png", sizes: "180x180", type: "image/png" },
-    ],
+    apple: [{ url: "/favicon-red-180.png", sizes: "180x180", type: "image/png" }],
+    // Extra fallback some browsers still check
+    shortcut: ["/favicon.ico"],
   },
   manifest: "/manifest.webmanifest",
 };
@@ -38,7 +41,7 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
-  maximumScale: 1,       // prevent iOS zoom-on-focus + weird scale after rotate
+  maximumScale: 1, // prevent iOS zoom-on-focus + weird scale after rotate
   viewportFit: "cover",
 };
 
@@ -56,6 +59,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     </html>
   );
 }
+
 
 
 

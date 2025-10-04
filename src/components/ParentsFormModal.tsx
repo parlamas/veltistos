@@ -125,9 +125,9 @@ export default function ParentsFormModal({ open, onClose }: Props) {
       />
       {/* dialog panel */}
       <div
-        ref={dialogRef}
-        className="relative z-10 w-full max-w-[560px] rounded-2xl bg-white shadow-xl ring-1 ring-zinc-200"
-      >
+  ref={dialogRef}
+  className="relative z-10 w-full max-w-[560px] rounded-2xl bg-white text-zinc-900 shadow-xl ring-1 ring-zinc-200"
+>
         <div className="px-5 py-4 border-b border-zinc-200">
           <h2 id={titleId} className="text-base font-semibold text-zinc-900">
             Επικοινωνία για γονείς / μαθητές

@@ -42,7 +42,7 @@ export default function Page() {
         Εισαγωγική παράγραφος… Γράψε εδώ το περιεχόμενο του άρθρου σου με
         παραγράφους, υποτίτλους, λίστες κ.λ.π.{" "}
         <span lang="zh-CN">今天是雨天。</span>{" "}
-        <span lang="es-ES">Me voy a la escuela. Κάθε μέρα είναι ένα δώρο.</span>
+        <span lang="es-ES">Me voy a la escuela.</span> <span lang="el-GR">Κάθε μέρα είναι ένα δώρο.</span>
       </p>
 {/* TTS (browser voices only) */}
         <TTSButton targetSelector="#story-content" label="" />

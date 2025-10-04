@@ -67,7 +67,7 @@ export async function POST(req: NextRequest) {
     await transporter.sendMail({
       from, to: "mind@veltistos.com",
       replyTo: `"${name}" <${email}>`,
-      subject: "Νέα ερώτηση από γονέα/μαθητή",
+      subject: "Νέα ερώτηση από γονέα",
       text,
     });
 

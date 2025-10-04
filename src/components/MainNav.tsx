@@ -5,11 +5,13 @@ import Link from "next/link";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { Home, ChevronDown } from "lucide-react";
+import ParentsFormModal from "@/components/ParentsFormModal";
 
 export default function MainNav() {
   const [elladaOpen, setElladaOpen] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [gnoseisOpen, setGnoseisOpen] = useState(false);
+  const [parentsOpen, setParentsOpen] = useState(false);
 
   // Toggle from TopBar burger
   useEffect(() => {
@@ -27,13 +29,12 @@ export default function MainNav() {
         <ul className="hidden sm:flex items-center gap-3 md:gap-4 lg:gap-5 h-10 whitespace-nowrap text-sm tracking-tight">
           {/* 1) Home */}
           <li>
-  <Link href="/" className="flex items-center hover:opacity-90" aria-label="Αρχική" title="Αρχική">
-    <Home className="w-5 h-5" aria-hidden="true" />
-  </Link>
-</li>
+            <Link href="/" className="flex items-center hover:opacity-90" aria-label="Αρχική" title="Αρχική">
+              <Home className="w-5 h-5" aria-hidden="true" />
+            </Link>
+          </li>
 
-
-          {/* 2) ΕΛΛΑΔΑ with dropdown (white panel, no hover gap) */}
+          {/* 2) ΕΛΛΑΔΑ with dropdown */}
           <li
             className="relative group before:absolute before:left-0 before:right-0 before:top-full before:h-2 before:content-['']"
             onMouseEnter={() => setElladaOpen(true)}
@@ -81,7 +82,7 @@ export default function MainNav() {
           {/* 4) ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ */}
           <li><Link href="/isidoros-parlamas" className="font-semibold hover:opacity-90">Ι. ΠΑΡΛΑΜΑΣ</Link></li>
 
-          {/* 5) ΓΝΩΣΕΙΣ (dropdown) */}
+          {/* 5) γνώσεις (dropdown) */}
           <li
             className="relative group before:absolute before:left-0 before:right-0 before:top-full before:h-2 before:content-['']"
             onMouseEnter={() => setGnoseisOpen(true)}
@@ -113,8 +114,18 @@ export default function MainNav() {
             </div>
           </li>
 
-          {/* 6) γονείς/μαθητές */}
-          <li><Link href="/parents" className="font-semibold hover:opacity-90">γονείς</Link></li>
+          {/* 6) γονείς — opens modal */}
+          <li>
+            <button
+              type="button"
+              onClick={() => setParentsOpen(true)}
+              className="font-semibold hover:opacity-90 focus:outline-none"
+              aria-haspopup="dialog"
+              aria-controls="parents-form-modal"
+            >
+              γονείς
+            </button>
+          </li>
 
           {/* 7) ΑΙ */}
           <li><Link href="/ai" className="font-semibold hover:opacity-90">ΑΙ</Link></li>
@@ -154,25 +165,23 @@ export default function MainNav() {
         {/* Mobile panel */}
         <div className="sm:hidden py-2">
           {mobileOpen && (
-              
-          <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[12px] leading-[1.2] [text-size-adjust:100%] [-webkit-text-size-adjust:100%]">
+            <div className="rounded-md bg-white text-zinc-900 shadow-md ring-1 ring-zinc-200 text-[12px] leading-[1.2] [text-size-adjust:100%] [-webkit-text-size-adjust:100%]">
               <ul className="py-2">
+                {/* Home */}
                 <li>
-  <Link
-    href="/"
-    onClick={closeMobile}
-    className="block p-2 hover:bg-zinc-50"
-    aria-label="Αρχική"
-    title="Αρχική"
-  >
-    <Home className="w-5 h-5" aria-hidden="true" />
-  </Link>
-</li>
-
+                  <Link
+                    href="/"
+                    onClick={closeMobile}
+                    className="block p-2 hover:bg-zinc-50"
+                    aria-label="Αρχική"
+                    title="Αρχική"
+                  >
+                    <Home className="w-5 h-5" aria-hidden="true" />
+                  </Link>
+                </li>
 
                 {/* ΕΛΛΑΔΑ subtree */}
                 <li className="px-3 py-1.5 font-semibold text-[12px]">ΕΛΛΑΔΑ</li>
-
                 <li>
                   <ul className="pb-2 text-xs">
                     <li><Link href="/ellada/kypros" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Κύπρος</Link></li>
@@ -185,7 +194,6 @@ export default function MainNav() {
 
                 {/* γνώσεις subtree */}
                 <li className="px-3 py-1.5 font-semibold text-[12px]">γνώσεις</li>
-
                 <li>
                   <ul className="pb-2 text-xs">
                     <li><Link href="/gnoseis/dialektiki" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Διαλεκτική</Link></li>
@@ -197,7 +205,20 @@ export default function MainNav() {
 
                 <li><Link href="/diethni" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">ΔΙΕΘΝΗ</Link></li>
                 <li><Link href="/isidoros-parlamas" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">ΙΣΙΔΩΡΟΣ ΠΑΡΛΑΜΑΣ</Link></li>
-                <li><Link href="/parents" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">γονείς</Link></li>
+
+                {/* Mobile: γονείς — open modal */}
+                <li>
+                  <button
+                    type="button"
+                    onClick={() => { setParentsOpen(true); closeMobile(); }}
+                    className="w-full text-left px-3 py-1.5 hover:bg-zinc-50 text-[12px] font-semibold"
+                    aria-haspopup="dialog"
+                    aria-controls="parents-form-modal"
+                  >
+                    γονείς
+                  </button>
+                </li>
+
                 <li><Link href="/ai" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">ΑΙ</Link></li>
                 <li><Link href="/videos" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">VIDEOS</Link></li>
                 <li><Link href="/greek-israeli-relations" onClick={closeMobile} className="block px-3 py-1.5 hover:bg-zinc-50 text-[12px]">Ελληνοϊσραηλινές Σχέσεις</Link></li>
@@ -207,8 +228,9 @@ export default function MainNav() {
           )}
         </div>
       </div>
+
+      {/* Modal lives at the end so it’s outside height-limited containers */}
+      <ParentsFormModal open={parentsOpen} onClose={() => setParentsOpen(false)} />
     </nav>
   );
 }
-
-

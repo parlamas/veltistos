@@ -341,7 +341,7 @@ export default function TopBar() {
         <div className="sm:hidden py-2">
           <div className="flex items-center justify-between gap-3">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
-              <Image src="/logo.svg" alt="Veltistos" width={148} height={60} priority className="block w-[148px] h-[60px] shrink-0" />
+              <Image src="/veltistos-white-high.png" alt="Veltistos" width={151} height={104} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
             <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
               Support Veltistos
@@ -389,7 +389,7 @@ export default function TopBar() {
         <div className="hidden sm:flex items-center justify-between gap-6 py-0">
           <div className="flex items-center gap-4">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
-              <Image src="/logo.svg" alt="Veltistos" width={148} height={60} priority className="block w-[148px] h-[60px] shrink-0" />
+              <Image src="/veltistos-white-high.png" alt="Veltistos" width={151} height={104} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
 
             <div className="flex items-start gap-2 text-sm" aria-label="Καιρός και ώρα">

@@ -32,6 +32,7 @@ export const metadata: Metadata = {
       { url: "/favicon-red-180.png", sizes: "180x180", type: "image/png" },
     ],
   },
+  manifest: "/manifest.webmanifest",
 };
 
 export const viewport: Viewport = {

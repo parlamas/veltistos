@@ -71,6 +71,26 @@ export async function POST(req: NextRequest) {
       text,
     });
 
+    // --- Auto-reply to the sender (best-effort) ---
+try {
+  const ackText = `Ευχαριστώ πολύ.
+
+Θα λάβετε απάντηση μέσα σε 48 ώρες.
+
+Ισίδωρος Παρλαμάς`;
+
+  await transporter.sendMail({
+    from,                 // e.g. "Veltistos" <mind@veltistos.com>
+    to: email,            // parent’s email
+    subject: "Λάβαμε το μήνυμά σας – Veltistos",
+    text: ackText,
+  });
+} catch (ackErr) {
+  console.error("Auto-reply failed:", ackErr);
+  // don't fail the whole request if the acknowledgement fails
+}
+
+
     return NextResponse.json({ ok: true });
   } catch (err) {
     console.error("parents-question error:", err instanceof Error ? err.message : String(err));

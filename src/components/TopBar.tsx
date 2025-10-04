@@ -389,7 +389,7 @@ export default function TopBar() {
         <div className="hidden sm:flex items-center justify-between gap-6 py-0">
           <div className="flex items-center gap-4">
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
-              <Image src="/veltistos-olive-high.png" alt="Veltistos" width={151} height={104} priority className="block w-[148px] h-[60px] shrink-0" />
+              <Image src="/trieris-veltistos-olive.png" alt="Veltistos" width={142} height={86} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
 
             <div className="flex items-start gap-2 text-sm" aria-label="Καιρός και ώρα">

@@ -1,14 +1,32 @@
 // src/app/api/parents-question/route.ts
+export const runtime = "nodejs";
+
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
 
 export async function POST(req: NextRequest) {
   try {
-    const body = await req.json();
+    // 1) Check required envs
+    const mustHave = ["EMAIL_HOST", "EMAIL_PORT", "EMAIL_SECURE", "EMAIL_USER", "EMAIL_PASS"] as const;
+    const missing = mustHave.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
+    if (missing.length) {
+      console.error("Missing SMTP env:", missing.join(", "));
+      return new NextResponse("Server email not configured.", { status: 500 });
+    }
 
+    // 2) Parse envs
+    const host = String(process.env.EMAIL_HOST);
+    const port = Number(process.env.EMAIL_PORT) || 465;
+    const secure = String(process.env.EMAIL_SECURE).toLowerCase() === "true";
+    const user = String(process.env.EMAIL_USER);
+    const pass = String(process.env.EMAIL_PASS);
+    const from = String(process.env.EMAIL_FROM || process.env.EMAIL_USER);
+
+    // 3) Read and validate body
+    const body = await req.json().catch(() => ({}));
     // simple honeypot
     if (typeof body.website === "string" && body.website.trim() !== "") {
-      return NextResponse.json({ ok: true }, { status: 200 });
+      return NextResponse.json({ ok: true });
     }
 
     const {
@@ -21,7 +39,6 @@ export async function POST(req: NextRequest) {
       question = "",
     } = body || {};
 
-    // validate
     if (!name || !email || !level || !question) {
       return new NextResponse("Missing required fields.", { status: 400 });
     }
@@ -32,46 +49,31 @@ export async function POST(req: NextRequest) {
       return new NextResponse("Invalid email.", { status: 400 });
     }
 
-    // Build message
+    // 4) Build email text
     const text = [
       `Ονοματεπώνυμο: ${name}`,
       `Email: ${email}`,
       `Επίπεδο: ${level}`,
       grade ? `Τάξη: ${grade}` : null,
       subject ? `Μάθημα: ${subject}` : null,
-      book ? `Βιβλίο: ${book}` : null,
+      book ? `Βιβλίο/Σελίδα: ${book}` : null,
       "",
       "Ερώτηση:",
       question,
-    ].filter(Boolean).join("\n");
+    ]
+      .filter(Boolean)
+      .join("\n");
 
-    // Transporter (use your SMTP)
-    const {
-      EMAIL_HOST,
-      EMAIL_PORT,
-      EMAIL_USER,
-      EMAIL_PASS,
-      EMAIL_SECURE, // "true" | "false" (optional)
-      EMAIL_FROM,   // e.g. '"Veltistos" <no-reply@veltistos.com>'
-    } = process.env as Record<string, string | undefined>;
-
-    if (!EMAIL_HOST || !EMAIL_PORT || !EMAIL_USER || !EMAIL_PASS) {
-      console.error("Missing SMTP env vars.");
-      return new NextResponse("Server email not configured.", { status: 500 });
-    }
-
+    // 5) Send via SMTP
     const transporter = nodemailer.createTransport({
-      host: EMAIL_HOST,
-      port: Number(EMAIL_PORT),
-      secure: EMAIL_SECURE === "true", // true for 465, false for 587
-      auth: {
-        user: EMAIL_USER,
-        pass: EMAIL_PASS,
-      },
+      host,
+      port,
+      secure, // true -> 465 SSL, false -> 587 STARTTLS
+      auth: { user, pass },
     });
 
     await transporter.sendMail({
-      from: EMAIL_FROM || EMAIL_USER!,
+      from,                                 // e.g. "Veltistos" <mind@veltistos.com>
       to: "mind@veltistos.com",
       replyTo: `"${name}" <${email}>`,
       subject: "Νέα ερώτηση από γονέα/μαθητή",
@@ -80,7 +82,7 @@ export async function POST(req: NextRequest) {
 
     return NextResponse.json({ ok: true });
   } catch (err) {
-    console.error(err);
+    console.error("parents-question error:", err);
     return new NextResponse("Internal error.", { status: 500 });
   }
 }

@@ -9,7 +9,14 @@ type Props = {
 };
 
 const LEVELS = ["Δημοτικό", "Γυμνάσιο", "Λύκειο"] as const;
+type Level = typeof LEVELS[number];
+
 const MAX_CHARS = 500;
+
+// runtime type guard for select value
+function isLevel(x: string): x is Level {
+  return (LEVELS as readonly string[]).includes(x);
+}
 
 export default function ParentsFormModal({ open, onClose }: Props) {
   const dialogRef = useRef<HTMLDivElement | null>(null);
@@ -21,7 +28,7 @@ export default function ParentsFormModal({ open, onClose }: Props) {
   // fields
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-  const [level, setLevel] = useState<typeof LEVELS[number] | "">("");
+  const [level, setLevel] = useState<Level | "">("");
   const [grade, setGrade] = useState("");    // τάξη
   const [subject, setSubject] = useState(""); // μάθημα
   const [book, setBook] = useState("");       // βιβλίο
@@ -55,7 +62,7 @@ export default function ParentsFormModal({ open, onClose }: Props) {
   const remaining = MAX_CHARS - question.length;
 
   const emailOk = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  const requiredOk = name.trim() && emailOk && level && question.trim();
+  const requiredOk = name.trim().length > 0 && emailOk && !!level && question.trim().length > 0;
   const tooLong = question.length > MAX_CHARS;
 
   async function handleSubmit(e: React.FormEvent) {
@@ -89,8 +96,12 @@ export default function ParentsFormModal({ open, onClose }: Props) {
       }
 
       setOk("Ευχαριστούμε! Το μήνυμά σας εστάλη.");
-    } catch (e: any) {
-      setErr(e?.message || "Κάτι πήγε στραβά. Προσπαθήστε ξανά.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setErr(err.message);
+      } else {
+        setErr("Κάτι πήγε στραβά. Προσπαθήστε ξανά.");
+      }
     } finally {
       setSubmitting(false);
     }
@@ -164,7 +175,10 @@ export default function ParentsFormModal({ open, onClose }: Props) {
               <label className="block text-xs font-medium text-zinc-800">Το παιδί φοιτά στο *</label>
               <select
                 value={level}
-                onChange={(e) => setLevel(e.target.value as any)}
+                onChange={(e: React.ChangeEvent<HTMLSelectElement>) => {
+                  const v = e.target.value;
+                  setLevel(isLevel(v) ? v : "");
+                }}
                 required
                 className="mt-1 w-full rounded-md border border-zinc-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-red-600 bg-white"
               >

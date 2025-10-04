@@ -1,5 +1,8 @@
 // src/app/api/parents-question/route.ts
 export const runtime = "nodejs";
+export const dynamic = "force-dynamic";   // ensure runtime execution
+export const revalidate = 0;               // no ISR
+export const fetchCache = "force-no-store";
 
 import { NextRequest, NextResponse } from "next/server";
 import nodemailer from "nodemailer";
@@ -7,7 +10,7 @@ import nodemailer from "nodemailer";
 function checkMissing() {
   const mustHave = ["EMAIL_HOST", "EMAIL_PORT", "EMAIL_SECURE", "EMAIL_USER", "EMAIL_PASS"] as const;
   const missing = mustHave.filter((k) => !process.env[k] || String(process.env[k]).trim() === "");
-  return { mustHave, missing };
+  return { missing };
 }
 
 function toStr(v: unknown): string {
@@ -103,7 +106,7 @@ export async function POST(req: NextRequest) {
       auth: { user, pass },
     });
 
-    // Optional: uncomment to test auth only
+    // Optional: verify auth
     // await transporter.verify();
 
     await transporter.sendMail({

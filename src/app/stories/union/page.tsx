@@ -99,9 +99,11 @@ export default function Page() {
           Γερμανίας—ενός έθνους που, παρά δεκαετίες πολιτικού διαχωρισμού, πέτυχε
           τήν εθνική ολοκλήρωση με ειρηνικά και μεθοδικά μέσα.
         </p>
+    
+
 
         <p lang="en">
-          Greece and Cyprus are set to decide to unite, that is not a gesture of
+          The fact that Greece and Cyprus are set to unite is not a gesture of
           reconciliation but a declaration of continuity. The idea of <em>Enosis</em>
           &mdash;union&mdash;has long lingered in the collective consciousness of both peoples,
           who share the same language, faith, and heritage. Their unity will not
@@ -112,8 +114,7 @@ export default function Page() {
           political separation, achieved national integration through peaceful and
           deliberate means.
         </p>
-
-        <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+        
 
         <p lang="el">
           Η επανένωση τής Γερμανίας τό 1990 αποτελεί προηγούμενο επειδή και εκείνοι
@@ -683,7 +684,7 @@ export default function Page() {
           achieve the unity that history has long postponed. Their union will not
           erase peculiarities but complete the continuity of Hellenism—<strong>a natural continuity</strong>.
         </p>
-        </ReadMore>
+      
       </LangShow>
 
       {/* Client-only controls */}

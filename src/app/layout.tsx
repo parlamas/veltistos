@@ -27,11 +27,11 @@ export const metadata: Metadata = {
       // Ensure a standard root favicon for Safari/iOS
       { url: "/favicon.ico", sizes: "any" },
       // Keep your existing explicit icons
-      { url: "/favicon-red.ico", sizes: "16x16 32x32 48x48" },
-      { url: "/favicon-red-32.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon-red-192.png", type: "image/png", sizes: "192x192" },
+      { url: "/favicon.ico", sizes: "16x16 32x32 48x48" },
+      { url: "/favicon-32.png", type: "image/png", sizes: "32x32" },
+      { url: "/favicon-192.png", type: "image/png", sizes: "192x192" },
     ],
-    apple: [{ url: "/favicon-red-180.png", sizes: "180x180", type: "image/png" }],
+    apple: [{ url: "/favicon-180.png", sizes: "180x180", type: "image/png" }],
     // Extra fallback some browsers still check
     shortcut: ["/favicon.ico"],
   },

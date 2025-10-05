@@ -29,6 +29,7 @@ export default function Page() {
         <TTSButton targetSelector="#story-content" label="" />
       </header>
 
+{/*
       <figure className="my-4">
         <Image
           src="/sidewalk.jpeg"
@@ -42,12 +43,19 @@ export default function Page() {
           Λεζάντα φωτογραφίας (προαιρετική).
         </figcaption>
       </figure>
+*/}
 
       <p>
-        Εισαγωγική παράγραφος… Γράψε εδώ το περιεχόμενο του άρθρου σου με
-        παραγράφους, υποτίτλους, λίστες κ.λ.π.{" "}
+        θετικός βαθμός: ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
+        συγκριτικός βαθμός: ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
+        υπερθετικός βαθμός: ὁ βέλτιστος • ἡ βελτίστη • τό βέλτιστον
+
+
+      {/*
+
         <span lang="zh-CN">今天是雨天。</span>{" "}
         <span lang="es-ES">Me voy a la escuela.</span>
+        */}
       </p>
 
       <div data-tts-skip className="not-prose mt-4">

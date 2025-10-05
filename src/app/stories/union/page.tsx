@@ -150,11 +150,11 @@ export default function Page() {
 
 
         <p lang="el">
-          Η βρετανική προσφορά τού 1915 για παραχώρηση τής Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε)
+          Η βρετανική προσφορά τού 1915 για παραχώρηση τής Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε).
         </p>
 
         <p lang="el">
-          <br />Τι συνέβη.<br />
+          <br />Τι συνέβη:<br />
           Τόν Οκτώβριο τού 1915, καθώς ο Α΄ Παγκόσμιος Πόλεμος διευρυνόταν και η Σερβία δεχόταν επίθεση (έπειτα από τήν είσοδο τής Βουλγαρίας στον πόλεμο),
           ο Βρετανός Υπουργός Εξωτερικών Έντουαρντ Γκρέι ενέκρινε μία πρόταση να παραχωρηθεί η Κύπρος στην Ελλάδα εφόσον η Ελλάδα θα έμπαινε στον πόλεμο
           στο πλευρό τών Συμμάχων (ουσιαστικά, για να συνδράμει τήν Σερβία).
@@ -164,11 +164,11 @@ export default function Page() {
         </p>
 
         <p lang="en">
-          The 1915 British offer of Cyprus to Greece (and why Greece declined)
+          The 1915 British offer of Cyprus to Greece (and why Greece declined).
         </p>
 
         <p lang="en">
-          <br />What happened.<br />
+          <br />What happened:<br />
           In October 1915, as World War I widened and Serbia was under attack (after Bulgaria entered the war), 
           British Foreign Secretary Edward Grey authorized an offer to cede Cyprus to Greece if Greece would enter the war on 
           the Allied side (effectively, come to Serbia’s aid).

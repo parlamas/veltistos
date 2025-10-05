@@ -9,7 +9,7 @@ import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/sidewalk";
-  const title = "Νέα για τα πεζοδρόμια";
+  const title = "Τα παραθετικά του <b>ἀγαθός</b>";
 
   return (
     <article
@@ -19,9 +19,11 @@ export default function Page() {
     >
       <header className="mb-4 flex items-start justify-between gap-3">
         <div>
-          <h1 className="font-serif text-2xl font-bold leading-tight">
-            {title}
-          </h1>
+          <h1
+  className="font-serif text-2xl font-bold leading-tight"
+  dangerouslySetInnerHTML={{ __html: title }}
+/>
+
           <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
         </div>
 

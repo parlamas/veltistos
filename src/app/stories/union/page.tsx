@@ -12,7 +12,10 @@ import ShareBar from "@/components/ShareBar";
 
 export default function Page() {
   const href = "/stories/union";
-  const title = "Η Ελλάδα και η Κύπρος Ενώνονται";
+  const titleGR = "Η Ελλάδα και η Κύπρος Ενώνονται";
+  const titleEN = "Greece and Cyprus are set to unite.";
+  const shareTitle = titleGR; // use when a single string is needed (Share/TTS/etc.)
+
 
   return (
     <article
@@ -23,8 +26,9 @@ export default function Page() {
       <header className="mb-4 flex items-start justify-between gap-3">
         <div>
           <h1 className="font-serif text-2xl font-bold leading-tight">
-            {title}
-          </h1>
+  <span lang="el" className="block">{titleGR}</span>
+  <span lang="en" className="block text-zinc-600">{titleEN}</span>
+</h1>
           <p className="text-sm text-zinc-500">
             05.10.25 • Ενωση Ελλάδας και Κύπρου
           </p>

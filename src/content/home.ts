@@ -56,7 +56,7 @@ export const homeSlots: HomeSlots = {
       href: "/stories/union",
       title: "Η Ενωση Ελλάδας και Κύπρου",
       img: "/union/enosis-01.jpg",
-      excerpt: "This is the excerpt for the first main story.",
+      excerpt: "Τό 1ο άρθρο.",
     },
     {
       href: "/lead-2",

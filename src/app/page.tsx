@@ -35,8 +35,8 @@ export default function HomePage() {
         </aside>
       }
     >
-      {/* center (main stories) */}
-      <div className="space-y-6">
+      {/* Middle column (lead stories) */}
+      <section className="space-y-3">
         {homeSlots.middle.map((s) => (
           <LeadCard
             key={s.href}
@@ -46,8 +46,9 @@ export default function HomePage() {
             excerpt={s.excerpt}
           />
         ))}
-      </div>
+      </section>
     </SiteGrid>
   );
 }
+
 

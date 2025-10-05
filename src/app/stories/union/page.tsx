@@ -15,20 +15,32 @@ import ShareBar from "@/components/ShareBar";
 
 
 
-import React, { ReactNode, isValidElement } from "react";
+
+
+import React, { ReactNode, isValidElement, ReactElement } from "react";
+
+
+
 import ReadMore from "@/components/ReadMore";
 
+type LangProps = {
+  lang?: "el" | "en";
+  ["data-lang"]?: "el" | "en";
+};
+
 function AutoLangGroups({ children }: { children: ReactNode }) {
-  const nodes = React.Children.toArray(children).filter(isValidElement);
+  const nodes = React.Children
+    .toArray(children)
+    .filter((n): n is ReactElement<LangProps> => isValidElement(n));
 
   const split = (code: "el" | "en") => {
     const arr = nodes.filter(
-      (n) => n.props?.lang === code || n.props?.["data-lang"] === code
+      (n) => n.props.lang === code || n.props["data-lang"] === code
     );
     const head = arr.slice(0, 2); // show first 2 before “Read more…”
     const tail = arr.slice(2);
     return { head, tail };
-    };
+  };
 
   const GR = split("el");
   const EN = split("en");
@@ -114,10 +126,9 @@ export default function Page() {
       </header>
 
       {/* Two speakers at the top (read hidden EL/EN blocks) */}
-<DualTTSBar
-  grSelector='#story-content [lang="el"]'
-  enSelector='#story-content [lang="en"]'
-/>
+
+<DualTTSBar targetEl='#story-content [lang="el"]' targetEn='#story-content [lang="en"]' />
+
 
 
 

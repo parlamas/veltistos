@@ -8,6 +8,7 @@ export const runtime = 'nodejs';
 import LangShow from "@/components/LangShow";
 import DualTTSBar from "@/components/DualTTSBar";
 import ShareBar from "@/components/ShareBar";
+import ReadMore from "@/components/ReadMore";
 
 
 export default function Page() {
@@ -111,6 +112,8 @@ export default function Page() {
           political separation, achieved national integration through peaceful and
           deliberate means.
         </p>
+
+        <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
 
         <p lang="el">
           Η επανένωση τής Γερμανίας τό 1990 αποτελεί προηγούμενο επειδή και εκείνοι
@@ -412,7 +415,7 @@ export default function Page() {
             <p lang="en">Kissinger is responsible for:</p>
 
       <p lang="el">
-        <strong>Α.</strong> Φρικαλεότητες στο Βιετνάμ και στην Καμπότζη
+        <strong>Α.</strong> Για φρικαλεότητες στο Βιετνάμ και στην Καμπότζη
         (1969–1973).
       </p>
       <p lang="en">
@@ -420,7 +423,7 @@ export default function Page() {
       </p>
 
       <p lang="el">
-        <strong>Β.</strong> Τό πραξικόπημα στη Χιλή (1973).
+        <strong>Β.</strong> Για τό πραξικόπημα στη Χιλή (1973).
       </p>
       <p lang="en">
         <strong>B.</strong> The coup in Chile (1973).
@@ -451,11 +454,11 @@ export default function Page() {
       </p>
 
       <p lang="el">
-        <strong>Ζ.</strong> Tόν Συντονισμό τής επιχείρησης «Κόνδωρ» στην Λατινική
+        <strong>Ζ.</strong> Για τόν Συντονισμό τής επιχείρησης «Κόνδωρ» στην Λατινική
         Αμερική (1975–1990).
       </p>
       <p lang="en">
-        <strong>F.</strong> the coordination of Operation Condor in Latin America
+        <strong>F.</strong> The coordination of Operation Condor in Latin America
         (1975–1990).
       </p>
 
@@ -680,6 +683,7 @@ export default function Page() {
           achieve the unity that history has long postponed. Their union will not
           erase peculiarities but complete the continuity of Hellenism—<strong>a natural continuity</strong>.
         </p>
+        </ReadMore>
       </LangShow>
 
       {/* Client-only controls */}

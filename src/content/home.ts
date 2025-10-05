@@ -47,7 +47,7 @@ export const homeSlots: HomeSlots = {
     {
   href: "/stories/sidewalk",         // must match the folder name
   title: "Νέα για τα πεζοδρόμια",    // you choose what headline shows
-  img: "/sidewalk.jpeg",             // must match the file in /public
+  img: "",             // must match the file in /public
   kicker: "Ελλάδα",                  // short label/category
 },
   ],

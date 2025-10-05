@@ -54,7 +54,7 @@ export const homeSlots: HomeSlots = {
   middle: [
     {
       href: "/stories/union",
-      title: "Η Ενωση Ελλάδας και Κύπρου",
+      title: "Η Ενωση Ελλάδας και Κύπρου<br>The Union of Greece and Cyprus",
       img: "/union/enosis-01.jpg",
       excerpt: "Τό 1ο άρθρο.",
     },

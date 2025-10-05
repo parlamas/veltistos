@@ -31,11 +31,11 @@ export default function LeadCard({
         </Link>
       )}
       <div className="p-4">
-        <h3 className="font-serif font-semibold leading-snug text-base md:text-lg lg:text-xl">
-          <Link href={href} className="hover:text-red-600">
-            <span dangerouslySetInnerHTML={{ __html: title }} />
-          </Link>
-        </h3>
+        <h3 className="font-serif font-semibold leading-snug text-base md:text-lg lg:text-xl mt-0">
+  <Link href={href} className="hover:text-red-600">
+    <span dangerouslySetInnerHTML={{ __html: title }} />
+  </Link>
+</h3>
         {excerpt && <p className="mt-2 text-sm text-zinc-600">{excerpt}</p>}
       </div>
     </article>

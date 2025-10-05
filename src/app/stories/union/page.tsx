@@ -23,8 +23,9 @@ export default function Page() {
         </div>
       </header>
 
+
       {/* Make sure this image exists at /public/union/enosis-01.jpg */}
-      <figure className="my-4">
+      {/*<figure className="my-4">
         <Image
           src="/union/enosis-01.jpg"
           alt="Ενωση τού Ελληνισμού"
@@ -37,7 +38,7 @@ export default function Page() {
           Η ενιαία Ελλάδα
         </figcaption>
       </figure>
-
+*/}
       <p>
         When Greece and Cyprus decide to unite, it would not be a gesture of
         reconciliation but a declaration of continuity. The idea of <em>Enosis</em>

@@ -45,23 +45,28 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
 
   return (
     <>
-      <div lang="el">
-        {GR.head}
-        {GR.tail.length > 0 && (
-          <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
-            {GR.tail}
-          </ReadMore>
-        )}
-      </div>
+      
 
-      <div lang="en">
-        {EN.head}
-        {EN.tail.length > 0 && (
-          <ReadMore moreLabel="Read more…" lessLabel="Read less">
-            {EN.tail}
-          </ReadMore>
-        )}
-      </div>
+<div lang="el" data-tts-el>
+  {GR.head}
+  {GR.tail.length > 0 && (
+    <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+      {GR.tail}
+    </ReadMore>
+  )}
+</div>
+
+<div lang="en" data-tts-en>
+  {EN.head}
+  {EN.tail.length > 0 && (
+    <ReadMore moreLabel="Read more…" lessLabel="Read less">
+      {EN.tail}
+    </ReadMore>
+  )}
+</div>
+
+
+
     </>
   );
 }
@@ -117,7 +122,8 @@ export default function Page() {
 
       {/* Two speakers at the top (read hidden EL/EN blocks) */}
 
-<DualTTSBar targetEl='#story-content [lang="el"]' targetEn='#story-content [lang="en"]' />
+<DualTTSBar targetEl='#story-content [data-tts-el]' targetEn='#story-content [data-tts-en]' />
+
 
 
 

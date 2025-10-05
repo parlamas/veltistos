@@ -23,22 +23,20 @@ import React, { ReactNode, isValidElement, ReactElement } from "react";
 
 import ReadMore from "@/components/ReadMore";
 
-type LangProps = {
-  lang?: "el" | "en";
-  ["data-lang"]?: "el" | "en";
-};
-
 function AutoLangGroups({ children }: { children: ReactNode }) {
   const nodes = React.Children
     .toArray(children)
-    .filter((n): n is ReactElement<LangProps> => isValidElement(n));
+    .filter(
+      (n): n is ReactElement<{ lang?: "el" | "en"; ["data-lang"]?: "el" | "en" }> =>
+        isValidElement(n)
+    );
 
   const split = (code: "el" | "en") => {
     const arr = nodes.filter(
       (n) => n.props.lang === code || n.props["data-lang"] === code
     );
-    const head = arr.slice(0, 2); // show first 2 before “Read more…”
-    const tail = arr.slice(2);
+    const head = arr.slice(0, 2); // first 2 shown
+    const tail = arr.slice(2);    // rest behind “Read more…”
     return { head, tail };
   };
 
@@ -50,30 +48,18 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
       <div lang="el">
         {GR.head}
         {GR.tail.length > 0 && (
-          <div className="not-prose">
-  <ReadMore
-    moreLabel="Περισσότερα… / Read more…"
-    lessLabel="Λιγότερα / Read less"
-  >
-    {GR.tail}
-  </ReadMore>
-</div>
+          <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+            {GR.tail}
+          </ReadMore>
         )}
       </div>
 
       <div lang="en">
         {EN.head}
         {EN.tail.length > 0 && (
-          <div className="not-prose">
-  <div className="not-prose">
-  <ReadMore
-    moreLabel="Read more…"
-    lessLabel="Read less"
-  >
-    {EN.tail}
-  </ReadMore>
-</div>
-
+          <ReadMore moreLabel="Read more…" lessLabel="Read less">
+            {EN.tail}
+          </ReadMore>
         )}
       </div>
     </>

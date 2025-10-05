@@ -16,7 +16,6 @@ export default function Page() {
   const titleEN = "Greece and Cyprus are set to unite.";
   const shareTitle = titleGR; // use when a single string is needed (Share/TTS/etc.)
 
-
   return (
     <article
       id="story-content"
@@ -515,7 +514,7 @@ export default function Page() {
       </LangShow>
 
       {/* Client-only controls */}
-      <ShareBar href={href} title={title} />
+      <ShareBar href={href} title={shareTitle} />
     </article>
   );
 }

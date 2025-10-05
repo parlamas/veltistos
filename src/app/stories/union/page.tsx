@@ -2,6 +2,9 @@
 import Image from "next/image";
 import ArticleExtras from "@/components/ArticleExtras";
 import LangShow from "@/components/LangShow";
+import DualTTSBar from "@/components/DualTTSBar";
+import ShareBar from "@/components/ShareBar";
+
 
 export default function Page() {
   const href = "/stories/union";
@@ -23,6 +26,13 @@ export default function Page() {
           </p>
         </div>
       </header>
+
+      {/* Two speakers at the top (read hidden EL/EN blocks) */}
+<DualTTSBar
+  targetEl="#story-content [data-tts-el]"
+  targetEn="#story-content [data-tts-en]"
+/>
+
 
       {/* (Optional) image block — keep/remove as you wish
       <figure className="my-4">
@@ -497,7 +507,7 @@ export default function Page() {
       </LangShow>
 
       {/* Client-only controls */}
-      <ArticleExtras href={href} title={title} targetSelector="#story-content" />
+      <ShareBar href={href} title={title} />
     </article>
   );
 }

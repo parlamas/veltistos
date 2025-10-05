@@ -13,17 +13,24 @@ export default function LangShow({
   defaultLang?: Lang;
 }) {
   const [lang, setLang] = useState<Lang>(defaultLang);
+  const kids = Children.toArray(children);
 
-  // Only render elements whose `lang` matches the active lang.
-  // Elements without a `lang` attribute are ALWAYS shown.
-  const filtered = Children.toArray(children).filter((child) => {
+  // Visible to the reader: elements with matching lang OR no lang
+  const visible = kids.filter((child) => {
     if (!isValidElement(child)) return true;
     const childLang = (child.props as { lang?: string }).lang;
     return !childLang || childLang === lang;
   });
 
+  // Hidden duplicates for TTS targets
+  const only = (l: Lang) =>
+    kids.filter(
+      (child) => isValidElement(child) && (child.props as { lang?: string }).lang === l
+    );
+
   return (
-    <div>
+    <div data-lang={lang}>
+      {/* Language toggle buttons */}
       <div className="not-prose mb-4 flex gap-2">
         <button
           type="button"
@@ -51,7 +58,16 @@ export default function LangShow({
         </button>
       </div>
 
-      {filtered}
+      {/* Visible content */}
+      {visible}
+
+      {/* Hidden full copies for TTS (stay in DOM, not visible) */}
+      <div className="sr-only" aria-hidden="true" data-tts-el>
+        {only("el")}
+      </div>
+      <div className="sr-only" aria-hidden="true" data-tts-en>
+        {only("en")}
+      </div>
     </div>
   );
 }

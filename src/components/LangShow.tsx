@@ -1,13 +1,29 @@
 // src/components/LangShow.tsx
 "use client";
 
-import { useState } from "react";
+import React, { useState, Children, isValidElement } from "react";
 
-export default function LangShow({ children }: { children: React.ReactNode }) {
-  const [lang, setLang] = useState<"el" | "en">("el"); // default Greek
+type Lang = "el" | "en";
+
+export default function LangShow({
+  children,
+  defaultLang = "el",
+}: {
+  children: React.ReactNode;
+  defaultLang?: Lang;
+}) {
+  const [lang, setLang] = useState<Lang>(defaultLang);
+
+  // Only render elements whose `lang` matches the active lang.
+  // Elements without a `lang` attribute are ALWAYS shown.
+  const filtered = Children.toArray(children).filter((child) => {
+    if (!isValidElement(child)) return true;
+    const childLang = (child.props as { lang?: string }).lang;
+    return !childLang || childLang === lang;
+  });
 
   return (
-    <div data-lang={lang}>
+    <div>
       <div className="not-prose mb-4 flex gap-2">
         <button
           type="button"
@@ -35,13 +51,7 @@ export default function LangShow({ children }: { children: React.ReactNode }) {
         </button>
       </div>
 
-      {children}
-
-      {/* Hide the other language */}
-      <style jsx>{`
-        [data-lang='el'] [lang='en'] { display: none; }
-        [data-lang='en'] [lang='el'] { display: none; }
-      `}</style>
+      {filtered}
     </div>
   );
 }

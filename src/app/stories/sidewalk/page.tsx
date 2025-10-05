@@ -9,7 +9,7 @@ import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/sidewalk";
-  const title = "Τα παραθετικά του <b>ἀγαθός</b>";
+  const title = "Τα παραθετικά τού <b>ἀγαθός</b>";
 
   return (
     <article
@@ -24,7 +24,7 @@ export default function Page() {
   dangerouslySetInnerHTML={{ __html: title }}
 />
 
-          <p className="text-sm text-zinc-500">01.10.25 • Ελλάδα</p>
+          <p className="text-sm text-zinc-500">05.10.25 • Γραμματική</p>
         </div>
 
         {/* TTS (browser voices only) */}

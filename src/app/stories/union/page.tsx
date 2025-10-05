@@ -59,16 +59,16 @@ export default function Page() {
 
       <LangShow>
         <p lang="el">
-          Η βρετανική προσφορά του 1915 για παραχώρηση της Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε)
+          Η βρετανική προσφορά τού 1915 για παραχώρηση τής Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε)
         </p>
 
         <p lang="el">
           <br />Τι συνέβη.<br />
-          Τον Οκτώβριο του 1915, καθώς ο Α΄ Παγκόσμιος Πόλεμος διευρυνόταν και η Σερβία δεχόταν επίθεση (έπειτα από την είσοδο της Βουλγαρίας στον πόλεμο),
-          ο Βρετανός Υπουργός Εξωτερικών Έντουαρντ Γκρέι ενέκρινε μια πρόταση να παραχωρηθεί η Κύπρος στην Ελλάδα εφόσον η Ελλάδα θα έμπαινε στον πόλεμο
-          στο πλευρό των Συμμάχων (ουσιαστικά, για να συνδράμει τη Σερβία).
-          Η προσφορά διαβιβάστηκε στην Αθήνα από τον Βρετανό πρεσβευτή σερ Φράνσις Έλιοτ.
-          Ο πρωθυπουργός Ελευθέριος Βενιζέλος τάχθηκε υπέρ της αποδοχής· ο βασιλιάς Κωνσταντίνος Α&rsquo;&mdash;προσηλωμένος στην ουδετερότητα&mdash;αρνήθηκε,
+          Τόν Οκτώβριο τού 1915, καθώς ο Α΄ Παγκόσμιος Πόλεμος διευρυνόταν και η Σερβία δεχόταν επίθεση (έπειτα από τήν είσοδο τής Βουλγαρίας στον πόλεμο),
+          ο Βρετανός Υπουργός Εξωτερικών Έντουαρντ Γκρέι ενέκρινε μία πρόταση να παραχωρηθεί η Κύπρος στην Ελλάδα εφόσον η Ελλάδα θα έμπαινε στον πόλεμο
+          στο πλευρό τών Συμμάχων (ουσιαστικά, για να συνδράμει τήν Σερβία).
+          Η προσφορά διαβιβάστηκε στην Αθήνα από τόν Βρετανό πρεσβευτή σερ Φράνσις Έλιοτ.
+          Ο πρωθυπουργός Ελευθέριος Βενιζέλος τάχθηκε υπέρ τής αποδοχής· ο βασιλιάς Κωνσταντίνος Α&rsquo;&mdash;προσηλωμένος στην ουδετερότητα&mdash;αρνήθηκε,
           οπότε η Ελλάδα δεν την αποδέχθηκε και η προσφορά ξεχάσθηκε.
         </p>
 
@@ -87,88 +87,84 @@ export default function Page() {
         </p>
 
         <p lang="el">
-          Όταν η Ελλάδα και η Κύπρος αποφασίσουν να ενωθούν, αυτό δεν θα είναι μια
-          χειρονομία συμφιλίωσης αλλά μια διακήρυξη συνέχειας. Η ιδέα της <em>Enosis</em>
-          —ένωσης— αιωρείται επί μακρόν στη συλλογική συνείδηση και των δύο λαών,
+          Τό ότι η Ελλάδα και η Κύπρος έχουν αποφασίσει να ενωθούν δεν είναι μία
+          χειρονομία συμφιλίωσης αλλά μία διακήρυξη συνέχειας. Η ιδέα της <em>Ενωσης</em>
+          αιωρείται επί μακρόν στη συλλογική συνείδηση και των δύο λαών,
           που μοιράζονται την ίδια γλώσσα, πίστη και πολιτιστική κληρονομιά. Η ένωσή
-          τους δεν θα θεράπευε ένα ρήγμα αλλά θα <strong>ολοκλήρωνε μια φυσική πορεία
-          της ιστορίας</strong> που διακόπηκε από την αποικιοκρατία, την κατοχή και τις
-          γεωπολιτικές συγκυρίες. Για να κατανοήσει κανείς τόσο το μέγεθος όσο και
-          τη μηχανική μιας τέτοιας ένωσης, μπορεί να στραφεί στο παράδειγμα της
+          τους δεν θεραπεύει ένα ρήγμα αλλά <strong>ολοκληρώνει μία φυσική πορεία
+          τής ιστορίας</strong> που διακόπηκε από τήν αποικιοκρατία, τήν κατοχή και τίς
+          γεωπολιτικές συγκυρίες. Για να κατανοήσει κανείς τόσο τό μέγεθος όσο και
+          τήν μηχανική μίας τέτοιας ένωσης, μπορεί να στραφεί στο παράδειγμα τής
           Γερμανίας—ενός έθνους που, παρά δεκαετίες πολιτικού διαχωρισμού, πέτυχε
-          την εθνική ολοκλήρωση με ειρηνικά και μεθοδικά μέσα.
+          τήν εθνική ολοκλήρωση με ειρηνικά και μεθοδικά μέσα.
         </p>
 
         <p lang="en">
-          When Greece and Cyprus decide to unite, it would not be a gesture of
+          Greece and Cyprus are set to decide to unite, that is not a gesture of
           reconciliation but a declaration of continuity. The idea of <em>Enosis</em>
-          —union—has long lingered in the collective consciousness of both peoples,
-          who share the same language, faith, and heritage. Their unity would not
+          &mdash;union&mdash;has long lingered in the collective consciousness of both peoples,
+          who share the same language, faith, and heritage. Their unity will not
           heal a rift but <strong>complete a natural arc of history</strong> that
           was interrupted by colonialism, occupation, and geopolitical circumstance.
           To understand both the magnitude and the mechanics of such a union, one
-          may turn to the example of Germany—a nation that, despite decades of
+          may turn to the example of Germany&mdash;a nation that, despite decades of
           political separation, achieved national integration through peaceful and
           deliberate means.
         </p>
 
         <p lang="el">
-          Η επανένωση της Γερμανίας το 1990 αποτελεί προηγούμενο όχι επειδή ο
-          γερμανικός λαός ήταν προηγουμένως εχθρικός μεταξύ του, αλλά επειδή και εκείνοι
+          Η επανένωση τής Γερμανίας τό 1990 αποτελεί προηγούμενο επειδή και εκείνοι
           ήταν{" "}
           <strong>
-            διαιρεμένοι από εξωτερικές δυνάμεις παρά την εσωτερική τους ομοιογένεια
+            διηρημένοι από εξωτερικές δυνάμεις παρά τήν εσωτερική τους ομοιογένεια
           </strong>
-          . Μετά τον Δεύτερο Παγκόσμιο Πόλεμο, η Γερμανία διαιρέθηκε σε Ανατολή και
+          . Μετά τόν Δεύτερο Παγκόσμιο Πόλεμο, η Γερμανία διαιρέθηκε σε Ανατολή και
           Δύση, δύο κράτη που αντανακλούσαν ανταγωνιστικές ιδεολογίες. Ωστόσο, η
           πολιτισμική και γλωσσική ενότητα του γερμανικού έθνους δεν έπαψε ποτέ να
-          υπάρχει. Όταν έπεσε το Τείχος του Βερολίνου, συμβόλισε την{" "}
+          υπάρχει. Η πτώση τού Τείχους τού Βερολίνου, σηματοδότησε τήν{" "}
           <strong>
-            αποκατάσταση της πολιτικής συνοχής ενός λαού που είχε παραμείνει ένας στην
-            ουσία
+            αποκατάσταση τής πολιτικής συνοχής ενός λαού που στην ουσία είχε παραμείνει ένας
           </strong>.
         </p>
 
         <p lang="en">
-          Germany’s reunification in 1990 stands as a precedent not because the
-          German people were enemies before, but because they too were{" "}
+          Germany’s reunification in 1990 stands as a precedent because they too were{" "}
           <strong>divided by external forces despite internal sameness</strong>.
           After the Second World War, Germany was partitioned into East and West,
           two states reflecting competing ideologies. Yet the cultural and linguistic
           unity of the German nation never ceased to exist. When the Berlin Wall
-          fell, it symbolized the{" "}
+          fell, it signaled the{" "}
           <strong>
-            restoration of political coherence to a people who had remained one in
-            essence
+            restoration of political coherence to a people who, in essence, had remained one
           </strong>.
         </p>
 
         <p lang="el">
-          Για την Ελλάδα και την Κύπρο, η πορεία θα έμοιαζε με αυτή τη διαδικασία—όχι
-          ως προς τα κίνητρα αλλά ως προς τη μέθοδο. Θα προϋπέθετε πολιτικό συντονισμό,
-          συνταγματικό σχεδιασμό και διεθνή διπλωματία στο πλαίσιο της κοινής
-          ευρωπαϊκής ιδιότητας μέλους. Ο στόχος θα ήταν να{" "}
-          <strong>μεταφραστεί ένα πολιτισμικό δεδομένο σε πολιτική μορφή</strong>.
+          Για τήν Ελλάδα και τήν Κύπρο, η πορεία μοιάζει με αυτή τήν διαδικασία&mdash;όχι
+          ως προς τά κίνητρα αλλά ως προς τήν μέθοδο. Προϋποθέτει πολιτικό συντονισμό,
+          συνταγματικό σχεδιασμό και διεθνή διπλωματία στο πλαίσιο τής κοινής
+          ευρωπαϊκής ιδιότητας μέλους. Ο στόχος είναι{" "}
+          <strong>ένα δεδομένο πολιτισμικό φαινόμενο να αποκτήσει πολιτική υπόσταση</strong>.
         </p>
 
         <p lang="en">
-          For Greece and Cyprus, the journey would resemble this process—not in
-          motivation but in method. It would involve political coordination,
+          For Greece and Cyprus, the journey resembles this process&mdash;not in
+          motivation but in method. It involves political coordination,
           constitutional design, and international diplomacy within the framework
-          of shared European membership. The objective would be to{" "}
-          <strong>translate a cultural fact into a political form</strong>.
+          of shared European membership. The objective is to{" "}
+          <strong>translate a cultural and historical fact into a political entity</strong>.
         </p>
 
         <h2 lang="el">Η Πορεία προς την Ένωση</h2>
         <p lang="el">
-          Εάν η Ελλάδα και η Κύπρος επρόκειτο να ενωθούν, η διαδικασία θα έπρεπε να είναι
+          Εφ’όσον η Ελλάδα και η Κύπρος ενωνονται, η διαδικασία πρέπει να είναι
           νομικά αυστηρή, διπλωματικά διεκδικητική και ιστορικά συνειδητή. Τα βήματα
           είναι σαφή, αν και απαιτητικά.
         </p>
 
         <h2 lang="en">The Path Toward Unification</h2>
         <p lang="en">
-          If Greece and Cyprus were to unite, the process would have to be legally
+          Since Greece and Cyprus are set to unite, the process is to be legally
           rigorous, diplomatically assertive, and historically conscious. The
           steps are clear, though demanding.
         </p>
@@ -176,9 +172,9 @@ export default function Page() {
         <h3 lang="el">1. Συνταγματικές Τροποποιήσεις και στις Δύο Χώρες</h3>
         <p lang="el">
           Η πρώτη προϋπόθεση είναι η συνταγματική μεταρρύθμιση. Τόσο το{" "}
-          <span className="font-semibold">Σύνταγμα της Ελλάδας</span> όσο και το{" "}
-          <span className="font-semibold">Σύνταγμα της Κυπριακής Δημοκρατίας</span>{" "}
-          θα χρειάζονταν τροποποίηση ώστε να επιτραπεί ένα ενιαίο κυρίαρχο κρατικό σχήμα.
+          <span className="font-semibold">Σύνταγμα τής Ελλάδας</span> όσο και το{" "}
+          <span className="font-semibold">Σύνταγμα τής Κυπριακής Δημοκρατίας</span>{" "}
+          χρειάζονται τροποποίηση ώστε να επιτραπεί ένα ενιαίο κυρίαρχο κρατικό σχήμα.
         </p>
 
         <h3 lang="en">1. Constitutional Amendments in Both Countries</h3>
@@ -186,21 +182,22 @@ export default function Page() {
           The first requirement is constitutional reform. Both the{" "}
           <span className="font-semibold">Hellenic Constitution</span> and the{" "}
           <span className="font-semibold">Constitution of the Republic of Cyprus</span>{" "}
-          would need amendment to permit a single sovereign structure.
+          need amendments to permit a single sovereign structure.
         </p>
 
         <p lang="el">
-          Στην περίπτωση της Ελλάδας, <strong>Άρθρο 27</strong> απαιτεί κάθε
-          μεταβολή της εθνικής επικράτειας να εγκρίνεται από τη Βουλή, και{" "}
-          <strong>Άρθρο 28</strong> ρυθμίζει τη συμμετοχή της χώρας σε
+          Στην περίπτωση τής Ελλάδας, τό <strong>Άρθρο 27</strong> απαιτεί κάθε
+          μεταβολή τής εθνικής επικράτειας να εγκρίνεται από τήν Βουλή, και{" "}
+          τό <strong>Άρθρο 28</strong> ρυθμίζει τήν συμμετοχή τής χώρας σε
           υπερεθνικούς οργανισμούς. Για να αποτυπωθεί η νομική διαδρομή, μπορεί
-          να γίνει αναφορά στο <strong>Άρθρο 23 του Γερμανικού Θεμελιώδους Νόμου</strong> (
-          <em>Grundgesetz</em>, εφεξής <em>GG</em>), το οποίο επέτρεψε στην
-          Ομοσπονδιακή Δημοκρατία της Γερμανίας να επεκτείνει τη συνταγματική της
-          τάξη σε άλλα γερμανικά εδάφη που επιθυμούσαν προσχώρηση. Δυνάμει του
-          άρθρου αυτού, η Γερμανική Λαοκρατική Δημοκρατία (Ανατολική Γερμανία)
+          να γίνει αναφορά στο <strong>Άρθρο 23 τού Γερμανικού Συντάγματος</strong> (
+          <em>Grundgesetz</em>, εφ’εξής<em>GG</em>), τό οποίο επέτρεψε στην
+          Ομοσπονδιακή Δημοκρατία τής Γερμανίας να επεκτείνει τήν συνταγματική της
+          τάξη σε άλλα γερμανικά εδάφη που επιθυμούσαν προσχώρηση. Δυνάμει τού
+          άρθρου αυτού, η Γερμανική Λαϊκή Δημοκρατία (Ανατολική Γερμανία)
           προσχώρησε στην Ομοσπονδιακή Δημοκρατία χωρίς να δημιουργηθεί νέο κράτος·
-          το υφιστάμενο απλώς επεκτάθηκε <em>[Art. 23 GG]</em>.
+          τό υφιστάμενο απλώς επεκτάθηκε <em>[Art. 23 GG]</em>. Δηλαδή, η Ελλάδα θα 
+          υπερψηφίσει άμεσα μία τροποποίηση τού Συντάγματος παρόμοια με το άρθρο 23 τού Γερμανικού Συντάγματος.
         </p>
 
         <p lang="en">
@@ -213,58 +210,59 @@ export default function Page() {
           Republic of Germany to extend its constitutional order to other German
           territories that desired accession. Under that article, the German
           Democratic Republic (East Germany) entered the Federal Republic without
-          creating a new state; the existing one merely expanded <em>[Art. 23 GG]</em>.
+          creating a new state; the existing one merely expanded <em>[Art. 23 GG]</em>. 
+          That is, Greece is about to promptly pass a constitutional amendment similar to Article 23 of the German Constitution.
         </p>
 
         <p lang="el">
-          Η Κύπρος θα χρειαζόταν να καταργήσει ή να αντικαταστήσει το
-          <strong>Άρθρο 186</strong> του Συντάγματός της, το οποίο ρητώς απαγορεύει
-          «την ολική ή μερική ένωση της Κύπρου με οποιοδήποτε άλλο κράτος»{" "}
-          <em>[Art. 186 Cyprus Const.]</em>. Η διάταξη αυτή, που εισήχθη στο
-          συνταγματικό πλαίσιο του 1960, αποσκοπούσε στη διατήρηση της ανεξαρτησίας
+          Η Κύπρος θα καταργήσει ή θα αντικαταστήσει τό 
+          <strong>Άρθρο 186</strong> τού Συντάγματός της, τό οποίο ρητώς απαγορεύει
+          «τήν ολική ή μερική ένωση τής Κύπρου με οποιοδήποτε άλλο κράτος»{" "}
+          <em>[Αρθρο 186 Σύνταγμα τής Κυπριακής Δημοκρατίας.]</em>. Η διάταξη αυτή, που εισήχθη στο
+          συνταγματικό πλαίσιο τού 1960, αποσκοπούσε στη διατήρηση τής ανεξαρτησίας
           βάσει της <span className="font-semibold">Συνθήκης Εγγυήσεως</span>. Ωστόσο,
-          η εισβολή της Τουρκίας το 1974 και η συνεχιζόμενη κατοχή συνιστούν σοβαρή
-          παραβίαση της ίδιας αυτής συνθήκης. Συνεπώς, η Κύπρος θα μπορούσε να
-          υποστηρίξει ενώπιον του{" "}
-          <span className="font-semibold">Διεθνούς Δικαστηρίου της Δικαιοσύνης</span>{" "}
-          (ICJ) ότι το Άρθρο 186 έχει απολέσει τη δεσμευτική του ισχύ, διότι το
-          θεμέλιό του — η διαφύλαξη της κυριαρχίας και της εδαφικής ακεραιότητας —
-          έχει παραβιαστεί από μία εκ των ίδιων των εγγυητριών δυνάμεων.
+          η εισβολή της Τουρκίας τό 1974 στην Κύπρο και η συνεχιζόμενη κατοχή συνιστούν σοβαρή
+          παραβίαση τής ίδιας αυτής συνθήκης. Συνεπώς, η Ελλάδα και η Κύπρος μπορούν να
+          υποστηρίξουν ενώπιον του{" "}
+          <span className="font-semibold">Διεθνούς Δικαστηρίου τής Δικαιοσύνης</span>{" "}
+          (ICJ) ότι τό Άρθρο 186 έχει απολέσει τήν δεσμευτική του ισχύ, διότι το
+          θεμέλιό του &mdash; η διαφύλαξη τής κυριαρχίας και τής εδαφικής ακεραιότητας &mdash; 
+          έχει παραβιαστεί από μία εκ τών ιδίων εγγυητριών δυνάμεων.
         </p>
 
         <p lang="en">
-          Cyprus would need to remove or supersede <strong>Article 186</strong> of
+          Cyprus is set to remove or supersede <strong>Article 186</strong> of
           its Constitution, which explicitly forbids “the integral or partial union
           of Cyprus with any other State” <em>[Art. 186 Cyprus Const.]</em>. This
           provision, introduced under the 1960 constitutional framework, was meant
           to preserve independence under the <span className="font-semibold">Treaty of Guarantee</span>.
           Yet Turkey’s 1974 invasion and continued occupation constitute a grave
-          breach of that very treaty. Cyprus could therefore argue before the{" "}
+          breach of that very treaty. Cyprus can therefore argue before the{" "}
           <span className="font-semibold">International Court of Justice</span>{" "}
-          (ICJ) that Article 186 has lost its binding force because its foundation—
-          the preservation of sovereignty and territorial integrity—has been violated
+          (ICJ) that Article 186 has lost its binding force because its foundation&mdash;
+          the preservation of sovereignty and territorial integrity&mdash;has been violated
           by one of the guarantor powers itself.
         </p>
 
         <p lang="el">
-          Μόλις αυτό το εμπόδιο αρθεί μέσω δικαστικής ή συνταγματικής αναθεώρησης,
-          οι δύο χώρες θα μπορούσαν να συντάξουν εξουσιοδοτικές τροποποιήσεις που να
+          Μόλις αυτό τό εμπόδιο αρθεί μέσω δικαστικής και συνταγματικής αναθεώρησης,
+          οι δύο χώρες θα συντάξουν εξουσιοδοτικές τροποποιήσεις που θα 
           προβλέπουν ένα ενιαίο πολιτειακό σχήμα υπό την{" "}
           <span className="font-semibold">Ελληνική Δημοκρατία</span>, με διοικητική
-          αυτονομία για την Κύπρο εντός ενός ενιαίου κράτους.
+          αυτονομία για τήν Κύπρο εντός ενός ενιαίου κράτους.
         </p>
 
         <p lang="en">
-          Once this obstacle is lifted through judicial or constitutional revision,
+          Once this obstacle is lifted through judicial and constitutional revision,
           both countries could draft enabling amendments providing for a single
           polity under the <span className="font-semibold">Hellenic Republic</span>, with
           administrative autonomy for Cyprus within a unified state.
         </p>
 
-        <h3 lang="el">2. Διπλά Δημοψηφίσματα και το Δικαίωμα της Αυτοδιάθεσης</h3>
+        <h3 lang="el">2. Διπλά Δημοψηφίσματα και το Δικαίωμα τής Αυτοδιάθεσης</h3>
         <p lang="el">
-          Η δημοκρατία πρέπει να επισφραγίσει την ένωση. Ξεχωριστά δημοψηφίσματα στην
-          Ελλάδα και στην Κύπρο θα απαιτούνταν για να εκφραστεί η κυρίαρχη βούληση των
+          Η δημοκρατία πρέπει να επισφραγίσει τήν ένωση. Ξεχωριστά δημοψηφίσματα στην
+          Ελλάδα και στην Κύπρο παιτούνται για να εκφραστεί η κυρίαρχη βούληση τών
           λαών. Αυτές οι λαϊκές ψηφοφορίες θα επιβεβαίωναν ότι η ενοποίηση προκύπτει από
           ελεύθερη επιλογή και όχι από εξωτερική επιβολή.
         </p>
@@ -272,50 +270,54 @@ export default function Page() {
         <h3 lang="en">2. Dual Referenda and the Right of Self-Determination</h3>
         <p lang="en">
           Democracy must consecrate unity. Separate referenda in Greece and Cyprus
-          would be required to express the peoples’ sovereign will. These plebiscites
+          αρε required to express the peoples’ sovereign will. These plebiscites
           would affirm that unification arises from free choice, not external
           imposition.
         </p>
 
         <blockquote lang="el">
           <p>
-            <strong>Άρθρο 1(2) του Χάρτη των Ηνωμένων Εθνών</strong>: «Να αναπτύσσει φιλικές σχέσεις μεταξύ των εθνών με βάση τον σεβασμό της αρχής της ισότητας των δικαιωμάτων και της <strong>αυτοδιάθεσης των λαών</strong>, και να λαμβάνει άλλα κατάλληλα μέτρα για την ενίσχυση της παγκόσμιας ειρήνης.» <em> [Art. 1(2) UN Charter]</em>
+            <strong>Άρθρο 1(2) τού Χάρτη των Ηνωμένων Εθνών</strong>: «Να αναπτύσσονται φιλικές σχέσεις μεταξύ τών εθνών με βάση τόν σεβασμό 
+            τής αρχής τής ισότητας τών δικαιωμάτων και τής <strong>αυτοδιάθεσης τών λαών</strong>, και να λαμβάνει άλλα κατάλληλα μέτρα για τήν ενίσχυση 
+            τής παγκόσμιας ειρήνης.» <em> [Art. 1(2) UN Charter]</em>
           </p>
         </blockquote>
 
         <blockquote lang="en">
           <p>
-            <strong>Article 1(2) of the Charter of the United Nations</strong>: “To develop friendly relations among nations based on respect for the principle of equal rights and <strong>self-determination of peoples</strong>, and to take other appropriate measures to strengthen universal peace.” <em> [Art. 1(2) UN Charter]</em>
+            <strong>Article 1(2) of the Charter of the United Nations</strong>: “To develop friendly relations among 
+            nations based on respect for the principle of equal rights and <strong>self-determination of peoples</strong>, and to take 
+            other appropriate measures to strengthen universal peace.” <em> [Art. 1(2) UN Charter]</em>
           </p>
         </blockquote>
 
         <p lang="el">
-          Αυτή η αρχή παρέχει σε κάθε λαό το δικαίωμα να καθορίζει το πολιτικό του
-          καθεστώς και να επιδιώκει την ανάπτυξή του. Για τους Έλληνες της Κύπρου—
+          Αυτή η αρχή παρέχει σε κάθε λαό τό δικαίωμα να καθορίζει τό πολιτικό του
+          καθεστώς και να επιδιώκει τήν ανάπτυξή του. Για τούς Έλληνες τής Κύπρου, συμπεριλαμβανομένων και τών γνησίων Τουρκοκυπρίων&mdash;
           που μοιράζονται αδιάσπαστη γλωσσική, πολιτιστική, και εθνική ταυτότητα με
-          την Ελλάδα—η αυτοδιάθεση σημαίνει το δικαίωμα να επιλέξουν ελεύθερα την
-          πολιτική ένωση με τη μητέρα πατρίδα.
+          τήν Ελλάδα&mdash;η αυτοδιάθεση σημαίνει τό δικαίωμα να επιλέξουν ελεύθερα τήν
+          πολιτική ένωση με τήν μητέρα πατρίδα.
         </p>
 
         <p lang="en">
           This principle grants every people the right to determine their political
-          status and to pursue their development. For the Greek people of Cyprus—
-          sharing an unbroken linguistic, cultural, and national identity with Greece—
+          status and to pursue their development. For the Greek people of Cyprus, including genuine Turkish Cypriots&mdash;
+          sharing an unbroken linguistic, cultural, and national identity with Greece&mdash;
           self-determination means the right to freely choose political union with
           the motherland.
         </p>
 
         <p lang="el">
-          Με αυτή την έννοια, η ενοποίηση δεν θα παραβίαζε το διεθνές δίκαιο αλλά{" "}
-          <strong>θα το εκπλήρωνε</strong>. Θα μετέτρεπε μια ήδη υπάρχουσα
+          Με αυτή την έννοια, η ενοποίηση δεν παραβιάζει τό διεθνές δίκαιο αλλά{" "}
+          <strong>το εκπληρώνει</strong>. Μετατρέπει μία ήδη υπάρχουσα
           πολιτισμική ενότητα σε συνταγματική πραγματικότητα, ακριβώς όπως συνέβη
-          στη Γερμανία όταν Ανατολικοί και Δυτικοί Γερμανοί εξέφρασαν τη βούλησή τους
-          μέσω ελεύθερων κοινοβουλευτικών και λαϊκών ψηφοφοριών το 1990.
+          στη Γερμανία όταν Ανατολικοί και Δυτικοί Γερμανοί εξέφρασαν τήν βούλησή τους
+          μέσω ελεύθερων κοινοβουλευτικών και λαϊκών ψηφοφοριών τό 1990.
         </p>
 
         <p lang="en">
-          In this sense, unification would not contravene international law but{" "}
-          <strong>fulfill it</strong>. It would transform an existing cultural unity
+          In this sense, unification does not contravene international law but{" "}
+          <strong>fulfills it</strong>. It transforms an existing cultural unity
           into constitutional reality, exactly as Germany did when East and West
           Germans expressed their will through free parliamentary and popular votes
           in 1990.
@@ -323,15 +325,17 @@ export default function Page() {
 
         <h3 lang="el">3. Η Συνθήκη Εγγυήσεως και το Διεθνές Δικαστήριο</h3>
         <p lang="el">
-          Η <span className="font-semibold">Συνθήκη Εγγυήσεως</span> του 1960, που
-          υπογράφηκε από την Ελλάδα, την Τουρκία και το Ηνωμένο Βασίλειο, αποσκοπούσε
-          στη διασφάλιση της ανεξαρτησίας και της εδαφικής ακεραιότητας της Κύπρου.
-          Ωστόσο, <strong>το Άρθρο I</strong>{" "} της συνθήκης απαγορεύει σε οποιαδήποτε
-          από τις εγγυήτριες δυνάμεις να προωθεί τη διχοτόμηση ή την ένωση. Με τη
-          διατήρηση στρατιωτικής κατοχής του βόρειου τμήματος της Κύπρου επί μισό
-          αιώνα, η Τουρκία έχει ουσιωδώς παραβιάσει αυτήν την υποχρέωση,{" "}
-          καθιστώντας έτσι <strong>τη συνθήκη άκυρη λόγω παραβίασης</strong>.
+          Η <span className="font-semibold">Συνθήκη Εγγυήσεως</span> τού 1960, που
+          υπογράφηκε από τήν Ελλάδα, τήν Τουρκία και τό Ηνωμένο Βασίλειο, αποσκοπούσε
+          στη διασφάλιση τής ανεξαρτησίας και τής εδαφικής ακεραιότητας τής Κύπρου.
+          Ωστόσο, <strong>τό Άρθρο I</strong>{" "} τής συνθήκης απαγορεύει σε οποιαδήποτε
+          από τίς εγγυήτριες δυνάμεις να προωθεί τήν διχοτόμηση ή τήν ένωση. Με τήν 
+          διατήρηση στρατιωτικής κατοχής τού βόρειου τμήματος τής Κύπρου επί μισό
+          αιώνα, η Τουρκία έχει ουσιωδώς παραβιάσει αυτήν τήν υποχρέωση,{" "}
+          καθιστώντας έτσι <strong>τήν συνθήκη άκυρη λόγω παραβίασης της</strong>.
         </p>
+
+
 
         <h3 lang="en">3. The Treaty of Guarantee and the International Court</h3>
         <p lang="en">
@@ -343,6 +347,159 @@ export default function Page() {
           a century, Turkey has materially violated this obligation, thereby{" "}
           <strong>nullifying the treaty through breach</strong>.
         </p>
+
+
+
+
+
+
+
+
+
+
+
+
+{/* Pair 1 */}
+      <p lang="el">
+        Ο υποκριτικός ισχυρισμός της Τουρκίας ότι εισέβαλε στην Κύπρο διότι
+        πρώτη η Ελλάδα παραβίασε τη Συνθήκη επιχειρώντας πραξικόπημα για να
+        επιτύχει την Ένωση με την Ελλάδα δεν αντέχει στη λογική, διότι είναι
+        γνωστά γεγονότα ότι οι ΗΠΑ ενορχήστρωσαν το στρατιωτικό πραξικόπημα
+        στην Αθήνα, υπό την άγρυπνη επιτήρηση του σοβαρά ηθικά
+        ακρωτηριασμένου Κίσινγκερ, ακριβώς για να διχοτομήσουν την Κύπρο. Η
+        ελληνική ψευδοκυβέρνηση των δικτατόρων δεν ήταν νόμιμη. Τόσο ο Νίξον
+        όσο και ο Κίσινγκερ ήταν παγκοσμίως γνωστοί για την ελεεινή τους
+        ηθική υπόσταση.
+      </p>
+      <p lang="en">
+        The hypocritical claim by Turkey that it invaded Cyprus because Greece
+        first violated the Treaty by attempting a coup to achieve Union with
+        Greece does not withstand logic, because it is well known that the
+        United States orchestrated the military coup in Athens—under the
+        watchful supervision of the severely morally compromised Kissinger—
+        precisely to partition Cyprus. The Greek pseudo-government of the
+        dictators was not legitimate. Both Nixon and Kissinger were globally
+        known for their wretched moral standing.
+      </p>
+
+      {/* Pair 2 */}
+      <p lang="el">
+        Το σκάνδαλο Γουότεργκεϊτ ανάγκασε τον Νίξον να παραιτηθεί, για να
+        αποφύγει τη φυλακή και τον διασυρμό. Ήταν η πρώτη φορά που
+        Αμερικανός πρόεδρος παραιτήθηκε.
+      </p>
+      <p lang="en">
+        The Watergate scandal forced Nixon to resign to avoid prison and
+        disgrace. It was the first time a U.S. president resigned.
+      </p>
+
+      {/* Pair 3 */}
+      <p lang="el">
+        Ο αντιπρόεδρος επί Νίξον, Σπύρος Άγκνιου, παραιτήθηκε επίσης έναν χρόνο
+        πριν από τον Νίξον, επειδή του απαγγέλθηκαν κατηγορίες για
+        φοροδιαφυγή και δωροδοκία.
+      </p>
+      <p lang="en">
+        Vice President under Nixon, Spiro Agnew, also resigned a year before
+        Nixon because he was charged with tax evasion and bribery.
+      </p>
+
+      {/* Pairs for the points (A–H) as paragraphs */}
+      <p lang="el">
+        <strong>Α.</strong> Φρικαλεότητες στο Βιετνάμ και στην Καμπότζη
+        (1969–1973).
+      </p>
+      <p lang="en">
+        <strong>A.</strong> Atrocities in Vietnam and Cambodia (1969–1973).
+      </p>
+
+      <p lang="el">
+        <strong>Β.</strong> Το πραξικόπημα στη Χιλή (1973).
+      </p>
+      <p lang="en">
+        <strong>B.</strong> The coup in Chile (1973).
+      </p>
+
+      <p lang="el">
+        <strong>Γ.</strong> Είναι υπεύθυνος για τις σφαγές στο Μπαγκλαντές
+        (1971).
+      </p>
+      <p lang="en">
+        <strong>C.</strong> Responsible for the massacres in Bangladesh (1971).
+      </p>
+
+      <p lang="el">
+        <strong>Δ.</strong> Είναι υπεύθυνος για την εισβολή της Τουρκίας στην
+        Κύπρο.
+      </p>
+      <p lang="en">
+        <strong>D.</strong> Responsible for Turkey’s invasion of Cyprus.
+      </p>
+
+      <p lang="el">
+        <strong>Ε.</strong> Οργάνωσε και ενέκρινε την εισβολή της Ινδονησίας στο
+        Ανατολικό Τιμόρ.
+      </p>
+      <p lang="en">
+        <strong>E.</strong> Organized and approved Indonesia’s invasion of East
+        Timor.
+      </p>
+
+      <p lang="el">
+        <strong>Ζ.</strong> Συντόνισε την επιχείρηση «Κόνδωρ» στη Λατινική
+        Αμερική (1975–1990).
+      </p>
+      <p lang="en">
+        <strong>F.</strong> Coordinated Operation Condor in Latin America
+        (1975–1990).
+      </p>
+
+      <p lang="el">
+        <strong>Η.</strong> Υπάρχουν αδιάσειστες αποδείξεις ότι ο Κίσινγκερ
+        διευκόλυνε παράνομες δραστηριότητες των ισραηλινών μυστικών υπηρεσιών·
+        γι’ αυτό το Ισραήλ εξήγαγε μεγάλες ποσότητες όπλων στη Λατινική Αμερική
+        κατά τη διάρκεια της επιχείρησης «Κόνδωρ». Είχε στενές και κρυφές
+        επαφές με τη Γκόλντα Μέιρ, τον Γιτσάκ Ράμπιν και τον Μοσέ Νταγιάν.
+        Ο Κίσινγκερ θεωρείται υπεύθυνος για την ενσωμάτωση των ισραηλινών
+        μυστικών υπηρεσιών στην επίσημη αμερικανική εξωτερική πολιτική.
+      </p>
+      <p lang="en">
+        <strong>G.</strong> There is irrefutable evidence that Kissinger
+        facilitated illegal activities of Israeli intelligence services; hence
+        Israel exported large quantities of weapons to Latin America during
+        Operation Condor. He had close and secret contacts with Golda Meir,
+        Yitzhak Rabin, and Moshe Dayan. Kissinger is regarded as responsible for
+        integrating Israeli intelligence into official U.S. foreign policy.
+      </p>
+
+      {/* Conclusion pair */}
+      <p lang="el">
+        Το συμπέρασμα είναι ότι οι δικτατορικές κυβερνήσεις στην Ελλάδα
+        (1967–1974) ήταν παράνομες και υποκινούμενες από άτομα ευτελούς αξίας
+        στις Ηνωμένες Πολιτείες, και οι δικαστές στο Διεθνές Δικαστήριο τα
+        γνωρίζουν αυτά και δεν θα δεχθούν την υποκριτική επιχειρηματολογία της
+        Τουρκίας.
+      </p>
+      <p lang="en">
+        The conclusion is that the dictatorial governments in Greece
+        (1967–1974) were illegal and instigated by people of paltry worth in
+        the United States, and the judges at the International Court are aware
+        of these facts and will not accept Turkey’s hypocritical argumentation.
+      </p>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
         <p lang="el">
           Η νόμιμη ενέργεια θα ήταν η Ελλάδα και η Κύπρος να φέρουν από κοινού το

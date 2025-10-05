@@ -53,9 +53,9 @@ export const homeSlots: HomeSlots = {
   ],
   middle: [
     {
-      href: "/lead-1",
-      title: "Main story 1",
-      img: "/images/lead-1.jpg",
+      href: "/stories/union",
+      title: "Η Ενωση Ελλάδας και Κύπρου",
+      img: "/union/enosis-01.jpg",
       excerpt: "This is the excerpt for the first main story.",
     },
     {

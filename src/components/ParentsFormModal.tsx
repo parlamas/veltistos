@@ -191,7 +191,7 @@ export default function ParentsFormModal({ open, onClose }: Props) {
               </select>
             </div>
             <div>
-              <label className="block text-xs font-medium text-zinc-800">Τάξη</label>
+              <label className="block text-xs font-medium text-zinc-800">Τάξη*</label>
               <input
                 type="text"
                 value={grade}

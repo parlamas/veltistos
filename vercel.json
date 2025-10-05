@@ -1,0 +1,6 @@
+{
+  "functions": {
+    "api/**/*": { "regions": ["sfo1"] },
+    "app/**/*": { "regions": ["sfo1"] }
+  }
+}

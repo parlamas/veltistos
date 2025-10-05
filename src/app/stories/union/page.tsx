@@ -8,7 +8,86 @@ export const runtime = 'nodejs';
 import LangShow from "@/components/LangShow";
 import DualTTSBar from "@/components/DualTTSBar";
 import ShareBar from "@/components/ShareBar";
+
+
+
+
+
+
+
+import React, { ReactNode, isValidElement } from "react";
 import ReadMore from "@/components/ReadMore";
+
+function AutoLangGroups({ children }: { children: ReactNode }) {
+  const nodes = React.Children.toArray(children).filter(isValidElement);
+
+  const split = (code: "el" | "en") => {
+    const arr = nodes.filter(
+      (n) => n.props?.lang === code || n.props?.["data-lang"] === code
+    );
+    const head = arr.slice(0, 2); // show first 2 before “Read more…”
+    const tail = arr.slice(2);
+    return { head, tail };
+    };
+
+  const GR = split("el");
+  const EN = split("en");
+
+  return (
+    <>
+      <div lang="el">
+        {GR.head}
+        {GR.tail.length > 0 && (
+          <ReadMore
+            moreLabel="Περισσότερα… / Read more…"
+            lessLabel="Λιγότερα / Read less"
+            toggleClassName="no-underline hover:no-underline"
+          >
+            {GR.tail}
+          </ReadMore>
+        )}
+      </div>
+
+      <div lang="en">
+        {EN.head}
+        {EN.tail.length > 0 && (
+          <ReadMore
+            moreLabel="Read more…"
+            lessLabel="Read less"
+            toggleClassName="no-underline hover:no-underline"
+          >
+            {EN.tail}
+          </ReadMore>
+        )}
+      </div>
+    </>
+  );
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 export default function Page() {
@@ -20,7 +99,6 @@ export default function Page() {
   return (
     <article
       id="story-content"
-      lang="el"
       className="prose prose-zinc max-w-none text-zinc-900"
     >
       <header className="mb-4 flex items-start justify-between gap-3">
@@ -37,9 +115,10 @@ export default function Page() {
 
       {/* Two speakers at the top (read hidden EL/EN blocks) */}
 <DualTTSBar
-  targetEl="#story-content [data-tts-el]"
-  targetEn="#story-content [data-tts-en]"
+  grSelector='#story-content [lang="el"]'
+  enSelector='#story-content [lang="en"]'
 />
+
 
 
       {/* (Optional) image block — keep/remove as you wish
@@ -58,7 +137,11 @@ export default function Page() {
       </figure>
       */}
 
-      <LangShow>
+      
+        <LangShow>
+        <AutoLangGroups>
+
+
         <p lang="el">
           Η βρετανική προσφορά τού 1915 για παραχώρηση τής Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε)
         </p>
@@ -685,7 +768,10 @@ export default function Page() {
           erase peculiarities but complete the continuity of Hellenism—<strong>a natural continuity</strong>.
         </p>
       
+  </AutoLangGroups>
+
       </LangShow>
+
 
       {/* Client-only controls */}
       <ShareBar href={href} title={shareTitle} />

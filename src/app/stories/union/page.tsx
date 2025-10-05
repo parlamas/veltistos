@@ -50,26 +50,30 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
       <div lang="el">
         {GR.head}
         {GR.tail.length > 0 && (
-          <ReadMore
-            moreLabel="Περισσότερα… / Read more…"
-            lessLabel="Λιγότερα / Read less"
-            toggleClassName="no-underline hover:no-underline"
-          >
-            {GR.tail}
-          </ReadMore>
+          <div className="not-prose">
+  <ReadMore
+    moreLabel="Περισσότερα… / Read more…"
+    lessLabel="Λιγότερα / Read less"
+  >
+    {GR.tail}
+  </ReadMore>
+</div>
         )}
       </div>
 
       <div lang="en">
         {EN.head}
         {EN.tail.length > 0 && (
-          <ReadMore
-            moreLabel="Read more…"
-            lessLabel="Read less"
-            toggleClassName="no-underline hover:no-underline"
-          >
-            {EN.tail}
-          </ReadMore>
+          <div className="not-prose">
+  <div className="not-prose">
+  <ReadMore
+    moreLabel="Read more…"
+    lessLabel="Read less"
+  >
+    {EN.tail}
+  </ReadMore>
+</div>
+
         )}
       </div>
     </>

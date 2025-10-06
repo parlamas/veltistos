@@ -46,7 +46,7 @@ export const homeSlots: HomeSlots = {
     },
     {
   href: "/stories/sidewalk",         // must match the folder name
-  title: "Τα παθετικά τού 'αγαθός'",    // you choose what headline shows
+  title: "Τα παραθετικά τού 'αγαθός'",    // you choose what headline shows
   img: "",             // must match the file in /public
   kicker: "Γραμματική",                  // short label/category
 },

@@ -90,24 +90,27 @@ function awaitVoices(synth: SpeechSynthesis | null, timeoutMs = 3000): Promise<S
 
   return new Promise((resolve) => {
     const start = Date.now();
-    const done = () => resolve(synth.getVoices());
+    let resolved = false;
+
+    const resolveOnce = (voices: SpeechSynthesisVoice[]) => {
+      if (resolved) return;
+      resolved = true;
+      clearInterval(timer);
+      synth.removeEventListener("voiceschanged", onChange);
+      resolve(voices);
+    };
+
+    const onChange = (_e: Event) => {
+      const v = synth.getVoices();
+      if (v.length) resolveOnce(v);
+    };
+
     const timer = setInterval(() => {
       const v = synth.getVoices();
-      if (v.length || Date.now() - start > timeoutMs) {
-        clearInterval(timer);
-        synth.removeEventListener?.("voiceschanged", onChange as any);
-        resolve(v);
-      }
+      if (v.length || Date.now() - start > timeoutMs) resolveOnce(v);
     }, 150);
-    const onChange = () => {
-      const v = synth.getVoices();
-      if (v.length) {
-        clearInterval(timer);
-        synth.removeEventListener?.("voiceschanged", onChange as any);
-        resolve(v);
-      }
-    };
-    synth.addEventListener?.("voiceschanged", onChange as any);
+
+    synth.addEventListener("voiceschanged", onChange);
   });
 }
 

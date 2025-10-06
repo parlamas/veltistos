@@ -7,35 +7,23 @@ import { Volume2, Pause, Square } from "lucide-react";
 type Status = "idle" | "speaking" | "paused" | "unavailable";
 type Segment = { text: string; lang: string; raw?: boolean };
 
-// --- Abbreviation expansion --------------------------------------------------
-
-// Expand common Greek abbreviations for clearer TTS output
+// ── Greek abbreviation expansion ──────────────────────────────────────────────
 function expandGreekAbbreviations(text: string): string {
-  // We’ll use unicode-aware boundaries to avoid hitting inside longer words
-  // Prefix: start or whitespace/punct; Suffix: end or whitespace/punct
   const P = String.raw`(^|[\s([«“"'\-])`;
   const S = String.raw`(?=$|[\s,.;:)\]»”"'!?\-])`;
-
   const rules: Array<[RegExp, string]> = [
-    // κλπ. / κ.λ.π. / κ.λπ / κτλ. / κ.τ.λ.
     [new RegExp(`${P}κ\\.?\\s*λ\\.?\\s*π\\.?${S}`, "giu"), "και τα λοιπά"],
     [new RegExp(`${P}κτλ\\.?${S}`, "giu"), "και τα λοιπά"],
     [new RegExp(`${P}κ\\.?\\s*τ\\.?\\s*λ\\.?${S}`, "giu"), "και τα λοιπά"],
-
-    // π.χ. → παραδείγματος χάριν
     [new RegExp(`${P}π\\.?\\s*χ\\.?${S}`, "giu"), "παραδείγματος χάριν"],
-
-    // δηλ. → δηλαδή
     [new RegExp(`${P}δηλ\\.?${S}`, "giu"), "δηλαδή"],
   ];
-
   let out = text;
   for (const [re, rep] of rules) out = out.replace(re, (_, pre = "") => (pre ? `${pre}${rep}` : rep));
   return out;
 }
 
-// --- Helpers ----------------------------------------------------------------
-
+// ── Helpers ───────────────────────────────────────────────────────────────────
 function normalizeLang(input?: string) {
   const l = (input || "el-GR").toLowerCase();
   if (l === "el") return "el-GR";
@@ -49,7 +37,7 @@ function sameLang(a: string, b: string) {
   const na = (a || "").toLowerCase();
   const nb = (b || "").toLowerCase();
   if (na === nb) return true;
-  return na.split("-")[0] === nb.split("-")[0]; // el == el-GR
+  return na.split("-")[0] === nb.split("-")[0];
 }
 
 function chunkSentences(text: string, maxLen = 400): string[] {
@@ -79,7 +67,6 @@ function chunkSentences(text: string, maxLen = 400): string[] {
 function pickVoice(lang: string, list: SpeechSynthesisVoice[]): SpeechSynthesisVoice | null {
   const lc = (s?: string) => (s || "").toLowerCase();
   const L = lc(lang);
-
   const exact = list.find(v => lc(v.lang) === L);
   if (exact) return exact;
 
@@ -103,28 +90,28 @@ function awaitVoices(synth: SpeechSynthesis | null, timeoutMs = 3000): Promise<S
 
   return new Promise((resolve) => {
     const start = Date.now();
-    const handler = () => {
+    const done = () => resolve(synth.getVoices());
+    const timer = setInterval(() => {
       const v = synth.getVoices();
       if (v.length || Date.now() - start > timeoutMs) {
-        synth.onvoiceschanged = null;
-        resolve(v);
-      }
-    };
-    synth.onvoiceschanged = handler;
-    const id = setInterval(() => {
-      const v = synth.getVoices();
-      if (v.length || Date.now() - start > timeoutMs) {
-        clearInterval(id);
-        synth.onvoiceschanged = null;
+        clearInterval(timer);
+        synth.removeEventListener?.("voiceschanged", onChange as any);
         resolve(v);
       }
     }, 150);
+    const onChange = () => {
+      const v = synth.getVoices();
+      if (v.length) {
+        clearInterval(timer);
+        synth.removeEventListener?.("voiceschanged", onChange as any);
+        resolve(v);
+      }
+    };
+    synth.addEventListener?.("voiceschanged", onChange as any);
   });
 }
 
-// Walk the DOM and collect text nodes with the nearest lang.
-// Skips anything inside [data-tts-skip].
-// If inside [data-tts-raw], we mark the segment to prevent expansion.
+// Collect text nodes with nearest lang; skip [data-tts-skip]; mark [data-tts-raw]
 function textNodesWithLang(root: HTMLElement, defaultLang = "el-GR"): Segment[] {
   const walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT);
   const rawSegments: Segment[] = [];
@@ -136,11 +123,9 @@ function textNodesWithLang(root: HTMLElement, defaultLang = "el-GR"): Segment[] 
     if (!text) continue;
 
     const parent = (node.parentElement || root) as HTMLElement;
-
     if (parent.closest("[data-tts-skip]")) continue;
 
     const noExpand = !!parent.closest("[data-tts-raw]");
-
     const elWithLang = parent.closest("[lang]") as HTMLElement | null;
     const lang =
       elWithLang?.getAttribute("lang") ||
@@ -151,7 +136,7 @@ function textNodesWithLang(root: HTMLElement, defaultLang = "el-GR"): Segment[] 
     rawSegments.push({ text, lang, raw: noExpand });
   }
 
-  // Merge adjacent same-lang segments (but don't merge across raw/non-raw)
+  // Merge adjacent same-lang segments (but not across raw/non-raw)
   const merged: Segment[] = [];
   for (const seg of rawSegments) {
     const last = merged[merged.length - 1];
@@ -164,8 +149,7 @@ function textNodesWithLang(root: HTMLElement, defaultLang = "el-GR"): Segment[] 
   return merged;
 }
 
-// --- Component ---------------------------------------------------------------
-
+// ── Component ─────────────────────────────────────────────────────────────────
 export default function TTSButton({
   targetSelector,
   label = "Ακρόαση",
@@ -187,7 +171,9 @@ export default function TTSButton({
       if (!mounted) return;
       setVoices(v);
     })();
-    return () => { mounted = false; };
+    return () => {
+      mounted = false;
+    };
   }, [synth]);
 
   async function play() {
@@ -200,10 +186,7 @@ export default function TTSButton({
     }
 
     const v = voices.length ? voices : await awaitVoices(synth, 3000);
-    if (!v.length) {
-      alert("Δεν φορτώθηκαν φωνές από τον περιηγητή. Δοκίμασε Microsoft Edge ή κάνε επανεκκίνηση του browser.");
-      return;
-    }
+    const noVoices = !v.length; // ← keep going anyway (some browsers populate after first speak)
 
     const root = document.querySelector(targetSelector) as HTMLElement | null;
     if (!root) return;
@@ -218,31 +201,35 @@ export default function TTSButton({
       const lang = normalizeLang(seg.lang);
       const voice = pickVoice(lang, v);
 
-      // Expand abbreviations for Greek segments unless marked raw
-      const prepared = lang.toLowerCase().startsWith("el") && !seg.raw
-        ? expandGreekAbbreviations(seg.text)
-        : seg.text;
+      const prepared =
+        lang.toLowerCase().startsWith("el") && !seg.raw
+          ? expandGreekAbbreviations(seg.text)
+          : seg.text;
 
       const chunks = chunkSentences(prepared, 400);
       for (const chunk of chunks) {
         const u = new SpeechSynthesisUtterance(chunk);
-        u.lang = voice?.lang || lang;   // always set a language
-        if (voice) u.voice = voice;     // prefer explicit voice when available
+        u.lang = voice?.lang || lang; // always set language
+        if (voice) u.voice = voice;   // use explicit voice when available
         u.rate = rate;
         u.onerror = () => {};
         queue.push(u);
       }
     }
 
-    // Warn once if no Greek voice is visible (we still try to speak)
-    const hasGreek = v.some(vv => (vv.lang || "").toLowerCase().startsWith("el") || /greek|ελλην/i.test(vv.name));
-    if (!hasGreek && !sessionStorage.getItem("noElVoiceWarned")) {
+    // Warn once if no Greek voice (still speak with default)
+    const hasGreek = v.some(vv =>
+      (vv.lang || "").toLowerCase().startsWith("el") || /greek|ελλην/i.test(vv.name)
+    );
+    if ((!hasGreek || noVoices) && !sessionStorage.getItem("noElVoiceWarned")) {
       sessionStorage.setItem("noElVoiceWarned", "1");
       const list = v.map(vv => `${vv.name} [${vv.lang}]`).join("\n");
-      alert("Δεν βρέθηκε ελληνική φωνή από τον περιηγητή.\n" +
-            "• Σε Windows, προτίμησε Microsoft Edge.\n" +
-            "• Βεβαιώσου ότι είναι εγκατεστημένη η φωνή el-GR και κάνε επανεκκίνηση του browser.\n\n" +
-            "Φωνές που βλέπει ο περιηγητής:\n" + list);
+      alert(
+        "Δεν βρέθηκε διαθέσιμη ελληνική φωνή από τον περιηγητή.\n" +
+          "• Σε Windows, προτίμησε Microsoft Edge ή εγκατέστησε φωνή el-GR.\n" +
+          "• Κάνε επανεκκίνηση του browser αν μόλις την εγκατέστησες.\n\n" +
+          (list ? "Φωνές που βλέπει ο περιηγητής:\n" + list : "Καμία φωνή δεν αναφέρθηκε (θα γίνει προσπάθεια με προεπιλογή).")
+      );
     }
 
     // Speak sequentially

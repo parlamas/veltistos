@@ -4,7 +4,7 @@ import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/parts-of-speech";
-  const title = "Τα 10 Μέρη του Λόγου";
+  const title = "Τά 10 Μέρη τού Λόγου";
 
   return (
     <article
@@ -42,7 +42,7 @@ export default function Page() {
 
       <p>
         <span lang="el-GR">
-          Τά μέρη του λόγου είναι 10.<br />
+          Τά μέρη τού λόγου είναι 10.<br />
           Οι κατάλληλες ερωτήσεις μάς οδηγούν στο σωστό μέρος τού λόγου.
         </span>
       </p>

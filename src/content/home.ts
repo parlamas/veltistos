@@ -18,9 +18,12 @@ export type LeadItem = {
 export type RightItem = {
   href: string;
   title: string;
-  img?: string;     // optional if not always needed
-  kicker?: string;  // optional
+  img?: string;
+  kicker?: string;
+  width?: number;   // ← add
+  height?: number;  // ← add
 };
+
 
 // Combined slots type
 export type HomeSlots = {
@@ -34,7 +37,7 @@ export const homeSlots: HomeSlots = {
   left: [
     
     {
-  href: "/stories/sidewalk",         // must match the folder name
+  href: "/stories/parathetika",         // must match the folder name
   title: "Τα παραθετικά τού 'αγαθός'",    // you choose what headline shows
   img: "",             // must match the file in /public
   kicker: "Γραμματική",                  // short label/category
@@ -56,14 +59,18 @@ export const homeSlots: HomeSlots = {
   ],
 
 
-  right: [
+// src/content/home.ts  (only the right item shown)
+right: [
+  {
+    href: "/stories/parts-of-speech",
+    title: "Τά μέρη τού λόγου.",
+    img: "/parts-of-speech.png",
+    width: 85,          // ← add
+    height: 167,        // ← add
+    kicker: "Γραμματική",
+  },
+],
 
-    {
-    href: "/stories/parts-of-speech",         // must match the folder name
-  title: "Τα μέρη του λόγου.",    // you choose what headline shows
-  img: "/parts-of-speech.png",             // must match the file in /public
-  kicker: "Γραμματική",                  // short label/category
-},
     
 
   ],

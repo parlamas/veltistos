@@ -36,7 +36,7 @@ export const homeSlots: HomeSlots = {
   left: [
     {
       href: "/stories/parathetika", // must match the folder name
-      title: "Τά παραθετικά τού 'αγαθός'",
+      title: 'Τά παραθετικά τού <span className="wow">αγαθός</span>',
       img: "", // OK to leave blank if your component handles it
       kicker: "Γραμματική",
     },

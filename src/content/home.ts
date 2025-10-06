@@ -18,12 +18,11 @@ export type LeadItem = {
 export type RightItem = {
   href: string;
   title: string;
-  img?: string;
-  kicker?: string;
-  width?: number;   // ← add
-  height?: number;  // ← add
+  img?: string;     // optional if not always needed
+  kicker?: string;  // optional
+  width?: number;   // optional display hint
+  height?: number;  // optional display hint
 };
-
 
 // Combined slots type
 export type HomeSlots = {
@@ -35,44 +34,32 @@ export type HomeSlots = {
 // Example content
 export const homeSlots: HomeSlots = {
   left: [
-    
     {
-  href: "/stories/parathetika",         // must match the folder name
-  title: "Τα παραθετικά τού 'αγαθός'",    // you choose what headline shows
-  img: "",             // must match the file in /public
-  kicker: "Γραμματική",                  // short label/category
-},
-
+      href: "/stories/parathetika", // must match the folder name
+      title: "Τά παραθετικά τού 'αγαθός'",
+      img: "", // OK to leave blank if your component handles it
+      kicker: "Γραμματική",
+    },
   ],
 
-
   middle: [
-
     {
       href: "/stories/union",
-      title: "Ηρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br>It is high time Greece and Cyprus united!",
+      title:
+        "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br>It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
       excerpt: "Τό 1ο άρθρο.",
     },
-    
-
   ],
 
-
-// src/content/home.ts  (only the right item shown)
-right: [
-  {
-    href: "/stories/parts-of-speech",
-    title: "Τά μέρη τού λόγου.",
-    img: "/parts-of-speech.png",
-    width: 85,          // ← add
-    height: 167,        // ← add
-    kicker: "Γραμματική",
-  },
-],
-
-    
-
+  right: [
+    {
+      href: "/stories/parts-of-speech",
+      title: "Τά μέρη τού λόγου.",
+      img: "/parts-of-speech.png",
+      width: 85,   // ← your requested size
+      height: 167, // ← your requested size
+      kicker: "Γραμματική",
+    },
   ],
 };
-

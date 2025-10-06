@@ -1,3 +1,5 @@
+// src/components/LeftStory.tsx
+
 import Link from "next/link";
 import Image from "next/image";
 import type { LeftItem } from "@/content/home";
@@ -11,7 +13,7 @@ export default function LeftStory({ item }: { item: LeftItem }) {
         {img ? (
           <Image
             src={img}
-            alt={title}
+            alt={typeof title === "string" ? title.replace(/<[^>]+>/g, "") : ""}
             width={96}
             height={96}
             className="shrink-0 rounded object-cover"
@@ -24,9 +26,12 @@ export default function LeftStory({ item }: { item: LeftItem }) {
               {kicker}
             </div>
           )}
-          <h3 className="font-semibold leading-snug group-hover:underline">
-            {title}
-          </h3>
+
+          {/* Render HTML in title (trusted from our own content file) */}
+          <h3
+            className="font-semibold leading-snug group-hover:underline"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
         </div>
       </article>
     </Link>

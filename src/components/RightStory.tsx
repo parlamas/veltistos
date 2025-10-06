@@ -1,4 +1,3 @@
-// src/components/RightStory.tsx
 import Image from "next/image";
 import Link from "next/link";
 import type { RightItem } from "@/content/home";
@@ -6,7 +5,6 @@ import type { RightItem } from "@/content/home";
 export default function RightStory({ item }: { item: RightItem }) {
   const { href, title, img, kicker, width, height } = item;
 
-  // Fallbacks if not provided
   const w = width ?? 85;
   const h = height ?? 167;
 
@@ -19,10 +17,8 @@ export default function RightStory({ item }: { item: RightItem }) {
             alt={title}
             width={w}
             height={h}
-            // Prevent flex shrinking and force exact pixel box
             className="shrink-0 rounded object-contain"
             style={{ width: `${w}px`, height: `${h}px` }}
-            priority={false}
           />
         )}
 
@@ -40,4 +36,3 @@ export default function RightStory({ item }: { item: RightItem }) {
     </Link>
   );
 }
-

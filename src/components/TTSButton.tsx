@@ -83,7 +83,10 @@ function pickVoice(lang: string, list: SpeechSynthesisVoice[]): SpeechSynthesisV
   return null;
 }
 
-function awaitVoices(synth: SpeechSynthesis | null, timeoutMs = 3000): Promise<SpeechSynthesisVoice[]> {
+function awaitVoices(
+  synth: SpeechSynthesis | null,
+  timeoutMs = 3000
+): Promise<SpeechSynthesisVoice[]> {
   if (!synth) return Promise.resolve([]);
   const existing = synth.getVoices();
   if (existing.length) return Promise.resolve(existing);
@@ -100,7 +103,7 @@ function awaitVoices(synth: SpeechSynthesis | null, timeoutMs = 3000): Promise<S
       resolve(voices);
     };
 
-    const onChange = (_e: Event) => {
+    const onChange = () => {
       const v = synth.getVoices();
       if (v.length) resolveOnce(v);
     };
@@ -113,6 +116,7 @@ function awaitVoices(synth: SpeechSynthesis | null, timeoutMs = 3000): Promise<S
     synth.addEventListener("voiceschanged", onChange);
   });
 }
+
 
 // Collect text nodes with nearest lang; skip [data-tts-skip]; mark [data-tts-raw]
 function textNodesWithLang(root: HTMLElement, defaultLang = "el-GR"): Segment[] {

@@ -1,44 +1,34 @@
-// src/components/LeadCard.tsx
 import Link from "next/link";
 import Image from "next/image";
+import type { LeadItem } from "@/content/home";
 
-export default function LeadCard({
-  href,
-  title,
-  img,
-  excerpt,
-}: {
-  href: string;
-  title: string;
-  img?: string;
-  excerpt?: string;
-}) {
-  // Strip any HTML (e.g., <br>) for aria-labels
-  const plainTitle = title.replace(/<[^>]+>/g, " ").replace(/\s+/g, " ").trim();
+export default function LeadCard({ item }: { item: LeadItem }) {
+  const { href, title, img, excerpt } = item;
 
   return (
-    <article className="rounded-xl overflow-hidden border border-zinc-200">
-      {img && (
-        <Link href={href} aria-label={plainTitle}>
+    <Link href={href} className="block group">
+      <article className="overflow-hidden rounded-lg border">
+        {img && (
           <Image
             src={img}
             alt=""
-            width={960}
-            height={540}
+            width={1200}
+            height={675}
             className="w-full h-auto"
-            priority
+            priority={false}
           />
-        </Link>
-      )}
-      <div className="p-4">
-        <h3 className="font-serif font-semibold leading-snug text-base md:text-lg lg:text-xl mt-0">
-  <Link href={href} className="hover:text-red-600">
-    <span dangerouslySetInnerHTML={{ __html: title }} />
-  </Link>
-</h3>
-        {excerpt && <p className="mt-2 text-sm text-zinc-600">{excerpt}</p>}
-      </div>
-    </article>
+        )}
+        <div className="p-3">
+          <h2
+            className="font-serif text-xl font-bold leading-tight"
+            // title can include <br/>, so render as HTML:
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
+          {excerpt && (
+            <p className="mt-1 text-sm text-zinc-600">{excerpt}</p>
+          )}
+        </div>
+      </article>
+    </Link>
   );
 }
-

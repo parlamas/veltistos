@@ -59,10 +59,10 @@ export const homeSlots: HomeSlots = {
   right: [
 
     {
-    href: "/stories/syntagma",         // must match the folder name
-  title: "Τό Σύνταγμα τα παλαιά χρόνια...",    // you choose what headline shows
-  img: "/syntagma.jpg",             // must match the file in /public
-  kicker: "Πολιτική",                  // short label/category
+    href: "/stories/parts-of-speech",         // must match the folder name
+  title: "Τα μέρη του λόγου.",    // you choose what headline shows
+  img: "/parts-of-speech.png",             // must match the file in /public
+  kicker: "Γραμματική",                  // short label/category
 },
     
 

@@ -1,4 +1,4 @@
-﻿// src/app/stories/sidewalk/page.tsx
+// src/app/stories/parathetika/page.tsx
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
@@ -20,10 +20,9 @@ export default function Page() {
       <header className="mb-4 flex items-start justify-between gap-3">
         <div>
           <h1
-  className="font-serif text-2xl font-bold leading-tight"
-  dangerouslySetInnerHTML={{ __html: title }}
-/>
-
+            className="font-serif text-2xl font-bold leading-tight"
+            dangerouslySetInnerHTML={{ __html: title }}
+          />
           <p className="text-sm text-zinc-500">05.10.25 • Γραμματική</p>
         </div>
 
@@ -31,33 +30,26 @@ export default function Page() {
         <TTSButton targetSelector="#story-content" label="" />
       </header>
 
-{/*
+      {/* 
       <figure className="my-4">
         <Image
           src="/sidewalk.jpeg"
-          alt="Πεζοδρόμιο στο κέντρο της Αθήνας"
+          alt="Τα παραθετικά τού 'αγαθός'"
           width={1200}
           height={675}
           className="w-full h-auto rounded-lg"
           priority
         />
         <figcaption className="mt-2 text-xs text-zinc-500">
-          Λεζάντα φωτογραφίας (προαιρετική).
+          λεζάντα
         </figcaption>
       </figure>
-*/}
+      */}
 
       <p>
         θετικός βαθμός: ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
         συγκριτικός βαθμός: ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
         υπερθετικός βαθμός: ὁ βέλτιστος • ἡ βελτίστη • τό βέλτιστον
-
-
-      {/*
-
-        <span lang="zh-CN">今天是雨天。</span>{" "}
-        <span lang="es-ES">Me voy a la escuela.</span>
-        */}
       </p>
 
       <div data-tts-skip className="not-prose mt-4">
@@ -66,6 +58,3 @@ export default function Page() {
     </article>
   );
 }
-
-
-

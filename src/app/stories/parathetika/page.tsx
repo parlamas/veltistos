@@ -9,7 +9,7 @@ import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
   const href = "/stories/parathetika";
-  const title = "Τα παραθετικά τού <b>ἀγαθός</b>";
+  const title = "Τα παραθετικά τού 'ἀγαθός'";
 
   return (
     <article

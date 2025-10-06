@@ -1,7 +1,7 @@
 // src/components/LeftStory.tsx
 import Link from "next/link";
 import Image from "next/image";
-import ShareBar from "@/components/ShareBar";
+//import ShareBar from "@/components/ShareBar";
 
 
 export default function LeftStory({

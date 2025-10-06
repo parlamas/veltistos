@@ -1,10 +1,4 @@
 // src/app/stories/parathetika/page.tsx
-"use client";
-
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
-export const runtime = 'nodejs';
 /*import Image from "next/image";*/
 import ShareBar from "@/components/ShareBar";
 import TTSButton from "@/components/TTSButton";
@@ -29,7 +23,7 @@ export default function Page() {
         </div>
 
         {/* TTS (browser voices only) */}
-        <TTSButton targetSelector="#story-content" label="" />
+        <TTSButton targetSelector="#story-content" label="Ακρόαση" />
       </header>
 
       {/* 

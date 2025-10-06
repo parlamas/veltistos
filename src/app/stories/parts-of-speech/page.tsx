@@ -1,14 +1,9 @@
 ﻿// src/app/stories/parts-of-speech/page.tsx
-export const dynamic = 'force-dynamic';
-export const revalidate = 0;
-export const fetchCache = 'force-no-store';
-export const runtime = 'nodejs';
-import Image from "next/image";
 import ShareBar from "@/components/ShareBar";
 import TTSButton from "@/components/TTSButton";
 
 export default function Page() {
-  const href = "/stories/syntagma";
+  const href = "/stories/parts-of-speech";
   const title = "Τα 10 Μέρη του Λόγου";
 
   return (
@@ -25,9 +20,11 @@ export default function Page() {
           <p className="text-sm text-zinc-500">05.10.25 • Γραμματική</p>
         </div>
 
-        
+        {/* TTS (browser voices only) */}
+        <TTSButton targetSelector="#story-content" label="Ακρόαση" />
       </header>
-{/*
+
+      {/* 
       <figure className="my-4">
         <Image
           src="/parts-of-speech.png"
@@ -41,14 +38,15 @@ export default function Page() {
           Λεζάντα φωτογραφίας (προαιρετική).
         </figcaption>
       </figure>
-*/}
+      */}
+
       <p>
-        <span lang="el-GR">Τά μέρη του λόγου είναι 10.<br />
-        Οι κατάλληλες ερωτήσεις μάς οδηγούν στο σωστό μέρος τού λόγου.
+        <span lang="el-GR">
+          Τά μέρη του λόγου είναι 10.<br />
+          Οι κατάλληλες ερωτήσεις μάς οδηγούν στο σωστό μέρος τού λόγου.
         </span>
       </p>
-{/* TTS (browser voices only) */}
-        <TTSButton targetSelector="#story-content" label="" />
+
       <div data-tts-skip className="not-prose mt-4">
         <ShareBar href={href} title={title} />
       </div>

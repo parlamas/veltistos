@@ -7,48 +7,32 @@ import { homeSlots } from "@/content/home";
 
 export default function HomePage() {
   return (
-    <SiteGrid
-      left={
-        <aside className="space-y-2 lg:sticky lg:top-16">
-          {homeSlots.left.map((s) => (
-            <LeftStory
-              key={s.href}
-              href={s.href}
-              title={s.title}
-              img={s.img}
-              kicker={s.kicker}
-            />
-          ))}
-        </aside>
-      }
-      right={
-        <aside className="space-y-2 lg:sticky lg:top-16">
-          {homeSlots.right.map((s) => (
-            <RightStory
-              key={s.href}
-              href={s.href}
-              title={s.title}
-              img={s.img}
-              kicker={s.kicker}
-            />
-          ))}
-        </aside>
-      }
-    >
-      {/* Middle column (lead stories) */}
-      <section className="space-y-3">
-        {homeSlots.middle.map((s) => (
-          <LeadCard
-            key={s.href}
-            href={s.href}
-            title={s.title}
-            img={s.img}
-            excerpt={s.excerpt}
-          />
-        ))}
-      </section>
-    </SiteGrid>
+    <main className="min-h-dvh bg-white">
+      <div className="mx-auto max-w-6xl px-4 py-6">
+        <SiteGrid
+          left={
+            <aside className="space-y-2 lg:sticky lg:top-16">
+              {homeSlots.left.map((s) => (
+                <LeftStory key={s.href} item={s} />
+              ))}
+            </aside>
+          }
+          right={
+            <aside className="space-y-2 lg:sticky lg:top-16">
+              {homeSlots.right.map((s) => (
+                <RightStory key={s.href} item={s} />
+              ))}
+            </aside>
+          }
+        >
+          {/* Middle column (lead stories) */}
+          <section className="space-y-3">
+            {homeSlots.middle.map((s) => (
+              <LeadCard key={s.href} item={s} />
+            ))}
+          </section>
+        </SiteGrid>
+      </div>
+    </main>
   );
 }
-
-

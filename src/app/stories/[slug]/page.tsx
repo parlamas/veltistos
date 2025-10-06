@@ -16,7 +16,7 @@ export default function StoryPage({ params }: { params: { slug: string } }) {
   return (
     <article className="prose prose-zinc max-w-none">
       <h1 className="font-serif text-3xl font-bold">Άρθρο: {slug}</h1>
-      <p>Περιεχόμενο για το “{slug}”.</p>
+      <p>Περιεχόμενο για τό “{slug}”.</p>
     </article>
   );
 }

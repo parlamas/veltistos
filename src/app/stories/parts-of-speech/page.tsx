@@ -1,4 +1,4 @@
-﻿// src/app/stories/syntagma/page.tsx
+﻿// src/app/stories/parts-of-speech/page.tsx
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';

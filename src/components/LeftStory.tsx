@@ -1,7 +1,7 @@
 // src/components/LeftStory.tsx
 import Link from "next/link";
 import Image from "next/image";
-//import ShareBar from "@/components/ShareBar";
+
 
 
 export default function LeftStory({
@@ -35,9 +35,7 @@ export default function LeftStory({
   <h4 className="text-sm font-semibold leading-snug">
     <Link href={href} className="hover:text-red-600">{title}</Link>
   </h4>
-
-  {/* Share buttons */}
-  <ShareBar href={href} title={title} />
+  
 </div>
 
     </article>

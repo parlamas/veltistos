@@ -27,11 +27,11 @@ export default function Page() {
 
         
       </header>
-
+{/*
       <figure className="my-4">
         <Image
           src="/parts-of-speech.png"
-          alt="Τηα 10 Μέρη τού Λόγου"
+          alt="Τά 10 Μέρη τού Λόγου"
           width={1200}
           height={675}
           className="w-full h-auto rounded-lg"
@@ -41,10 +41,10 @@ export default function Page() {
           Λεζάντα φωτογραφίας (προαιρετική).
         </figcaption>
       </figure>
-
+*/}
       <p>
-        <span lang="el-GR">Τα μέρη του λόγου είναι 10.<br />
-        Οι κατάλληλες ερωτήσεις μας οδηγούν στο σωστό μέρος του λόγου.
+        <span lang="el-GR">Τά μέρη του λόγου είναι 10.<br />
+        Οι κατάλληλες ερωτήσεις μάς οδηγούν στο σωστό μέρος τού λόγου.
         </span>
       </p>
 {/* TTS (browser voices only) */}

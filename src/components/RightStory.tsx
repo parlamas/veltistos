@@ -1,36 +1,43 @@
 // src/components/RightStory.tsx
 import Image from "next/image";
+import Link from "next/link";
+import type { RightItem } from "@/content/home";
 
-type RightStoryProps = {
-  href: string;
-  title: string;
-  img?: string;
-  kicker?: string;
-};
+export default function RightStory({ item }: { item: RightItem }) {
+  const { href, title, img, kicker, width, height } = item;
 
-export default function RightStory({ href, title, img, kicker }: RightStoryProps) {
+  // Fallbacks if not provided
+  const w = width ?? 85;
+  const h = height ?? 167;
+
   return (
-    <a
-      href={href}
-      className="block border-b pb-2 hover:bg-gray-50 transition-colors"
-    >
-      {img && (
-        <div className="mb-2">
+    <Link href={href} className="block group">
+      <div className="flex items-start gap-3">
+        {img && (
           <Image
             src={img}
             alt={title}
-            width={300}
-            height={200}
-            className="w-full h-auto object-cover rounded"
+            width={w}
+            height={h}
+            // Prevent flex shrinking and force exact pixel box
+            className="shrink-0 rounded object-contain"
+            style={{ width: `${w}px`, height: `${h}px` }}
+            priority={false}
           />
+        )}
+
+        <div className="min-w-0">
+          {kicker && (
+            <div className="text-xs uppercase tracking-wide text-zinc-500">
+              {kicker}
+            </div>
+          )}
+          <h3 className="font-semibold leading-snug group-hover:underline">
+            {title}
+          </h3>
         </div>
-      )}
-      {kicker && (
-        <div className="text-xs uppercase tracking-wide text-gray-500 mb-1">
-          {kicker}
-        </div>
-      )}
-      <h3 className="font-medium text-sm">{title}</h3>
-    </a>
+      </div>
+    </Link>
   );
 }
+

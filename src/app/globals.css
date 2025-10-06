@@ -40,3 +40,14 @@ main, article, .prose {
   .mobile-drawer .lvl2 { font-size: 10px !important; }
 }
 
+
+.r {color:red; font-weight:bold;}
+.b {color:blue; font-weight:bold;}
+.br {color: brown; font-weight: bold;}
+.ub {border-bottom: 2px solid blue; padding-bottom: 1px;}
+.ul {border-bottom: 2px solid lime; padding-bottom: 1px;}
+.ur {border-bottom: 2px solid red; padding-bottom: 1px;}
+.wow {background-color:beige; color:brown; font-weight:bold; padding:2px; border-radius:5px;}
+.regress {background-color:#27f59f; color:black; font-weight:bold; padding:2px; border-radius:5px;}
+.black {background-color:#b0e0b6; color:black; font-weight:bold; padding:2px; border-radius:5px;}
+

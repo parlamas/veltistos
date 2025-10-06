@@ -3,7 +3,8 @@ export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
 export const runtime = 'nodejs';
-import Image from "next/image";
+import "./globals.css";
+/*import Image from "next/image";*/
 import ShareBar from "@/components/ShareBar";
 import TTSButton from "@/components/TTSButton";
 
@@ -47,7 +48,7 @@ export default function Page() {
       */}
 
       <p>
-        θετικός βαθμός: ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
+        <span className="wow">θετικός βαθμός:</span> ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
         συγκριτικός βαθμός: ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
         υπερθετικός βαθμός: ὁ βέλτιστος • ἡ βελτίστη • τό βέλτιστον
       </p>

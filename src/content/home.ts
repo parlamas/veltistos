@@ -57,8 +57,8 @@ export const homeSlots: HomeSlots = {
       href: "/stories/parts-of-speech",
       title: "Τά μέρη τού λόγου.",
       img: "/parts-of-speech.png",
-      width: 43,   // ← your requested size
-      height: 84, // ← your requested size
+      width: 85,   // ← your requested size
+      height: 167, // ← your requested size
       kicker: "Γραμματική",
     },
   ],

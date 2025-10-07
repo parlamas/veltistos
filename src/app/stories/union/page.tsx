@@ -150,7 +150,7 @@ export default function Page() {
 
         <p lang="el">
           Η βρετανική προσφορά τού 1915 για παραχώρηση τής Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε).
-          <div data-search-only className="hidden">αριθμός 1 • number 1</div>
+          <div data-search-only className="hidden">a1</div>
         </p>
 
         <p lang="el">

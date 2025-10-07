@@ -43,7 +43,7 @@ export const homeSlots: HomeSlots = {
       title: "Τά παραθετικά τού <span class='wow'>ἀγαθός</span>",
       img: "", // OK to leave blank if your component handles it
       kicker: "Γραμματική",
-      number: "αριθμός 2 • number 2",
+      number: "a2 α2",
     },
   ],
 
@@ -54,7 +54,7 @@ export const homeSlots: HomeSlots = {
         "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br>It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
       excerpt: "Οι διαδικασίες αρχίζουν αμέσως...",
-      number: "αριθμός 1 • number 1",
+      number: "a1 α1",
     },
   ],
 
@@ -66,7 +66,7 @@ export const homeSlots: HomeSlots = {
       width: 85,   // ← your requested size
       height: 167, // ← your requested size
       kicker: "Γραμματική",
-      number: "αριθμός 3 • number 3",
+      number: "a3 α3",
     },
   ],
 };

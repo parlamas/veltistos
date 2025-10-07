@@ -48,21 +48,28 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
       
 
 <div lang="el" data-tts-el>
-  {GR.head}
   {GR.tail.length > 0 && (
+  <>
     <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
       {GR.tail}
     </ReadMore>
-  )}
+    {/* search-only duplicate: in DOM, not visible */}
+    <div data-search-only className="hidden">{GR.tail}</div>
+  </>
+)}
 </div>
 
 <div lang="en" data-tts-en>
   {EN.head}
   {EN.tail.length > 0 && (
+  <>
     <ReadMore moreLabel="Read more…" lessLabel="Read less">
       {EN.tail}
     </ReadMore>
-  )}
+    {/* search-only duplicate: in DOM, not visible */}
+    <div data-search-only className="hidden">{EN.tail}</div>
+  </>
+)}
 </div>
 
 

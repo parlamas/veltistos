@@ -188,7 +188,7 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
       byUrl.set(key, s);
     }
   }
-  let index = Array.from(byUrl.values());
+  const index = Array.from(byUrl.values());
 
   // 4) Fetch full HTML for each item (to include "Read more" text in search)
   //    Limit to reasonable concurrency by awaiting sequentially (small site).

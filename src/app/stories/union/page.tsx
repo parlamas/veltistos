@@ -75,7 +75,7 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
                   ? React.cloneElement(node as ReactElement, {
                       key: `dup-en-${i}`,
                       "data-search-dup": "1",
-                    } as any)
+                    } as Record<string, unknown>)
                   : node
               )}
             </div>

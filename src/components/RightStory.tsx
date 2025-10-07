@@ -1,9 +1,11 @@
+// src/components/RightStory.tsx
+
 import Image from "next/image";
 import Link from "next/link";
 import type { RightItem } from "@/content/home";
 
 export default function RightStory({ item }: { item: RightItem }) {
-  const { href, title, img, kicker, width, height } = item;
+  const { href, title, img, kicker, width, height, number } = item;
 
   const w = width ?? 85;
   const h = height ?? 167;
@@ -28,6 +30,13 @@ export default function RightStory({ item }: { item: RightItem }) {
               {kicker}
             </div>
           )}
+
+          {number && (
+            <div className="text-xs text-zinc-600">
+              {number}
+            </div>
+          )}
+
           <h3 className="font-semibold leading-snug group-hover:underline">
             {title}
           </h3>
@@ -36,3 +45,5 @@ export default function RightStory({ item }: { item: RightItem }) {
     </Link>
   );
 }
+
+

@@ -22,11 +22,13 @@ export default function LeadCard({ item }: { item: LeadItem }) {
         )}
         <div className="p-3">
           <h2
-            className="font-serif text-xl font-bold leading-tight"
-            // title can include <br/>, so render as HTML:
-            dangerouslySetInnerHTML={{ __html: title }}
-            {number && <div className="mt-1 text-xs text-zinc-600">{number}</div>}
-          />
+  className="font-serif text-xl font-bold leading-tight"
+  // title can include <br/>, so render as HTML:
+  dangerouslySetInnerHTML={{ __html: title }}
+/>
+{number && (
+  <div className="mt-1 text-xs text-zinc-600">{number}</div>
+)}
           {excerpt && (
             <p className="mt-1 text-sm text-zinc-600">{excerpt}</p>
           )}

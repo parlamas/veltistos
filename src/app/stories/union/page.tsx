@@ -10,6 +10,7 @@ import DualTTSBar from "@/components/DualTTSBar";
 import ShareBar from "@/components/ShareBar";
 import ReadMore from "@/components/ReadMore";
 
+
 /**
  * AutoLangGroups
  * - Shows the first two EL and EN nodes.
@@ -52,7 +53,7 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
                   ? React.cloneElement(node as ReactElement, {
                       key: `dup-gr-${i}`,
                       "data-search-dup": "1",
-                    } as any)
+                    } as Record<string, unknown>)
                   : node
               )}
             </div>

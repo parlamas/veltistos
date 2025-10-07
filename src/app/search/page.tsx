@@ -1,9 +1,9 @@
 // src/app/search/page.tsx
 import Link from "next/link";
 import type { ReactNode } from "react";
-// Statically import the built index from /public
 import searchData from "../../../public/search-index.json";
 import { homeSlots } from "@/content/home";
+import { headers } from "next/headers";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -15,8 +15,9 @@ export type SearchItem = {
   excerpt?: string;
   date?: string;
   tags?: string[];
-  number?: string;   // ← include identifier
+  number?: string;    // identifier (e.g., "αριθμός 3 • number 3")
   _folded?: string;
+  _fulltext?: string; // fetched full page text for searching
 };
 
 function fold(s: string) {
@@ -25,6 +26,16 @@ function fold(s: string) {
 
 function stripHtml(s: string) {
   return s.replace(/<[^>]*>/g, "");
+}
+
+function extractTextFromHtml(html: string) {
+  return html
+    .replace(/<script[\s\S]*?<\/script>/gi, "")
+    .replace(/<style[\s\S]*?<\/style>/gi, "")
+    .replace(/<!--[\s\S]*?-->/g, "")
+    .replace(/<[^>]+>/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
 }
 
 function buildFoldMap(text: string) {
@@ -72,7 +83,11 @@ function highlightAI(text: string, query: string) {
   let last = 0;
   merged.forEach(([s, e], idx) => {
     if (last < s) out.push(<span key={`r-${idx}-a`}>{text.slice(last, s)}</span>);
-    out.push(<mark key={`r-${idx}-b`} className="bg-yellow-100 rounded px-0.5">{text.slice(s, e)}</mark>);
+    out.push(
+      <mark key={`r-${idx}-b`} className="bg-yellow-100 rounded px-0.5">
+        {text.slice(s, e)}
+      </mark>
+    );
     last = e;
   });
   if (last < text.length) out.push(<span key="r-end">{text.slice(last)}</span>);
@@ -84,12 +99,15 @@ function scoreItem(q: string, it: SearchItem) {
   const titleF  = fold(it.title ?? "");
   const bodyF   = fold(((it.excerpt ?? "") + " " + (it.tags ?? []).join(" ")).trim());
   const numberF = fold(it.number ?? "");
+  const fullF   = fold(it._fulltext ?? "");
 
   let score = 0;
   if (titleF.includes(s))   score += 100;
   if (titleF.startsWith(s)) score += 60;
   if (bodyF.includes(s))    score += 40;
-  if (numberF.includes(s))  score += 120; // strongly weight identifier hits
+  if (numberF.includes(s))  score += 140; // prioritize identifier matches
+  if (fullF.includes(s))    score += 80;  // full body text, including “read more”
+
   if (it.date) {
     const t = new Date(it.date).getTime();
     if (!Number.isNaN(t)) {
@@ -108,13 +126,24 @@ function matches(q: string, it: SearchItem) {
         (it.title ?? "") + " " +
         (it.excerpt ?? "") + " " +
         (it.tags ?? []).join(" ") + " " +
-        (it.number ?? "")
+        (it.number ?? "") + " " +
+        (it._fulltext ?? "")
       );
   return hay.includes(s);
 }
 
-// normalize "/path" and "/path/"
 const norm = (u: string) => (u.endsWith("/") && u !== "/" ? u.slice(0, -1) : u);
+
+async function absoluteUrl(pathname: string) {
+  const h = await headers();
+  const host =
+    h.get("x-forwarded-host") ??
+    h.get("host") ??
+    process.env.NEXT_PUBLIC_SITE_DOMAIN ??
+    "veltistos.com";
+  const proto = h.get("x-forwarded-proto") ?? "https";
+  return `${proto}://${host}${pathname}`;
+}
 
 export default async function SearchPage({ searchParams }: { searchParams: { q?: string } }) {
   const q = (searchParams?.q ?? "").toString().trim();
@@ -122,7 +151,7 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
   // 1) Base index from JSON
   const rawIndex: SearchItem[] = Array.isArray(searchData) ? (searchData as SearchItem[]) : [];
 
-  // 2) Build slot-derived items so `number` is always known for those pages
+  // 2) Slot-derived items (to ensure numbers exist)
   const slotItems: SearchItem[] = [
     ...homeSlots.left.map(s => ({
       title: stripHtml(s.title),
@@ -139,7 +168,7 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
       number: s.number,
     })),
     ...homeSlots.right.map(s => ({
-      title: s.title, // already plain text
+      title: s.title,
       url: s.href,
       excerpt: undefined,
       tags: s.kicker ? [s.kicker] : [],
@@ -147,7 +176,7 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
     })),
   ];
 
-  // 3) Merge: prefer JSON fields but fill `number` from slots; also add slot-only pages
+  // 3) Merge by URL; keep JSON item, fill number from slots, add slot-only items
   const byUrl = new Map<string, SearchItem>();
   for (const it of rawIndex) byUrl.set(norm(it.url), it);
   for (const s of slotItems) {
@@ -159,13 +188,30 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
       byUrl.set(key, s);
     }
   }
-  const index = Array.from(byUrl.values());
+  let index = Array.from(byUrl.values());
 
-  const filtered = q ? index.filter(it => matches(q, it)) : [];
+  // 4) Fetch full HTML for each item (to include "Read more" text in search)
+  //    Limit to reasonable concurrency by awaiting sequentially (small site).
+  for (let i = 0; i < index.length; i++) {
+    const it = index[i];
+    try {
+      const abs = await absoluteUrl(it.url);
+      const res = await fetch(abs, { cache: "no-store", next: { revalidate: 0 } });
+      if (res.ok) {
+        const html = await res.text();
+        const full = extractTextFromHtml(html);
+        index[i] = { ...it, _fulltext: full };
+      }
+    } catch {
+      // ignore fetch failures; keep item as-is
+    }
+  }
+
+  const filtered = q ? index.filter((it) => matches(q, it)) : [];
   const results = filtered
-    .map(it => ({ it, score: scoreItem(q, it) }))
+    .map((it) => ({ it, score: scoreItem(q, it) }))
     .sort((a, b) => b.score - a.score)
-    .map(x => x.it);
+    .map((x) => x.it);
 
   return (
     <main className="max-w-[1120px] mx-auto px-6 py-6">
@@ -195,12 +241,6 @@ export default async function SearchPage({ searchParams }: { searchParams: { q?:
 
             {r.excerpt && (
               <p className="text-sm text-zinc-600 mt-1">{highlightAI(r.excerpt, q)}</p>
-            )}
-            {r.date && (
-              <p className="text-xs text-zinc-500 mt-1">
-                {new Date(r.date).toLocaleDateString("el-GR")}
-                {r.tags?.length ? ` · ${r.tags.join(", ")}` : null}
-              </p>
             )}
           </li>
         ))}

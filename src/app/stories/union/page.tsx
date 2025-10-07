@@ -148,9 +148,9 @@ export default function Page() {
         <LangShow>
         <AutoLangGroups>
 
-
         <p lang="el">
           Η βρετανική προσφορά τού 1915 για παραχώρηση τής Κύπρου στην Ελλάδα (και γιατί η Ελλάδα αρνήθηκε).
+          <div data-search-only className="hidden">αριθμός 1 • number 1</div>
         </p>
 
         <p lang="el">
@@ -772,8 +772,7 @@ export default function Page() {
           Through constitutional amendment, referenda, international adjudication,
           and diplomatic negotiation, Greece and Cyprus can lawfully and peacefully
           achieve the unity that history has long postponed. Their union will not
-          erase peculiarities but complete the continuity of Hellenism—<strong>a natural continuity</strong>.<br />
-        αριθμός 1 • number 1
+          erase peculiarities but complete the continuity of Hellenism—<strong>a natural continuity</strong>.
         </p>
       
   </AutoLangGroups>

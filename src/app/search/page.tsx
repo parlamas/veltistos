@@ -1,6 +1,7 @@
 // src/app/search/page.tsx
-import fs from "fs/promises";
-import path from "path";
+// import fs from "fs/promises";
+// import path from "path";
+import { headers } from "next/headers";
 import Link from "next/link";
 import type { ReactNode } from "react";
 
@@ -20,14 +21,26 @@ export type SearchItem = {
 
 async function readIndex(): Promise<SearchItem[]> {
   try {
-    const p = path.join(process.cwd(), "public", "search-index.json");
-    const raw = await fs.readFile(p, "utf8");
-    const data = JSON.parse(raw);
+    const h = headers();
+    const host =
+      h.get("x-forwarded-host") ??
+      h.get("host") ??
+      process.env.NEXT_PUBLIC_SITE_DOMAIN ??
+      "veltistos.com";
+    const proto = h.get("x-forwarded-proto") ?? "https";
+    const res = await fetch(`${proto}://${host}/search-index.json`, {
+      cache: "no-store",
+      // Next.js hint to keep it dynamic:
+      next: { revalidate: 0 },
+    });
+    if (!res.ok) return [];
+    const data = await res.json();
     return Array.isArray(data) ? data : [];
   } catch {
     return [];
   }
 }
+
 
 function fold(s: string) {
   return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();

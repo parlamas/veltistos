@@ -45,66 +45,47 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
 
   return (
     <>
-      
+      <div lang="el" data-tts-el>
+        {GR.head}
+        {GR.tail.length > 0 && (
+          <>
+            <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+              {GR.tail}
+            </ReadMore>
+            {/* Search-only duplicate in server HTML (hidden) */}
+            <div className="hidden" aria-hidden="true" data-search-only>
+              {GR.tail.map((node, i) =>
+                isValidElement(node)
+                  ? React.cloneElement(node, { key: `dup-gr-${i}`, "data-search-dup": "1" })
+                  : node
+              )}
+            </div>
+          </>
+        )}
+      </div>
 
-<div lang="el" data-tts-el>
-  {GR.tail.length > 0 && (
-  <>
-    <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
-      {GR.tail}
-    </ReadMore>
-    {/* search-only duplicate: in DOM, not visible */}
-    <div data-search-only className="hidden">{GR.tail}</div>
-  </>
-)}
-</div>
-
-<div lang="en" data-tts-en>
-  {EN.head}
-  {EN.tail.length > 0 && (
-  <>
-    <ReadMore moreLabel="Read more…" lessLabel="Read less">
-      {EN.tail}
-    </ReadMore>
-    {/* search-only duplicate: in DOM, not visible */}
-    <div data-search-only className="hidden">{EN.tail}</div>
-  </>
-)}
-</div>
-
-
-
+      <div lang="en" data-tts-en>
+        {EN.head}
+        {EN.tail.length > 0 && (
+          <>
+            <ReadMore moreLabel="Read more…" lessLabel="Read less">
+              {EN.tail}
+            </ReadMore>
+            {/* Search-only duplicate in server HTML (hidden) */}
+            <div className="hidden" aria-hidden="true" data-search-only>
+              {EN.tail.map((node, i) =>
+                isValidElement(node)
+                  ? React.cloneElement(node, { key: `dup-en-${i}`, "data-search-dup": "1" })
+                  : node
+              )}
+            </div>
+          </>
+        )}
+      </div>
     </>
   );
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-export default function Page() {
   const href = "/stories/union";
   const titleGR = "Η Ελλάδα και η Κύπρος Ενώνονται";
   const titleEN = "Greece and Cyprus are set to unite.";
@@ -258,7 +239,7 @@ export default function Page() {
 
         <h2 lang="el">Η Πορεία προς την Ένωση</h2>
         <p lang="el">
-          Εφ’όσον η Ελλάδα και η Κύπρος ενωνονται, η διαδικασία πρέπει να είναι
+          Εφ’όσον η Ελλάδα και η Κύπρος ενώνονται, η διαδικασία πρέπει να είναι
           νομικά αυστηρή, διπλωματικά διεκδικητική και ιστορικά συνειδητή. Τα βήματα
           είναι σαφή, αν και απαιτητικά.
         </p>

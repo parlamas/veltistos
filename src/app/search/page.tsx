@@ -20,20 +20,12 @@ export type SearchItem = {
   _fulltext?: string; // fetched full page text for searching
 };
 
-function buildFoldMap(text: string) {
-  let folded = "";
-  const mapFoldToOrig: number[] = [];
-  for (let i = 0; i < text.length; i++) {
-    const base = text[i]
-      .normalize("NFD")
-      .replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase()
-      .replace(/ς/g, "σ");            // normalize final sigma here too
-    if (base.length === 0) continue;
-    folded += base;
-    for (let k = 0; k < base.length; k++) mapFoldToOrig.push(i);
-  }
-  return { folded, mapFoldToOrig };
+function fold(s: string) {
+  return s
+    .normalize("NFD")                 // split accents
+    .replace(/[\u0300-\u036f]/g, "")  // drop accents/breathings
+    .toLowerCase()
+    .replace(/ς/g, "σ");              // final sigma → sigma
 }
 
 
@@ -55,10 +47,14 @@ function buildFoldMap(text: string) {
   let folded = "";
   const mapFoldToOrig: number[] = [];
   for (let i = 0; i < text.length; i++) {
-    const f = text[i].normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-    if (f.length === 0) continue;
-    folded += f;
-    for (let k = 0; k < f.length; k++) mapFoldToOrig.push(i);
+    const base = text[i]
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/ς/g, "σ");           // normalize final sigma here too
+    if (base.length === 0) continue;
+    folded += base;
+    for (let k = 0; k < base.length; k++) mapFoldToOrig.push(i);
   }
   return { folded, mapFoldToOrig };
 }

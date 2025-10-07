@@ -6,6 +6,7 @@ export type LeftItem = {
   title: string;
   img: string;
   kicker: string;
+  number?: string;
 };
 
 export type LeadItem = {

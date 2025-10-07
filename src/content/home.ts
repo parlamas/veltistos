@@ -14,6 +14,7 @@ export type LeadItem = {
   title: string;
   img: string;
   excerpt: string;
+  number?: string;
 };
 
 export type RightItem = {

@@ -49,7 +49,21 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
         {GR.head}
         {GR.tail.length > 0 && (
           <>
-            <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+            <>
+  <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+    {GR.tail}
+  </ReadMore>
+
+  {/* Search-only duplicate in server HTML (hidden) */}
+  <div className="hidden" aria-hidden="true" data-search-only>
+    {GR.tail.map((node, i) =>
+      isValidElement(node)
+        ? React.cloneElement(node, { key: `dup-gr-${i}`, "data-search-dup": "1" })
+        : node
+    )}
+  </div>
+</>
+
               {GR.tail}
             </ReadMore>
             {/* Search-only duplicate in server HTML (hidden) */}
@@ -68,7 +82,21 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
         {EN.head}
         {EN.tail.length > 0 && (
           <>
-            <ReadMore moreLabel="Read more…" lessLabel="Read less">
+            <>
+  <ReadMore moreLabel="Read more…" lessLabel="Read less">
+    {EN.tail}
+  </ReadMore>
+
+  {/* Search-only duplicate in server HTML (hidden) */}
+  <div className="hidden" aria-hidden="true" data-search-only>
+    {EN.tail.map((node, i) =>
+      isValidElement(node)
+        ? React.cloneElement(node, { key: `dup-en-${i}`, "data-search-dup": "1" })
+        : node
+    )}
+  </div>
+</>
+
               {EN.tail}
             </ReadMore>
             {/* Search-only duplicate in server HTML (hidden) */}

@@ -5,7 +5,7 @@ import Image from "next/image";
 import type { LeftItem } from "@/content/home";
 
 export default function LeftStory({ item }: { item: LeftItem }) {
-  const { href, title, img, kicker } = item;
+  const { href, title, img, kicker, number } = item;
 
   return (
     <Link href={href} className="block group">
@@ -24,6 +24,12 @@ export default function LeftStory({ item }: { item: LeftItem }) {
           {kicker && (
             <div className="text-xs uppercase tracking-wide text-zinc-500">
               {kicker}
+            </div>
+          )}
+
+          {number && (
+            <div className="text-xs text-zinc-600">
+              {number}
             </div>
           )}
 

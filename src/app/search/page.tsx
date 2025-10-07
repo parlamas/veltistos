@@ -1,8 +1,10 @@
 // src/app/search/page.tsx
 import Link from "next/link";
 import type { ReactNode } from "react";
-// Statically import the built index from /public (written by your prebuild script)
+// Statically import the built index from /public
 import searchData from "../../../public/search-index.json";
+// Pull numbers from homepage slots to enrich items that may not have number in the JSON
+import { homeSlots } from "@/content/home";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -14,6 +16,7 @@ export type SearchItem = {
   excerpt?: string;
   date?: string;
   tags?: string[];
+  number?: string;   // ← include number in the search item
   _folded?: string;
 };
 
@@ -81,11 +84,13 @@ function scoreItem(q: string, it: SearchItem) {
   const s = fold(q);
   const titleF = fold(it.title ?? "");
   const bodyF = fold(((it.excerpt ?? "") + " " + (it.tags ?? []).join(" ")).trim());
+  const numberF = fold(it.number ?? "");
 
   let score = 0;
   if (titleF.includes(s)) score += 100;
   if (titleF.startsWith(s)) score += 60;
   if (bodyF.includes(s)) score += 40;
+  if (numberF.includes(s)) score += 80; // prioritize matches in the identifier
 
   if (it.date) {
     const t = new Date(it.date).getTime();
@@ -107,10 +112,15 @@ function matches(q: string, it: SearchItem) {
           " " +
           (it.excerpt ?? "") +
           " " +
-          (it.tags ?? []).join(" ")
+          (it.tags ?? []).join(" ") +
+          " " +
+          (it.number ?? "")
       );
   return hay.includes(s);
 }
+
+// helper to normalize keys like "/path" and "/path/"
+const stripTrail = (u: string) => (u.endsWith("/") && u !== "/" ? u.slice(0, -1) : u);
 
 export default async function SearchPage({
   searchParams,
@@ -120,9 +130,25 @@ export default async function SearchPage({
   const q = (searchParams?.q ?? "").toString().trim();
 
   // Normalize imported data to the expected type
-  const index: SearchItem[] = Array.isArray(searchData)
+  const rawIndex: SearchItem[] = Array.isArray(searchData)
     ? (searchData as SearchItem[])
     : [];
+
+  // Build a map of url -> number from the homepage slots (if present)
+  const numberByUrl = new Map<string, string>();
+  for (const s of [...homeSlots.left, ...homeSlots.middle, ...homeSlots.right]) {
+    if (s.number) {
+      numberByUrl.set(stripTrail(s.href), s.number);
+      numberByUrl.set(stripTrail(`${s.href}/`), s.number);
+    }
+  }
+
+  // Enrich index with number (if missing) from home slots
+  const index: SearchItem[] = rawIndex.map((it) => {
+    const key = stripTrail(it.url);
+    const num = it.number ?? numberByUrl.get(key);
+    return num ? { ...it, number: num } : it;
+  });
 
   const filtered = q ? index.filter((it) => matches(q, it)) : [];
   const results = filtered
@@ -154,6 +180,14 @@ export default async function SearchPage({
             >
               {highlightAI(r.title, q)}
             </Link>
+
+            {/* Show and highlight the identifier */}
+            {r.number && (
+              <div className="text-xs text-zinc-600 mt-0.5">
+                {highlightAI(r.number, q)}
+              </div>
+            )}
+
             {r.excerpt && (
               <p className="text-sm text-zinc-600 mt-1">
                 {highlightAI(r.excerpt, q)}

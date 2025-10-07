@@ -20,9 +20,22 @@ export type SearchItem = {
   _fulltext?: string; // fetched full page text for searching
 };
 
-function fold(s: string) {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
+function buildFoldMap(text: string) {
+  let folded = "";
+  const mapFoldToOrig: number[] = [];
+  for (let i = 0; i < text.length; i++) {
+    const base = text[i]
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase()
+      .replace(/ς/g, "σ");            // normalize final sigma here too
+    if (base.length === 0) continue;
+    folded += base;
+    for (let k = 0; k < base.length; k++) mapFoldToOrig.push(i);
+  }
+  return { folded, mapFoldToOrig };
 }
+
 
 function stripHtml(s: string) {
   return s.replace(/<[^>]*>/g, "");

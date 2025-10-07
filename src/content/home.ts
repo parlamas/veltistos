@@ -22,6 +22,7 @@ export type RightItem = {
   kicker?: string;  // optional
   width?: number;   // optional display hint
   height?: number;  // optional display hint
+  number?: string;
 };
 
 // Combined slots type
@@ -61,6 +62,8 @@ export const homeSlots: HomeSlots = {
       width: 85,   // ← your requested size
       height: 167, // ← your requested size
       kicker: "Γραμματική",
+      number: "αριθμός 3 • number 3",
     },
   ],
 };
+

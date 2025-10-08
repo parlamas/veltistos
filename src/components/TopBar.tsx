@@ -21,6 +21,7 @@ import {
   CloudSnow,
   CloudFog,
   CloudLightning,
+  Twitter,            // ← add this
 } from "lucide-react";
 
 function iconForOpenMeteo(code: number) {
@@ -435,12 +436,22 @@ export default function TopBar() {
 >
   &copy; {now.getFullYear()} Veltistos
 </div>
-            <div className="hidden sm:flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
-              <a href="https://x.com/" target="_blank" rel="noopener noreferrer" title="X" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full font-bold text-xs" aria-label="X">X</a>
-              <a href="https://www.linkedin.com/" target="_blank" rel="noopener noreferrer" title="LinkedIn" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="LinkedIn"><Linkedin className="w-4 h-4" aria-hidden="true" /></a>
-              <a href="https://www.facebook.com/" target="_blank" rel="noopener noreferrer" title="Facebook" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="Facebook"><Facebook className="w-4 h-4" aria-hidden="true" /></a>
-              <a href="https://www.instagram.com/" target="_blank" rel="noopener noreferrer" title="Instagram" className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-label="Instagram"><Instagram className="w-4 h-4" aria-hidden="true" /></a>
-            </div>
+<div className="hidden sm:flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
+  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
+    <Twitter className="w-4 h-4" />
+  </div>
+  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
+    <Linkedin className="w-4 h-4" />
+  </div>
+  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
+    <Facebook className="w-4 h-4" />
+  </div>
+  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
+    <Instagram className="w-4 h-4" />
+  </div>
+</div>
+
+        
           </div>
         </div>
       </div>

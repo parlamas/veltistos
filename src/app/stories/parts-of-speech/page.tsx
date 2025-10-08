@@ -41,6 +41,7 @@ export default function Page() {
       */}
 
       <p>
+        <span hidden>a3 α3</span>
         <span lang="el-GR">
           Τά μέρη τού λόγου είναι 10.<br />
           Οι κατάλληλες ερωτήσεις μάς οδηγούν στο σωστό μέρος τού λόγου.<br />

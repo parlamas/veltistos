@@ -61,7 +61,7 @@ export const homeSlots: HomeSlots = {
   right: [
     {
       href: "/stories/parts-of-speech",
-      title: "Τά μέρη τού λόγου.",
+      title: "<span className="pt12">Τα μερη του λογου.</span>",
       img: "/parts-of-speech.png",
       width: 85,   // ← your requested size
       height: 167, // ← your requested size

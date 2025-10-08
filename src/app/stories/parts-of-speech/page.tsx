@@ -40,9 +40,9 @@ export default function Page() {
       </figure>
       */}
 
-      <p>
+      <div>
         <span hidden>a3 α3</span>
-        <span lang="el-GR">
+        <div lang="el-GR">
           Τα μερη του λογου ειναι 10.<br />
           Οι καταλληλες ερωτησεις και οι σωστες απαντησεις μας οδηγουν στο σωστο μερος του λογου.<br />
           <ol className="list-decimal list-inside space-y-1">
@@ -54,9 +54,9 @@ export default function Page() {
 
       <li><span className="wow">Αντωνυμιες:</span> Χρησιμοποιειται αυτη η λεξη αντι καποιου ουσιαστικου; (ναι)</li>
     </ol>
-        {/*αριθμός 3 • number 3*/}
-        </span>
-      </p>
+    
+        </div>
+      </div>
 
       <div data-tts-skip className="not-prose mt-4">
         <ShareBar href={href} title={title} />

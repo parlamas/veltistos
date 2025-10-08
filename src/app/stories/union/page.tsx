@@ -774,7 +774,7 @@ export default function Page() {
           and diplomatic negotiation, Greece and Cyprus can lawfully and peacefully
           achieve the unity that history has long postponed. Their union will not
           erase peculiarities but complete the continuity of Hellenism—<strong>a natural continuity</strong>.<br />
-        αριθμός 1 • number 1
+        {/*αριθμός 1 • number 1*/}
         </p>
       
   </AutoLangGroups>

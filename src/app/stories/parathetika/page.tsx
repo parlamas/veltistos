@@ -47,7 +47,7 @@ export default function Page() {
         <span className="wow">θετικός βαθμός:</span> ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
         <span className="wow">συγκριτικός βαθμός:</span> ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
         <span className="wow">υπερθετικός βαθμός:</span> ὁ βέλτιστος • ἡ βελτίστη • τό βέλτιστον<br />
-        αριθμός 2 • number 2
+        {/*αριθμός 2 • number 2*/}
       </p>
 
       <div data-tts-skip className="not-prose mt-4">

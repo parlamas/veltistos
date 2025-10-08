@@ -345,9 +345,13 @@ export default function TopBar() {
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
               <Image src="/trieris-veltistos-midb.png" alt="Veltistos" width={129} height={78} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
-            <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
-              Support Veltistos
-            </button>
+            <div
+  className="text-xs sm:text-sm text-zinc-600 font-medium whitespace-nowrap"
+  aria-label="Πνευματικά δικαιώματα"
+>
+  &copy; {now.getFullYear()} Veltistos
+</div>
+
           </div>
 
           {!searchOpen ? (
@@ -426,9 +430,12 @@ export default function TopBar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
-              Support Veltistos
-            </button>
+            <div
+  className="text-xs sm:text-sm text-zinc-600 font-medium whitespace-nowrap"
+  aria-label="Πνευματικά δικαιώματα"
+>
+  &copy; {now.getFullYear()} Veltistos
+</div>
             
           </div>
         </div>

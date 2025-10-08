@@ -76,14 +76,16 @@ export default function ShareBar({
       </a>
       {/* Instagram has no web share; we copy the link */}
       <button
-        type="button"
-        onClick={copyLink}
-        aria-label="Copy link for Instagram"
-        className="p-1.5 rounded hover:bg-zinc-100"
-        title="Copy link"
-      >
-        <Instagram className="w-4 h-4" />
-      </button>
+  type="button"
+  onClick={shareToInstagram}
+  aria-label="Share to Instagram (or copy link)"
+  className="p-1.5 rounded hover:bg-zinc-100"
+  title={typeof navigator !== "undefined" && navigator.share ? "Share" : "Copy link"}
+>
+  <Instagram className="w-4 h-4" />
+</button>
+
+      
 
       {copied && (
         <span className="ml-1 text-[11px] text-zinc-600">Αντιγράφηκε</span>

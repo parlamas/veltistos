@@ -21,7 +21,6 @@ import {
   CloudSnow,
   CloudFog,
   CloudLightning,
-  Twitter,            // ← add this
 } from "lucide-react";
 
 function iconForOpenMeteo(code: number) {
@@ -346,12 +345,9 @@ export default function TopBar() {
             <Link href="/" aria-label="Veltistos - Αρχική" className="block">
               <Image src="/trieris-veltistos-midb.png" alt="Veltistos" width={129} height={78} priority className="block w-[148px] h-[60px] shrink-0" />
             </Link>
-            <div
-  className="text-xs sm:text-sm text-zinc-600 font-medium whitespace-nowrap"
-  aria-label="Πνευματικά δικαιώματα"
->
-  &copy; {now.getFullYear()} Veltistos
-</div>
+            <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
+              Support Veltistos
+            </button>
           </div>
 
           {!searchOpen ? (
@@ -430,28 +426,10 @@ export default function TopBar() {
           </div>
 
           <div className="flex items-center gap-3">
-            <div
-  className="text-xs sm:text-sm text-zinc-600 font-medium whitespace-nowrap"
-  aria-label="Πνευματικά δικαιώματα"
->
-  &copy; {now.getFullYear()} Veltistos
-</div>
-<div className="hidden sm:flex items-center gap-2 text-zinc-700" aria-label="Κοινωνικά Δίκτυα">
-  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
-    <Twitter className="w-4 h-4" />
-  </div>
-  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
-    <Linkedin className="w-4 h-4" />
-  </div>
-  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
-    <Facebook className="w-4 h-4" />
-  </div>
-  <div className="grid place-items-center w-8 h-8 border border-zinc-200 rounded-full" aria-hidden="true">
-    <Instagram className="w-4 h-4" />
-  </div>
-</div>
-
-        
+            <button className="bg-red-600 hover:bg-red-700 text-white font-bold text-sm px-4 py-1.5 rounded-full">
+              Support Veltistos
+            </button>
+            
           </div>
         </div>
       </div>

@@ -1,4 +1,4 @@
-// src/app/stories/union/page.tsx
+// src/app/diethni/nobel-irony/page.tsx
 export const dynamic = 'force-dynamic';
 export const revalidate = 0;
 export const fetchCache = 'force-no-store';
@@ -63,26 +63,39 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
 
 export default function Page() {
   const href = "/stories/union";
-  const titleGR = "Η Ελλάδα και η Κύπρος Ενώνονται";
-  const titleEN = "Greece and Cyprus are set to unite.";
-  const shareTitle = titleGR; // use when a single string is needed (Share/TTS/etc.)
+  const titleGR = "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου";
+  const titleEN = "Oslo, give the Nobel of Peace to Netanyahu";
+  const shareTitle = titleGR; // use when a single string is needed (Share/TTS/etc.)// — small bilingual byline constants —
+  const bylineDate = "05.10.25";
+  const nameEL = "Ισίδωρος Παρλαμάς";
+  const nameEN = "Isidoros Parlamas";
 
   return (
-    <article
-      id="story-content"
-      className="prose prose-zinc max-w-none text-zinc-900"
-    >
-      <header className="mb-4 flex items-start justify-between gap-3">
-        <div>
-          <h1 className="font-serif text-2xl font-bold leading-tight">
-  <span lang="el" className="block">{titleGR}</span>
-  <span lang="en" className="block text-zinc-600">{titleEN}</span>
-</h1>
-          <p className="text-sm text-zinc-500">
-            05.10.25 • Ενωση Ελλάδας και Κύπρου
-          </p>
-        </div>
-      </header>
+    <>
+      {/* Small bilingual byline BEFORE the article */}
+      <div className="mb-2 text-xs leading-tight text-zinc-500">
+        <div lang="el">{bylineDate} • {nameEL}</div>
+        <div lang="en">{bylineDate} • {nameEN}</div>
+      </div>
+
+      <article
+        id="story-content"
+        className="prose prose-zinc max-w-none text-zinc-900"
+      >
+        <header className="mb-4 flex items-start justify-between gap-3">
+          <div>
+            <h1 className="font-serif text-2xl font-bold leading-tight">
+              <span lang="el" className="block">{titleGR}</span>
+              <span lang="en" className="block text-zinc-600">{titleEN}</span>
+            </h1>
+            <p className="text-sm text-zinc-500">
+              05.10.25 • Ενωση Ελλάδας και Κύπρου
+            </p>
+          </div>
+        </header>
+
+
+
 
       {/* Two speakers at the top (read hidden EL/EN blocks) */}
 

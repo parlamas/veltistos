@@ -117,7 +117,7 @@ export default function Page() {
 
           <figure className="rounded-lg overflow-hidden bg-white shadow-sm ring-1 ring-zinc-200">
             <Image
-              src="/breivek.jpg" // ← replace with your image
+              src="/breivek.png" // ← replace with your image
               alt="View over the fjord"
               width={138}
               height={92}

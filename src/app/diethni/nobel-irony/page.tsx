@@ -102,7 +102,7 @@ export default function Page() {
         <div className="my-4 grid grid-cols-1 sm:grid-cols-3 gap-3 not-prose">
           <figure className="rounded-lg overflow-hidden bg-white shadow-sm ring-1 ring-zinc-200">
             <Image
-              src="/kissinger.jpg" // ← replace with your image
+              src="/kissinger.png" // ← replace with your image
               alt="Oslo city view"
               width={170}
               height={92}

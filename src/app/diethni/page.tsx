@@ -20,7 +20,7 @@ const posts: Post[] = [
     titleGR: "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου",
     titleEN: "Oslo, give the Nobel Peace prize to Netanyahu",
     
-    date: "2025-10-05",
+    date: "Οκτ/Oct 9, 2025",
     number: "α4 • a4", // use real bullet
   },
   // Add future posts here:

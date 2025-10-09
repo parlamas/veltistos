@@ -92,7 +92,7 @@ export default function Page() {
               </span>
             </h1>
             <p className="text-sm text-zinc-500">
-  <span hidden>α4 • a4</span></p>
+  <span data-tts-skip hidden>α4 • a4</span></p>
             </div>
         </header>
 
@@ -122,8 +122,8 @@ export default function Page() {
         <LangShow>
           <AutoLangGroups>
             <p lang="el">
-              <span hidden>a4 α4</span>
-            <p>Μια Σεμνη Προταση για το Επομενο Νομπελ Ειρηνης</p>
+              <span data-tts-skip hidden>a4 α4</span>
+            <p>Μια Σεμνη Προταση για το Επομενο Νομπελ Ειρηνης.</p>
 
 <p>
 Ειναι καιρος, αναμφιβολα, η Νορβηγικη Επιτροπη Νομπελ να αποκαταστησει τις παλιες της παραδοσεις. Οι παραδοσεις ειναι ιερες — και λιγες ειναι 
@@ -170,7 +170,7 @@ export default function Page() {
 
             <p lang="en">
             
-              <p>A Modest Proposal for the Next Nobel Peace Prize</p>
+              <p>A Modest Proposal for the Next Nobel Peace Prize.</p>
 
 <p>It is time, surely, for the Nobel Committee to restore its old traditions. Traditions are sacred — and few are as venerable as the 
     Committee’s habit of confusing peace with the efficient administration of violence. When history looks back on our age, it will find 

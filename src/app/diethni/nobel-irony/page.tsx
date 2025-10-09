@@ -106,7 +106,7 @@ export default function Page() {
               alt="Oslo city view"
               width={170}
               height={92}
-              className="block w-full h-auto"
+              className="block"
               sizes="(min-width: 640px) 33vw, 100vw"
               priority
             />
@@ -121,7 +121,7 @@ export default function Page() {
               alt="View over the fjord"
               width={138}
               height={92}
-              className="block w-full h-auto"
+              className="block"
               sizes="(min-width: 640px) 33vw, 100vw"
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
@@ -135,7 +135,7 @@ export default function Page() {
               alt="Streets of Oslo"
               width={89}
               height={92}
-              className="block w-full h-auto"
+              className="block"
               sizes="(min-width: 640px) 33vw, 100vw"
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">

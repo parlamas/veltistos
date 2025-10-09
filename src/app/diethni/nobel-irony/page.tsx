@@ -131,7 +131,7 @@ export default function Page() {
 
           <figure className="rounded-lg overflow-hidden bg-white shadow-sm ring-1 ring-zinc-200">
             <Image
-              src="/neta.jpg" // ← replace with your image
+              src="/neta.png" // ← replace with your image
               alt="Streets of Oslo"
               width={89}
               height={92}

@@ -61,7 +61,8 @@ function AutoLangGroups({ children }: { children: ReactNode }) {
 export default function Page() {
   const href = "/diethni/nobel-irony";
   const titleGR = "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου";
-  const titleEN = "Oslo, give the Nobel of Peace to Netanyahu";
+  const titleEN = "Oslo, give the Nobel Peace Prize to Netanyahu";
+
   const shareTitle = titleGR; // use when a single string is needed (Share/TTS/etc.)
   // — small bilingual byline constants —
   const bylineDate = "09.10.25";
@@ -95,9 +96,11 @@ export default function Page() {
               </span>
             </h1>
             <p className="text-sm text-zinc-500">
-                α4 &bull; a4<br />
-              09.10.25 • Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου
-            </p>
+  α4 • a4<br />
+  <span lang="el">09.10.25 • Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου</span>
+  <span lang="en" className="block">09.10.25 • Oslo, give the Nobel Peace Prize to Netanyahu</span>
+</p>
+
           </div>
         </header>
 
@@ -157,9 +160,7 @@ export default function Page() {
             </p>
 
             <p lang="en">
-              <br />
-              This is the idea:
-              <br />
+            
               <p>A Modest Proposal for the Next Nobel Peace Prize</p>
 
 <p>It is time, surely, for the Nobel Committee to restore its old traditions. Traditions are sacred — and few are as venerable as the Committee’s habit of confusing peace with the efficient administration of violence. When history looks back on our age, it will find coherence in the chaos: the same institution that crowned Henry Kissinger for his delicate orchestration of bombings over Cambodia and Laos can now, with equal moral precision, honor Benjamin Netanyahu.</p>

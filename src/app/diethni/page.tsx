@@ -18,7 +18,8 @@ const posts: Post[] = [
   {
     slug: "nobel-irony",
     titleGR: "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου",
-    titleEN: "Oslo, give the Nobel of Peace to Netanyahu",
+    titleEN: "Oslo, give the Nobel Peace prize to Netanyahu",
+    
     date: "2025-10-05",
     number: "α4 • a4", // use real bullet
   },

@@ -93,10 +93,7 @@ export default function Page() {
             </h1>
             <p className="text-sm text-zinc-500">
   <span hidden>α4 • a4</span><br />
-  
-</p>
-
-          </div>
+            </div>
         </header>
 
         {/* Two speakers at the top (read hidden EL/EN blocks) */}

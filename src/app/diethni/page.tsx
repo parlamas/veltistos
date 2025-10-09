@@ -11,6 +11,7 @@ type Post = {
   titleGR: string;
   titleEN?: string;
   date: string; // e.g. 2025-10-05
+  number: string;
 };
 
 const posts: Post[] = [
@@ -19,6 +20,7 @@ const posts: Post[] = [
     titleGR: "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου",
     titleEN: "Oslo, give the Nobel of Peace to Netanyahu",
     date: "2025-10-05",
+    number: "α4 &bull; a4",
   },
   // Add future posts here:
   // { slug: "my-next-article", titleGR: "Τίτλος", titleEN: "Title", date: "YYYY-MM-DD" },

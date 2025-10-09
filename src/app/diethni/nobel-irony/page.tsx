@@ -64,7 +64,7 @@ export default function Page() {
   const titleEN = "Oslo, give the Nobel of Peace to Netanyahu";
   const shareTitle = titleGR; // use when a single string is needed (Share/TTS/etc.)
   // — small bilingual byline constants —
-  const bylineDate = "05.10.25";
+  const bylineDate = "09.10.25";
   const nameEL = "Ισίδωρος Παρλαμάς";
   const nameEN = "Isidoros Parlamas";
 
@@ -95,7 +95,8 @@ export default function Page() {
               </span>
             </h1>
             <p className="text-sm text-zinc-500">
-              05.10.25 • Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου
+                α4 &bull; a4<br />
+              09.10.25 • Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου
             </p>
           </div>
         </header>
@@ -131,73 +132,27 @@ export default function Page() {
               (και γιατί η Ελλάδα αρνήθηκε).
             </p>
 
-            <p lang="el">
+            <p lang="en">
               <br />
               Τι συνέβη:
               <br />
-              Τόν Οκτώβριο τού 1915, καθώς ο Α΄ Παγκόσμιος Πόλεμος διευρυνόταν και
-              η Σερβία δεχόταν επίθεση (έπειτα από τήν είσοδο τής Βουλγαρίας στον
-              πόλεμο), ο Βρετανός Υπουργός Εξωτερικών Έντουαρντ Γκρέι ενέκρινε μία
-              πρόταση να παραχωρηθεί η Κύπρος στην Ελλάδα εφόσον η Ελλάδα θα έμπαινε
-              στον πόλεμο στο πλευρό τών Συμμάχων (ουσιαστικά, για να συνδράμει τήν
-              Σερβία). Η προσφορά διαβιβάστηκε στην Αθήνα από τόν Βρετανό πρεσβευτή
-              σερ Φράνσις Έλιοτ. Ο πρωθυπουργός Ελευθέριος Βενιζέλος τάχθηκε υπέρ
-              τής αποδοχής· ο βασιλιάς Κωνσταντίνος Α&rsquo;&mdash;προσηλωμένος στην
-              ουδετερότητα&mdash;αρνήθηκε, οπότε η Ελλάδα δεν την αποδέχθηκε και η
-              προσφορά ξεχάσθηκε.
+              <p>A Modest Proposal for the Next Nobel Peace Prize</p>
+
+<p>It is time, surely, for the Nobel Committee to restore its old traditions. Traditions are sacred — and few are as venerable as the Committee’s habit of confusing peace with the efficient administration of violence. When history looks back on our age, it will find coherence in the chaos: the same institution that crowned Henry Kissinger for his delicate orchestration of bombings over Cambodia and Laos can now, with equal moral precision, honor Benjamin Netanyahu.</p>
+
+<p>After all, consistency is the soul of credibility. Kissinger’s Peace Prize in 1973 recognized his tireless efforts to bring “peace with honor” — a phrase that aged as well as the jungles it napalmed. Why stop there? Netanyahu, too, has demonstrated that peace, properly defined, can only be achieved through the systematic erasure of whatever stands in its way.</p>
+
+<p>Yes, Trump deserves mention — a mere enabler, a supplier of weapons and smiles — but not the spotlight. The true artisans of peace are those who pull the trigger, not those who sell the gun. Kissinger, Breivik, Netanyahu: a noble lineage of men who remind us that peace, to be taken seriously, must first be preceded by slaughter. The Oslo Committee should be proud of its heritage; it has long blurred the line between irony and insult with unparalleled grace.</p>
+
+<p>Let us remember the precedent. In the same year Kissinger accepted his award — modestly, of course, and with only a few million casualties behind him — the world saw a coup in Chile, a genocide in Bangladesh, and invasions from Cyprus to East Timor. It was a golden age for peace, defined not by silence but by the thunder of well-intentioned explosions.</p>
+
+<p>So why hesitate now? Netanyahu’s resume glitters. Flattened neighborhoods, children under rubble, an unshakable belief in his divine right to self-defense — these are the hallmarks of a true laureate. And if the Committee wishes to modernize, why not share the honor with Anders Behring Breivik, a lone practitioner of the same philosophy? Breivik was, in essence, a one-man foreign policy — the privatization of state violence, the entrepreneurial face of Western civilization’s finest exports.</p>
+
+<p>Awarding the Nobel Peace Prize to Netanyahu and Breivik together would close the circle. It would tell the truth, at last, about what “peace” has come to mean in our time: the peace of submission, the peace of graves, the peace negotiated by drones and cement walls. The Nobel Committee, born of idealism, could die of honesty — and perhaps that would be its most peaceful act yet.</p>
+
             </p>
 
-            <p lang="en">
-              The 1915 British offer of Cyprus to Greece (and why Greece
-              declined).
-            </p>
-
-            <p lang="en">
-              <br />
-              What happened:
-              <br />
-              In October 1915, as World War I widened and Serbia was under attack
-              (after Bulgaria entered the war), British Foreign Secretary Edward
-              Grey authorized an offer to cede Cyprus to Greece if Greece would
-              enter the war on the Allied side (effectively, come to Serbia’s aid).
-              The offer was conveyed in Athens by the British minister Sir Francis
-              Elliot. Prime Minister Eleftherios Venizelos favored accepting; King
-              Constantine I&mdash;committed to neutrality&mdash;refused, so Greece
-              declined and the offer lapsed.
-            </p>
-
-            <p lang="el">
-              Τό ότι η Ελλάδα και η Κύπρος έχουν αποφασίσει να ενωθούν δεν είναι μία
-              χειρονομία συμφιλίωσης αλλά μία διακήρυξη συνέχειας. Η ιδέα της{" "}
-              <em>Ενωσης</em> αιωρείται επί μακρόν στη συλλογική συνείδηση και των
-              δύο λαών, που μοιράζονται την ίδια γλώσσα, πίστη και πολιτιστική
-              κληρονομιά. Η ένωσή τους δεν θεραπεύει ένα ρήγμα αλλά{" "}
-              <strong>ολοκληρώνει μία φυσική πορεία τής ιστορίας</strong> που
-              διακόπηκε από τήν αποικιοκρατία, τήν κατοχή και τίς γεωπολιτικές
-              συγκυρίες. Για να κατανοήσει κανείς τόσο τό μέγεθος όσο και τήν
-              μηχανική μίας τέτοιας ένωσης, μπορεί να στραφεί στο παράδειγμα τής
-              Γερμανίας—ενός έθνους που, παρά δεκαετίες πολιτικού διαχωρισμού,
-              πέτυχε τήν εθνική ολοκλήρωση με ειρηνικά και μεθοδικά μέσα.
-            </p>
-
-            <p lang="el">
-              Μέσω συνταγματικής αναθεώρησης, δημοψηφισμάτων, διεθνούς δικαστικής
-              επίλυσης και διπλωματικής διαπραγμάτευσης, η Ελλάδα και η Κύπρος
-              μπορούν νόμιμα και ειρηνικά να επιτύχουν τήν ενότητα που η ιστορία
-              έχει επί μακρόν αναβάλει. Η ένωσή τους δεν θα εξαφανίσει τίς ιδομορφίες
-              αλλά θα ολοκληρώσει τήν συνέχεια του Ελληνισμού&mdash;
-              <strong>μια φυσική ολοκλήρωση</strong>.
-            </p>
-
-            <p lang="en">
-              Through constitutional amendment, referenda, international
-              adjudication, and diplomatic negotiation, Greece and Cyprus can
-              lawfully and peacefully achieve the unity that history has long
-              postponed. Their union will not erase peculiarities but complete the
-              continuity of Hellenism—<strong>a natural continuity</strong>.
-              <br />
-              {/*αριθμός 1 • number 1*/}
-            </p>
+            
           </AutoLangGroups>
         </LangShow>
 

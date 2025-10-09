@@ -104,14 +104,14 @@ export default function Page() {
             <Image
               src="/kissinger.jpg" // ← replace with your image
               alt="Oslo city view"
-              width={116}
-              height={63}
+              width={170}
+              height={92}
               className="block w-full h-auto"
               sizes="(min-width: 640px) 33vw, 100vw"
               priority
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
-              Oslo skyline at dusk.
+              Ηθικο Εκτρωμα
             </figcaption>
           </figure>
 
@@ -125,7 +125,7 @@ export default function Page() {
               sizes="(min-width: 640px) 33vw, 100vw"
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
-              Over the fjord.
+              Ηθικο Εκτρωμα<br />Ethically Maimed
             </figcaption>
           </figure>
 
@@ -133,13 +133,13 @@ export default function Page() {
             <Image
               src="/neta.jpg" // ← replace with your image
               alt="Streets of Oslo"
-              width={98}
-              height={104}
+              width={89}
+              height={92}
               className="block w-full h-auto"
               sizes="(min-width: 640px) 33vw, 100vw"
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
-              Streets of Oslo.
+              Ηθικο Εκτρωμα<br />Ethically Mutilated
             </figcaption>
           </figure>
         </div>

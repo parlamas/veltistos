@@ -92,9 +92,7 @@ export default function Page() {
               </span>
             </h1>
             <p className="text-sm text-zinc-500">
-  α4 • a4<br />
-  <span lang="el">09.10.25</span>
-</p>
+  <span hidden>α4 • a4</span>
 
           </div>
         </header>

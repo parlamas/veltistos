@@ -20,10 +20,10 @@ const posts: Post[] = [
     titleGR: "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου",
     titleEN: "Oslo, give the Nobel of Peace to Netanyahu",
     date: "2025-10-05",
-    number: "α4 &bull; a4",
+    number: "α4 • a4", // use real bullet
   },
   // Add future posts here:
-  // { slug: "my-next-article", titleGR: "Τίτλος", titleEN: "Title", date: "YYYY-MM-DD" },
+  // { slug: "my-next-article", titleGR: "Τίτλος", titleEN: "Title", date: "YYYY-MM-DD", number: "α5 • a5" },
 ];
 
 export default function DiethniIndex() {
@@ -36,16 +36,24 @@ export default function DiethniIndex() {
 
       <ul className="grid gap-4 md:grid-cols-2">
         {posts.map((p) => (
-          <li key={p.slug} className="rounded-lg border border-zinc-200 p-4 hover:bg-zinc-50">
+          <li
+            key={p.slug}
+            className="rounded-lg border border-zinc-200 p-4 hover:bg-zinc-50"
+          >
             <h2 className="font-semibold leading-snug">
               <Link href={`/diethni/${p.slug}`} className="hover:underline">
                 <span lang="el" className="block">{p.titleGR}</span>
                 {p.titleEN && (
-                  <span lang="en" className="block text-zinc-600">{p.titleEN}</span>
+                  <span lang="en" className="block text-zinc-600">
+                    {p.titleEN}
+                  </span>
                 )}
               </Link>
             </h2>
-            <p className="mt-1 text-xs text-zinc-500">{p.date}</p>
+
+            <p className="mt-1 text-xs text-zinc-500">
+              {p.date} • {p.number}
+            </p>
           </li>
         ))}
       </ul>

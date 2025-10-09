@@ -1,3 +1,65 @@
+// src/app/diethni/nobel-irony/page.tsx
+export const dynamic = 'force-dynamic';
+export const revalidate = 0;
+export const fetchCache = 'force-no-store';
+export const runtime = 'nodejs';
+//import Image from "next/image";
+//import ArticleExtras from "@/components/ArticleExtras";
+import LangShow from "@/components/LangShow";
+import DualTTSBar from "@/components/DualTTSBar";
+import ShareBar from "@/components/ShareBar";
+import React, { ReactNode, isValidElement, ReactElement } from "react";
+import ReadMore from "@/components/ReadMore";
+
+function AutoLangGroups({ children }: { children: ReactNode }) {
+  const nodes = React.Children
+    .toArray(children)
+    .filter(
+      (n): n is ReactElement<{ lang?: "el" | "en"; ["data-lang"]?: "el" | "en" }> =>
+        isValidElement(n)
+    );
+
+  const split = (code: "el" | "en") => {
+    const arr = nodes.filter(
+      (n) => n.props.lang === code || n.props["data-lang"] === code
+    );
+    const head = arr.slice(0, 2); // first 2 shown
+    const tail = arr.slice(2);    // rest behind “Read more…”
+    return { head, tail };
+  };
+
+  const GR = split("el");
+  const EN = split("en");
+
+  return (
+    <>
+      
+
+<div lang="el" data-tts-el>
+  {GR.head}
+  {GR.tail.length > 0 && (
+    <ReadMore moreLabel="Περισσότερα… / Read more…" lessLabel="Λιγότερα / Read less">
+      {GR.tail}
+    </ReadMore>
+  )}
+</div>
+
+<div lang="en" data-tts-en>
+  {EN.head}
+  {EN.tail.length > 0 && (
+    <ReadMore moreLabel="Read more…" lessLabel="Read less">
+      {EN.tail}
+    </ReadMore>
+  )}
+</div>
+
+
+
+    </>
+  );
+}
+
+
 export default function Page() {
   const href = "/diethni/nobel-irony";
   const titleGR = "Οσλο, δωστε το Νομπελ Ειρηνης στον Νετανιάχου";
@@ -34,8 +96,6 @@ export default function Page() {
 
         {/* Two speakers at the top (read hidden EL/EN blocks) */}
         <DualTTSBar targetEl="#story-content [data-tts-el]" targetEn="#story-content [data-tts-en]" />
-
-
 
 
 

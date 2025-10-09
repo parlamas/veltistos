@@ -111,7 +111,7 @@ export default function Page() {
               priority
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
-              Ηθικο Εκτρωμα
+              Henry Kissinger - Ηθικο Εκτρωμα<br />Moral Monstrosity
             </figcaption>
           </figure>
 
@@ -125,7 +125,7 @@ export default function Page() {
               sizes="(min-width: 640px) 33vw, 100vw"
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
-              Ηθικο Εκτρωμα<br />Ethically Maimed
+              Breivek - Ηθικο Εκτρωμα<br />Ethically Maimed
             </figcaption>
           </figure>
 
@@ -139,7 +139,7 @@ export default function Page() {
               sizes="(min-width: 640px) 33vw, 100vw"
             />
             <figcaption className="px-3 py-2 text-xs text-zinc-500">
-              Ηθικο Εκτρωμα<br />Ethically Mutilated
+              Netanyahu - Ηθικο Εκτρωμα<br />Ethically Mutilated
             </figcaption>
           </figure>
         </div>

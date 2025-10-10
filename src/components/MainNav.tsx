@@ -110,6 +110,12 @@ export default function MainNav() {
                 <li><Link href="/gnoseis/oristiki"   className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Οριστική</Link></li>
                 <li><Link href="/gnoseis/grammatiki" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γραμματική</Link></li>
                 <li><Link href="/gnoseis/glosses"    className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γλώσσες</Link></li>
+                <li>
+  <Link href="/docs/S-P-001.html" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">
+    Γλώσσες — 002
+  </Link>
+</li>
+
               </ul>
             </div>
           </li>
@@ -200,6 +206,16 @@ export default function MainNav() {
                     <li><Link href="/gnoseis/oristiki"   onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Οριστική</Link></li>
                     <li><Link href="/gnoseis/grammatiki" onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Γραμματική</Link></li>
                     <li><Link href="/gnoseis/glosses"    onClick={closeMobile} className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]">Γλώσσες</Link></li>
+                    <li>
+  <Link
+    href="/docs/S-P-001.html"
+    onClick={closeMobile}
+    className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]"
+  >
+    Γλώσσες — 002
+  </Link>
+</li>
+
                   </ul>
                 </li>
 

@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="q.css">
+  <title>R-S-001</title>
+  <style>
+  :root {
+    --bg: #f8fafc;      /* slate-50 */
+    --card: #ffffff;    /* white */
+    --ink: #0f172a;     /* slate-900 */
+    --muted: #475569;   /* slate-600 */
+    --ring: #cbd5e1;    /* slate-300 */
+    --accent: #2563eb;  /* blue-600 */
+  }
+  html, body { margin:0; padding:0; background: var(--bg); color: var(--ink); font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji"; }
+  .container { max-width: 950px; margin: 32px auto; padding: 0 16px; }
+  .title { text-align:center; font-weight:700; }
+  .subtitle { text-align:center; color: var(--muted); margin-top: 6px; }
+
+  .card { background: var(--card); border:1px solid var(--ring); border-radius: 14px; box-shadow: 0 1px 6px rgba(15,23,42,.06); padding: 18px 20px; }
+  .row { display:flex; gap: 12px; align-items:center; justify-content: space-between; }
+  .lang-badge { font-weight:600; letter-spacing:.3px; }
+
+  .toolbar { display:flex; gap: 8px; flex-wrap: wrap; justify-content: center; margin: 16px 0 22px; }
+  .tab { border:1px solid var(--ring); background: #fff; color: var(--ink); padding: 8px 12px; border-radius: 999px; cursor:pointer; font-weight:600; transition: all .15s ease; }
+  .tab:hover { border-color: var(--accent); color: var(--accent); }
+
+  .speaker { display:inline-flex; align-items:center; gap:8px; border:1px solid var(--ring); background:#fff; padding:6px 10px; border-radius:10px; cursor:pointer; }
+  .speaker:hover { border-color: var(--accent); color: var(--accent); }
+  .speaker svg { width:18px; height:18px; }
+
+  /* Stop button matches speaker styling */
+  .stopper {
+    display:inline-flex; align-items:center; gap:8px;
+    border:1px solid var(--ring); background:#fff; padding:6px 10px;
+    border-radius:10px; cursor:pointer;
+  }
+  .stopper:hover { border-color: var(--accent); color: var(--accent); }
+  .stopper svg { width:18px; height:18px; }
+
+  .hr { height:1px; background: var(--ring); margin: 16px 0; border:0; }
+
+  .content { line-height: 1.7; font-size: 15.5px; }
+  .content .blue { color:#1d4ed8; }
+
+  .note { font-size: 12.5px; color: var(--muted); margin-top: 6px; }
+
+  /* --- tiny upgrades --- */
+  .speaker:focus-visible,
+  .stopper:focus-visible {
+    outline: 2px solid var(--accent);
+    outline-offset: 2px;
+  }
+
+  .speaker:active,
+  .stopper:active {
+    transform: translateY(1px);
+  }
+</style>
+
+</head>
+<body>
+  <div class="container">
+    <h2 class="title"> <span style="color:brown;">The Birth of Dialectics and Horistics</span><hr>
+      <a style="text-decoration:none;" href="https://horistics.ai">horistics.ai</a> &bull; <a style="text-decoration:none;" href="https://horistics.com">horistics.com</a> &bull; 
+      <a style="text-decoration:none;" href="https://veltistos.com">veltistos.com</a><hr>
+    η Πολιτεία τοῦ Πλάτωνα • Plato's Republic</h2>
+    <div class="subtitle">Parallel viewer — Attic Greek + one selected translation with on‑page TTS</div>
+
+    <!-- Always-visible Attic Greek (original) -->
+    <div class="card" id="attic-card">
+      <div class="row">
+        <div class="lang-badge">Book 1, Part 1 &bull; Πρωτότυπο — Ἀττικὴ διάλεκτος<hr>Σωκράτης</div>
+        <button class="speaker" data-say="attic">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"></path><path d="M19.07 4.93a10 10 0 010 14.14"></path><path d="M15.54 8.46a5 5 0 010 7.07"></path></svg>
+          <span>Listen</span>
+        </button>
+        <button class="stopper" data-stop="attic" aria-label="Stop audio">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="6" y="6" width="12" height="12"></rect>
+  </svg>
+  <span>Stop</span>
+</button>
+
+      </div>
+
+      <div class="content" id="attic-html">
+        <div class="blue">
+          Κατέβην<sub>1</sub> χθὲς<sub>2</sub> εἰς<sub>3</sub> Πειραιᾶ<sub>4</sub> μετὰ<sub>5</sub> Γλαύκωνος<sub>6</sub> τοῦ<sub>7</sub> Ἀρίστωνος<sub>8</sub> προσευξόμενός<sub>9</sub> τε<sub>10</sub> τῇ<sub>11</sub> θεῷ<sub>12</sub> καὶ<sub>13</sub> ἅμα<sub>14</sub> τὴν<sub>15</sub> ἑορτὴν<sub>16</sub> βουλόμενος<sub>17</sub> θεάσασθαι<sub>18</sub> τίνα<sub>19</sub> τρόπον<sub>20</sub> ποιήσουσιν<sub>21</sub> ἅτε<sub>22</sub> νῦν<sub>23</sub> πρῶτον<sub>24</sub> ἄγοντες.<sub>25</sub> καλὴ<sub>26</sub> μὲν<sub>27</sub> οὖν<sub>28</sub> μοι<sub>29</sub> καὶ<sub>30</sub> ἡ<sub>31</sub> τῶν<sub>32</sub> ἐπιχωρίων<sub>33</sub> πομπὴ<sub>34</sub> ἔδοξεν<sub>35</sub> εἶναι,<sub>36</sub> οὐ<sub>37</sub> μέντοι<sub>38</sub> ἧττον<sub>39</sub> ἐφαίνετο<sub>40</sub> πρέπειν<sub>41</sub> ἣν<sub>42</sub> οἱ<sub>43</sub> Θρᾷκες<sub>44</sub> ἔπεμπον.<sub>45</sub>
+          <audio controls>
+  <source src="/audio/b1-001a.m4a" type="audio/mpeg">
+</audio><hr>
+Κατέβηκα<sub>1</sub> χθες<sub>2</sub> στον<sub>3</sub> Πειραιά<sub>4</sub> μαζί<sub>5</sub> με<sub>6</sub> τον<sub>7</sub> Γλαύκωνα,<sub>8</sub> τον<sub>9</sub> γιο<sub>10</sub> του<sub>11</sub> Αρίστωνα,<sub>12</sub> και<sub>13</sub> για<sub>14</sub> να<sub>15</sub> προσευχηθώ<sub>16</sub> στη<sub>17</sub> θεά<sub>18</sub> αλλά<sub>19</sub> και<sub>20</sub> επειδή<sub>21</sub> ήθελα<sub>22</sub> να<sub>23</sub> δω<sub>24</sub> με<sub>25</sub> ποιόν<sub>26</sub> τρόπο<sub>27</sub> θα<sub>28</sub> τελέσουν<sub>29</sub> την<sub>30</sub> γιορτή,<sub>31</sub> αφού<sub>32</sub> τώρα<sub>33</sub> την<sub>34</sub> έκαναν<sub>35</sub> για<sub>36</sub> πρώτη<sub>37</sub> φορά.<sub>38</sub> Μου<sub>39</sub> φάνηκε<sub>40</sub> λοιπόν<sub>41</sub> ωραία<sub>42</sub> η<sub>43</sub> πομπή<sub>44</sub> των<sub>45</sub> εντοπίων,<sub>46</sub> ωστόσο<sub>47</sub> εξίσου<sub>48</sub> όμορφη<sub>49</sub> μου<sub>50</sub> φάνηκε<sub>51</sub> και<sub>52</sub> η<sub>53</sub> πομπή<sub>54</sub> των<sub>55</sub> Θρακών.<sub>56</sub><br>
+<audio controls>
+<source src="/audio/b1-001b.mp3" type="audio/mpeg">
+</audio><hr>
+
+          
+          <div class="wow">(1-8) time, place,explicit and implicit agents &bull; (9-21) goal &bull; (22-25) justifyning goal &bull; (26-45) comparing aesthetics &bull; (19-21) Thracians as agents</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tabs / menu for the other 9 languages -->
+    <div class="toolbar" id="menu">
+      <!-- buttons will be injected -->
+    </div>
+
+    <!-- Selected translation appears here -->
+    <div class="card" id="trans-card" style="display:none;">
+      <div class="row">
+        <div class="lang-badge" id="trans-label">&nbsp;</div>
+        <button class="speaker" data-say="translation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5L6 9H3v6h3l5 4V5z"></path><path d="M19.07 4.93a10 10 0 010 14.14"></path><path d="M15.54 8.46a5 5 0 010 7.07"></path></svg>
+          <span>Listen</span>
+        </button>
+        <button class="stopper" data-stop="attic" aria-label="Stop audio">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+       stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+    <rect x="6" y="6" width="12" height="12"></rect>
+  </svg>
+  <span>Stop</span>
+</button>
+      </div>
+      <div class="content" id="trans-html"></div>
+    </div>
+  </div>
+
+  <script>
+    // --- DATA ---------------------------------------------------------------
+    const blocks = {
+      // Attic (for TTS we feed a no-sub version)
+      attic: {
+        label: 'Σωκράτης • Ἀττική',
+        htmlId: 'attic-html',
+        tts: `Κατέβην χθὲς εἰς Πειραιᾶ μετὰ Γλαύκωνος τοῦ Ἀρίστωνος προσευξόμενός τε τῇ θεῷ καὶ ἅμα τὴν ἑορτὴν βουλόμενος θεάσασθαι τίνα τρόπον ποιήσουσιν ἅτε νῦν πρῶτον ἄγοντες. καλὴ μὲν οὖν μοι καὶ ἡ τῶν ἐπιχωρίων πομπὴ ἔδοξεν εἶναι, οὐ μέντοι ἧττον ἐφαίνετο πρέπειν ἣν οἱ Θρᾷκες ἔπεμπον.`,
+        lang: 'el-GR'
+      },
+      // Nine translations
+      en: {
+        menu: 'English',
+        label: 'Socrates • English',
+        html: `I<sub>1</sub> went<sub>2</sub> down<sub>3</sub> yesterday<sub>4</sub> to<sub>5</sub> the<sub>6</sub> Piraeus<sub>7</sub> with<sub>8</sub> Glaucon,<sub>9</sub> the<sub>10</sub> son<sub>11</sub> of<sub>12</sub> Ariston,<sub>13</sub> to<sub>14</sub> pray<sub>15</sub> to<sub>16</sub> the<sub>17</sub> goddess<sub>18</sub> and<sub>19</sub> also<sub>20</sub> because<sub>21</sub> I<sub>22</sub> wanted<sub>23</sub> to<sub>24</sub> see<sub>25</sub> how<sub>26</sub> they<sub>27</sub> would<sub>28</sub> hold<sub>29</sub> the<sub>30</sub> festival,<sub>31</sub> since<sub>32</sub> they<sub>33</sub> were<sub>34</sub> doing<sub>35</sub> this<sub>36</sub> for<sub>37</sub> the<sub>38</sub> first<sub>39</sub> time.<sub>40</sub> The<sub>41</sub> procession<sub>42</sub> of<sub>43</sub> the<sub>44</sub> locals<sub>45</sub> seemed<sub>46</sub> fine<sub>47</sub> to<sub>48</sub> me,<sub>49</sub> but<sub>50</sub> no<sub>51</sub> less<sub>52</sub> fitting<sub>53</sub> was<sub>54</sub> the<sub>55</sub> one<sub>56</sub> the<sub>57</sub> Thracians<sub>58</sub> put<sub>59</sub> on.<sub>60</sub>`,
+        tts: `I went down yesterday to the Piraeus with Glaucon, the son of Ariston, to pray to the goddess and also because I wanted to see how they would hold the festival, since they were doing this for the first time. The procession of the locals seemed fine to me, but no less fitting was the one the Thracians put on.`,
+        lang: 'en'
+      },
+      es: {
+        menu: 'Español',
+        label: 'Sócrates • Español',
+        html: `Bajé<sub>1</sub> ayer<sub>2</sub> al<sub>3</sub> Pireo<sub>4</sub> con<sub>5</sub> Glaucón,<sub>6</sub> hijo<sub>7</sub> de<sub>8</sub> Aristón,<sub>9</sub> para<sub>10</sub> rezar<sub>11</sub> a<sub>12</sub> la<sub>13</sub> diosa<sub>14</sub> y<sub>15</sub> también<sub>16</sub> porque<sub>17</sub> quería<sub>18</sub> ver<sub>19</sub> cómo<sub>20</sub> iban<sub>21</sub> a<sub>22</sub> celebrar<sub>23</sub> la<sub>24</sub> fiesta,<sub>25</sub> ya<sub>26</sub> que<sub>27</sub> la<sub>28</sub> celebraban<sub>29</sub> por<sub>30</sub> primera<sub>31</sub> vez.<sub>32</sub> Me<sub>33</sub> pareció<sub>34</sub> buena<sub>35</sub> la<sub>36</sub> procesión<sub>37</sub> de<sub>38</sub> los<sub>39</sub> lugareños,<sub>40</sub> pero<sub>41</sub> no<sub>42</sub> menos<sub>43</sub> adecuada<sub>44</sub> fue<sub>45</sub> la<sub>46</sub> que<sub>47</sub> organizaron<sub>48</sub> los<sub>49</sub> tracios.<sub>50</sub>`,
+        tts: `Bajé ayer al Pireo con Glaucón, hijo de Aristón, para rezar a la diosa y también porque quería ver cómo iban a celebrar la fiesta, ya que la celebraban por primera vez. Me pareció buena la procesión de los lugareños, pero no menos adecuada fue la que organizaron los tracios.`,
+        lang: 'es-ES'
+      },
+      fr: {
+        menu: 'Français',
+        label: 'Socrate • Français',
+        html: `Je<sub>1</sub> suis<sub>2</sub> descendu<sub>3</sub> hier<sub>4</sub> au<sub>5</sub> Pirée<sub>6</sub> avec<sub>7</sub> Glaucon,<sub>8</sub> fils<sub>9</sub> d’<sub>10</sub> Ariston,<sub>11</sub> pour<sub>12</sub> prier<sub>13</sub> la<sub>14</sub> déesse<sub>15</sub> et<sub>16</sub> aussi<sub>17</sub> parce<sub>18</sub> que<sub>19</sub> je<sub>20</sub> voulais<sub>21</sub> voir<sub>22</sub> comment<sub>23</sub> ils<sub>24</sub> allaient<sub>25</sub> célébrer<sub>26</sub> la<sub>27</sub> fête,<sub>28</sub> puisqu’<sub>29</sub> ils<sub>30</sub> la<sub>31</sub> célébraient<sub>32</sub> pour<sub>33</sub> la<sub>34</sub> première<sub>35</sub> fois.<sub>36</sub> La<sub>37</sub> procession<sub>38</sub> des<sub>39</sub> habitants<sub>40</sub> m’<sub>41</sub> a<sub>42</sub> paru<sub>43</sub> belle<sub>44</sub> ;<sub>45</sub> celle<sub>46</sub> des<sub>47</sub> Thraces<sub>48</sub> ne<sub>49</sub> l’<sub>50</sub> était<sub>51</sub> pas<sub>52</sub> moins.<sub>53</sub>`,
+        tts: `Je suis descendu hier au Pirée avec Glaucon, fils d’Ariston, pour prier la déesse et aussi parce que je voulais voir comment ils allaient célébrer la fête, puisqu’ils la célébraient pour la première fois. La procession des habitants m’a paru belle ; celle des Thraces ne l’était pas moins.`,
+        lang: 'fr-FR'
+      },
+      da: {
+        menu: 'Dansk',
+        label: 'Sokrates • Dansk',
+        html: `Jeg<sub>1</sub> gik<sub>2</sub> i<sub>3</sub> går<sub>4</sub> ned<sub>5</sub> til<sub>6</sub> Piræus<sub>7</sub> sammen<sub>8</sub> med<sub>9</sub> Glaukon,<sub>10</sub> Aristons<sub>11</sub> søn,<sub>12</sub> for<sub>13</sub> at<sub>14</sub> bede<sub>15</sub> til<sub>16</sub> gudinden<sub>17</sub> og<sub>18</sub> også<sub>19</sub> fordi<sub>20</sub> jeg<sub>21</sub> gerne<sub>22</sub> ville<sub>23</sub> se,<sub>24</sub> hvordan<sub>25</sub> de<sub>26</sub> ville<sub>27</sub> holde<sub>28</sub> festen,<sub>29</sub> eftersom<sub>30</sub> de<sub>31</sub> holdt<sub>32</sub> den<sub>33</sub> for<sub>34</sub> første<sub>35</sub> gang.<sub>36</sub> Processionen<sub>37</sub> for<sub>38</sub> de<sub>39</sub> lokale<sub>40</sub> forekom<sub>41</sub> mig<sub>42</sub> god,<sub>43</sub> men<sub>44</sub> ikke<sub>45</sub> mindre<sub>46</sub> passende<sub>47</sub> var<sub>48</sub> den,<sub>49</sub> som<sub>50</sub> thrakerne<sub>51</sub> stod<sub>52</sub> for.<sub>53</sub>`,
+        tts: `Jeg gik i går ned til Piræus sammen med Glaukon, Aristons søn, for at bede til gudinden og også fordi jeg gerne ville se, hvordan de ville holde festen, eftersom de holdt den for første gang. Processionen for de lokale forekom mig god, men ikke mindre passende var den, som thrakerne stod for.`,
+        lang: 'da-DK'
+      },
+      de: {
+        menu: 'Deutsch',
+        label: 'Sokrates • Deutsch',
+        html: `Ich<sub>1</sub> ging<sub>2</sub> gestern<sub>3</sub> mit<sub>4</sub> Glaukon,<sub>5</sub> dem<sub>6</sub> Sohn<sub>7</sub> des<sub>8</sub> Ariston,<sub>9</sub> zum<sub>10</sub> Piräus<sub>11</sub> hinunter,<sub>12</sub> um<sub>13</sub> zur<sub>14</sub> Göttin<sub>15</sub> zu<sub>16</sub> beten<sub>17</sub> und<sub>18</sub> auch,<sub>19</sub> weil<sub>20</sub> ich<sub>21</sub> sehen<sub>22</sub> wollte,<sub>23</sub> wie<sub>24</sub> sie<sub>25</sub> das<sub>26</sub> Fest<sub>27</sub> abhalten<sub>28</sub> würden,<sub>29</sub> da<sub>30</sub> sie<sub>31</sub> es<sub>32</sub> zum<sub>33</sub> ersten<sub>34</sub> Mal<sub>35</sub> feierten.<sub>36</sub> Die<sub>37</sub> Prozession<sub>38</sub> der<sub>39</sub> Einheimischen<sub>40</sub> erschien<sub>41</sub> mir<sub>42</sub> gut,<sub>43</sub> doch<sub>44</sub> nicht<sub>45</sub> weniger<sub>46</sub> passend<sub>47</sub> war<sub>48</sub> diejenige,<sub>49</sub> die<sub>50</sub> die<sub>51</sub> Thraker<sub>52</sub> veranstalteten.<sub>53</sub>`,
+        tts: `Ich ging gestern mit Glaukon, dem Sohn des Ariston, zum Piräus hinunter, um zur Göttin zu beten und auch, weil ich sehen wollte, wie sie das Fest abhalten würden, da sie es zum ersten Mal feierten. Die Prozession der Einheimischen erschien mir gut, doch nicht weniger passend war diejenige, die die Thraker veranstalteten.`,
+        lang: 'de-DE'
+      },
+      pl: {
+        menu: 'Polski',
+        label: 'Sokrates • Polski',
+        html: `Wczoraj<sub>1</sub> zszedłem<sub>2</sub> do<sub>3</sub> Pireusu<sub>4</sub> z<sub>5</sub> Glaukonem,<sub>6</sub> synem<sub>7</sub> Aristona,<sub>8</sub> aby<sub>9</sub> pomodlić<sub>10</sub> się<sub>11</sub> do<sub>12</sub> bogini,<sub>13</sub> a<sub>14</sub> także<sub>15</sub> dlatego,<sub>16</sub> że<sub>17</sub> chciałem<sub>18</sub> zobaczyć,<sub>19</sub> jak<sub>20</sub> będą<sub>21</sub> obchodzić<sub>22</sub> święto,<sub>23</sub> skoro<sub>24</sub> obchodzili<sub>25</sub> je<sub>26</sub> po<sub>27</sub> raz<sub>28</sub> pierwszy.<sub>29</sub> Procesja<sub>30</sub> miejscowych<sub>31</sub> wydała<sub>32</sub> mi<sub>33</sub> się<sub>34</sub> dobra,<sub>35</sub> lecz<sub>36</sub> nie<sub>37</sub> mniej<sub>38</sub> stosowna<sub>39</sub> była<sub>40</sub> ta,<sub>41</sub> którą<sub>42</sub> urządzili<sub>43</sub> Trakowie.<sub>44</sub>`,
+        tts: `Wczoraj zszedłem do Pireusu z Glaukonem, synem Aristona, aby pomodlić się do bogini, a także dlatego, że chciałem zobaczyć, jak będą obchodzić święto, skoro obchodzili je po raz pierwszy. Procesja miejscowych wydała mi się dobra, lecz nie mniej stosowna była ta, którą urządzili Trakowie.`,
+        lang: 'pl-PL'
+      },
+      it: {
+        menu: 'Italiano',
+        label: 'Socrate • Italiano',
+        html: `Ieri<sub>1</sub> sono<sub>2</sub> sceso<sub>3</sub> al<sub>4</sub> Pireo<sub>5</sub> con<sub>6</sub> Glaucone,<sub>7</sub> figlio<sub>8</sub> di<sub>9</sub> Aristone,<sub>10</sub> per<sub>11</sub> pregare<sub>12</sub> la<sub>13</sub> dea<sub>14</sub> e<sub>15</sub> anche<sub>16</sub> perché<sub>17</sub> volevo<sub>18</sub> vedere<sub>19</sub> come<sub>20</sub> avrebbero<sub>21</sub> celebrato<sub>22</sub> la<sub>23</sub> festa,<sub>24</sub> dato<sub>25</sub> che<sub>26</sub> la<sub>27</sub> tenevano<sub>28</sub> per<sub>29</sub> la<sub>30</sub> prima<sub>31</sub> volta.<sub>32</sub> La<sub>33</sub> processione<sub>34</sub> degli<sub>35</sub> abitanti<sub>36</sub> mi<sub>37</sub> parve<sub>38</sub> bella,<sub>39</sub> ma<sub>40</sub> non<sub>41</sub> meno<sub>42</sub> adeguata<sub>43</sub> fu<sub>44</sub> quella<sub>45</sub> organizzata<sub>46</sub> dai<sub>47</sub> Traci.<sub>48</sub>`,
+        tts: `Ieri sono sceso al Pireo con Glaucone, figlio di Aristone, per pregare la dea e anche perché volevo vedere come avrebbero celebrato la festa, dato che la tenevano per la prima volta. La processione degli abitanti mi parve bella, ma non meno adeguata fu quella organizzata dai Traci.`,
+        lang: 'it-IT'
+      },
+      fi: {
+        menu: 'Suomi',
+        label: 'Sokrates • suomi',
+        html: `Menin<sub>1</sub> eilen<sub>2</sub> Pireukseen<sub>3</sub> Glaukonin,<sub>4</sub> Aristonin<sub>5</sub> pojan,<sub>6</sub> kanssa<sub>7</sub> rukoilemaan<sub>8</sub> jumalatarta,<sub>9</sub> ja<sub>10</sub> myös<sub>11</sub> siksi<sub>12</sub> että<sub>13</sub> halusin<sub>14</sub> nähdä,<sub>15</sub> miten<sub>16</sub> he<sub>17</sub> järjestäisivät<sub>18</sub> juhlan,<sub>19</sub> koska<sub>20</sub> he<sub>21</sub> viettivät<sub>22</sub> sitä<sub>23</sub> ensimmäistä<sub>24</sub> kertaa.<sub>25</sub> Paikallisten<sub>26</sub> kulkue<sub>27</sub> vaikutti<sub>28</sub> minusta<sub>29</sub> hyvältä,<sub>30</sub> mutta<sub>31</sub> ei<sub>32</sub> yhtään<sub>33</sub> vähemmän<sub>34</sub> sopiva<sub>35</sub> ollut<sub>36</sub> se,<sub>37</sub> jonka<sub>38</sub> traakialaiset<sub>39</sub> järjestivät.<sub>40</sub>`,
+        tts: `Menin eilen Pireukseen Glaukonin, Aristonin pojan, kanssa rukoilemaan jumalatarta, ja myös siksi että halusin nähdä, miten he järjestäisivät juhlan, koska he viettivät sitä ensimmäistä kertaa. Paikallisten kulkue vaikutti minusta hyvältä, mutta ei yhtään vähemmän sopiva ollut se, jonka traakialaiset järjestivät.`,
+        lang: 'fi-FI'
+      }
+    };
+
+    // Stop buttons: cancel any ongoing speech
+  document.addEventListener('click', (e) => {
+    const stopBtn = e.target.closest('.stopper');
+    if (!stopBtn) return;
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.cancel();
+    }
+  });
+
+    // Build menu with the nine translation tabs (exclude attic)
+    const order = ['en','es','fr','da','de','pl','it','fi'];
+    const menu = document.getElementById('menu');
+    order.forEach(key => {
+      const b = document.createElement('button');
+      b.className = 'tab';
+      b.textContent = blocks[key].menu;
+      b.addEventListener('click', () => showTranslation(key));
+      menu.appendChild(b);
+    });
+
+    function showTranslation(key) {
+      const card = document.getElementById('trans-card');
+      const label = document.getElementById('trans-label');
+      const html = document.getElementById('trans-html');
+      label.textContent = blocks[key].label;
+      html.innerHTML = blocks[key].html;
+      card.style.display = 'block';
+      card.dataset.lang = key; // remember which is shown
+      // Stop any ongoing speech
+      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+      window.scrollTo({ top: document.getElementById('attic-card').offsetTop, behavior: 'smooth' });
+    }
+
+    // --- TTS helpers --------------------------------------------------------
+    function pickVoice(forLang) {
+      const synth = window.speechSynthesis;
+      const voices = synth.getVoices();
+      if (!voices || !voices.length) return null;
+      // exact match first, then startsWith(lang)
+      let voice = voices.find(v => v.lang === forLang) || voices.find(v => v.lang && v.lang.toLowerCase().startsWith(forLang.split('-')[0]));
+      return voice || voices[0];
+    }
+
+    async function speak(kind) {
+      if (!('speechSynthesis' in window)) {
+        alert('Speech Synthesis is not supported in this browser.');
+        return;
+      }
+      const synth = window.speechSynthesis;
+      synth.cancel();
+
+      let text = '';
+      let lang = 'en-US';
+
+      if (kind === 'attic') {
+        text = blocks.attic.tts;
+        lang = blocks.attic.lang;
+      } else {
+        const key = document.getElementById('trans-card').dataset.lang;
+        if (!key) return;
+        text = blocks[key].tts;
+        lang = blocks[key].lang;
+      }
+
+      // Some browsers need a small delay before voices are available
+      await new Promise(r => setTimeout(r, 100));
+      const voice = pickVoice(lang);
+
+      const u = new SpeechSynthesisUtterance(text);
+      if (voice) {
+        u.voice = voice;
+        u.lang = voice.lang || lang;
+      } else {
+        u.lang = lang;
+      }
+      u.rate = 1.0; // normal speed
+      u.pitch = 1.0;
+      synth.speak(u);
+    }
+
+    // Attach listeners to speaker buttons
+    document.querySelectorAll('.speaker').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const kind = btn.getAttribute('data-say');
+        speak(kind);
+      });
+    });
+
+    // Ensure voices are loaded in Safari
+    if ('speechSynthesis' in window) {
+      window.speechSynthesis.onvoiceschanged = () => {};
+    }
+  </script>
+</body>
+</html>
+

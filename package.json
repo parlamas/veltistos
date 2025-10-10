@@ -8,13 +8,15 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "postbuild": "node scripts/build-docs-index.mjs"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.8.0",
     "clsx": "^2.1.1",
     "framer-motion": "^12.23.22",
     "lucide-react": "^0.544.0",
+    "minisearch": "^7.2.0",
     "next": "15.5.4",
     "nodemailer": "^6.10.1",
     "react": "19.1.0",

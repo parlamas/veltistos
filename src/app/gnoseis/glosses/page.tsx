@@ -2,6 +2,7 @@
 import path from "path";
 import { promises as fs } from "fs";
 import Link from "next/link";
+import GlossesSearch from "@/components/GlossesSearch";
 
 export const dynamic = "force-dynamic"; // read folder on every request
 
@@ -24,16 +25,24 @@ export default async function GlossesIndex() {
   return (
     <main className="max-w-[900px] mx-auto px-6 py-8">
       <h1 className="text-2xl font-semibold tracking-tight mb-2">Γνώσεις · Γλώσσες</h1>
-      <p className="text-sm text-zinc-600 mb-6">
+      <p className="text-sm text-zinc-600 mb-4">
         Αρχεία στο/Files in <code className="px-1 rounded bg-zinc-100">public/docs</code>.
       </p>
+
+      {/* 🔎 Client-side search over public/docs-index.json */}
+      <div className="mb-6">
+        <GlossesSearch />
+      </div>
 
       {entries.length === 0 ? (
         <p className="text-zinc-700">Δεν υπάρχουν ακόμη αρχεία./No files yet.</p>
       ) : (
         <ul className="space-y-2">
           {entries.map(name => (
-            <li key={name} className="flex items-center justify-between rounded-md border border-zinc-200 p-3 hover:bg-zinc-50">
+            <li
+              key={name}
+              className="flex items-center justify-between rounded-md border border-zinc-200 p-3 hover:bg-zinc-50"
+            >
               <div className="truncate">
                 <span className="font-medium">{name}</span>
               </div>
@@ -52,3 +61,4 @@ export default async function GlossesIndex() {
     </main>
   );
 }
+

@@ -2,10 +2,11 @@
 
 "use client";
 
-import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import SiteSearchInline from "@/components/SiteSearchInline";
 import {
   Search,
   X,
@@ -23,16 +24,9 @@ import {
   CloudLightning,
 } from "lucide-react";
 
+
 // --- Site-wide search inline component (TopBar) ---
-type SearchItem = {
-  type: "doc" | "page";
-  id: string;
-  url: string;
-  title: string;
-  body?: string;
-  excerpt?: string;
-  tags?: string[];
-};
+
 
 function SiteSearchInline() {
   const [items, setItems] = useState<SearchItem[]>([]);

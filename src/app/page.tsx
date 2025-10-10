@@ -4,11 +4,21 @@ import LeftStory from "@/components/LeftStory";
 import LeadCard from "@/components/LeadCard";
 import RightStory from "@/components/RightStory";
 import { homeSlots } from "@/content/home";
+import SiteSearch from "@/components/SiteSearch";
 
 export default function HomePage() {
   return (
     <main className="min-h-dvh bg-white">
       <div className="mx-auto max-w-6xl px-4 py-6">
+
+        {/* Site-wide search (docs + pages) */}
+        <section className="mb-6">
+          <div className="rounded-md border border-zinc-200 p-4 bg-white">
+            <h2 className="text-sm font-semibold mb-2">Αναζήτηση σε όλο τον ιστότοπο</h2>
+            <SiteSearch />
+          </div>
+        </section>
+
         <SiteGrid
           left={
             <div style={{ border: "1px solid brown", padding: "8px" }}>
@@ -42,3 +52,7 @@ export default function HomePage() {
     </main>
   );
 }
+
+
+
+

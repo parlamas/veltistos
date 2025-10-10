@@ -8,8 +8,7 @@
     "dev": "next dev --turbopack",
     "build": "next build --turbopack",
     "start": "next start",
-    "lint": "eslint",
-    "postbuild": "node scripts/build-docs-index.mjs"
+    "lint": "eslint"
   },
   "dependencies": {
     "@icons-pack/react-simple-icons": "^13.8.0",

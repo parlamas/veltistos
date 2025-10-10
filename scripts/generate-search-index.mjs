@@ -1,108 +1,70 @@
-// scripts/generate-search-index.mjs
-import { readdir, stat, readFile, writeFile } from "node:fs/promises";
-import path from "node:path";
+"use client";
+import MiniSearch from "minisearch";
+import { useEffect, useMemo, useState } from "react";
 
-const ROOT = process.cwd();
-const APP_DIR = path.join(ROOT, "src", "app");
-const OUT_PATH = path.join(ROOT, "public", "search-index.json");
+type DocItem =
+  | { type: "doc"; id: string; url: string; title: string; body: string }
+  | { type: "page"; id: string; url: string; title: string; excerpt?: string; tags?: string[] };
 
-async function walk(dir) {
-  const out = [];
-  for (const name of await readdir(dir)) {
-    const full = path.join(dir, name);
-    const st = await stat(full);
-    if (st.isDirectory()) {
-      out.push(...(await walk(full)));
-    } else {
-      out.push(full);
-    }
-  }
-  return out;
+export default function SiteSearch() {
+  const [q, setQ] = useState("");
+  const [loaded, setLoaded] = useState(false);
+
+  const mini = useMemo(
+    () =>
+      new MiniSearch<DocItem>({
+        fields: ["title", "body", "excerpt", "tags"],
+        storeFields: ["title", "url", "type"],
+        searchOptions: { prefix: true, boost: { title: 3 } },
+      }),
+    []
+  );
+
+  useEffect(() => {
+    fetch("/site-search.json")
+      .then((r) => r.json())
+      .then((data: DocItem[]) => { mini.addAll(data); setLoaded(true); })
+      .catch(() => setLoaded(true));
+  }, [mini]);
+
+  const results = q ? mini.search(q) : [];
+
+  return (
+    <div className="space-y-3">
+      <input
+        value={q}
+        onChange={(e) => setQ(e.target.value)}
+        placeholder="Αναζήτηση σε όλο τον ιστότοπο…"
+        className="w-full border rounded px-3 py-2"
+        aria-label="Αναζήτηση"
+      />
+      {q && (
+        <ul className="space-y-2">
+          {results.map((r) => {
+            const url = (r as any).url as string;
+            const title = (r as any).title as string;
+            const type = (r as any).type as "doc" | "page";
+            return (
+              <li key={r.id} className="border rounded p-3">
+                <a
+                  className="text-blue-600 hover:underline"
+                  href={url}
+                  target={type === "doc" ? "_blank" : undefined}
+                  rel="noopener noreferrer"
+                >
+                  {title}
+                </a>
+                <div className="text-xs text-zinc-600 mt-1">
+                  {type === "doc" ? "Document" : "Page"} · {url}
+                </div>
+              </li>
+            );
+          })}
+          {results.length === 0 && loaded && (
+            <li className="text-sm text-zinc-600">Κανένα αποτέλεσμα.</li>
+          )}
+        </ul>
+      )}
+    </div>
+  );
 }
-
-function isPageTsx(file) {
-  if (!file.endsWith(path.sep + "page.tsx")) return false;
-  if (file.includes(path.sep + "api" + path.sep)) return false;
-  if (file.endsWith(path.normalize("src/app/search/page.tsx"))) return false;
-  if (file.split(path.sep).some((seg) => /^\[.+\]$/.test(seg))) return false; // skip [slug]
-  return true;
-}
-
-function routeFrom(file) {
-  const rel = path.relative(APP_DIR, path.dirname(file));
-  if (!rel || rel === ".") return "/";
-  return "/" + rel.replace(/\\/g, "/");
-}
-
-function stripJsxAndTags(s) {
-  s = s.replace(/\/\*[\s\S]*?\*\//g, " ").replace(/\/\/[^\n]*/g, " "); // comments
-  s = s.replace(/\{[^{}]*\}/g, " "); // simple JSX braces
-  s = s.replace(/<[^>]+>/g, " "); // tags
-  return s.replace(/\s+/g, " ").trim();
-}
-
-function extractTitle(src, route) {
-  let m = src.match(/const\s+title\s*=\s*["'`](.*?)["'`]/s);
-  if (m && m[1]) return m[1].trim();
-  m = src.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-  if (m && m[1]) return stripJsxAndTags(m[1]);
-  if (route === "/") return "Αρχική";
-  return route.split("/").filter(Boolean).slice(-1)[0].replace(/[-_]/g, " ");
-}
-
-function extractExcerpt(src) {
-  const art = src.match(/<article[^>]*>([\s\S]*?)<\/article>/i);
-  const body = art ? art[1] : src;
-  return stripJsxAndTags(body).slice(0, 240);
-}
-
-// Try to extract a date from the source:
-// - ISO: 2025-10-01
-// - Dots/slashes/dashes: 01.10.25, 01/10/2025, 1-10-25, etc.
-function extractDateISO(src) {
-  // ISO yyyy-mm-dd
-  let m = src.match(/\b(20\d{2}-\d{2}-\d{2})\b/);
-  if (m) return new Date(m[1] + "T00:00:00Z").toISOString();
-
-  // dd.mm.yyyy or dd.mm.yy (also / or -)
-  m = src.match(/\b(\d{1,2})[./-](\d{1,2})[./-](\d{2,4})\b/);
-  if (m) {
-    let d = parseInt(m[1], 10);
-    let mo = parseInt(m[2], 10);
-    let y = parseInt(m[3], 10);
-    if (y < 100) y += 2000; // "25" -> 2025
-    if (mo >= 1 && mo <= 12 && d >= 1 && d <= 31) {
-      const dt = new Date(Date.UTC(y, mo - 1, d));
-      if (!isNaN(dt.getTime())) return dt.toISOString();
-    }
-  }
-  return undefined;
-}
-
-function fold(s) {
-  return s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase();
-}
-
-(async () => {
-  const all = await walk(APP_DIR);
-  const pages = all.filter(isPageTsx);
-
-  const items = [];
-  for (const file of pages) {
-    const route = routeFrom(file);
-    const raw = await readFile(file, "utf8");
-    const title = extractTitle(raw, route);
-    const excerpt = extractExcerpt(raw);
-    const date = extractDateISO(raw); // may be undefined
-    items.push({
-      title,
-      url: route,
-      excerpt,
-      date,
-      _folded: fold(`${title} ${excerpt}`),
-    });
-  }
-
-  await writeFile(OUT_PATH, JSON.stringify(items, null, 2), "utf8");
-  console.log(`✅ Wrote ${items.length} items to ${path.relative(ROOT, OUT_PATH)}`);
-})();

@@ -6,6 +6,7 @@ import { useEffect, useRef, useState, type ReactNode } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import SiteSearchInline from "@/components/SiteSearchInline";
 import {
   Search,
   X,
@@ -27,132 +28,6 @@ import {
 // --- Site-wide search inline component (TopBar) ---
 
 
-function SiteSearchInline() {
-  const [items, setItems] = useState<SearchItem[]>([]);
-  const [q, setQ] = useState("");
-  const [open, setOpen] = useState(false);
-  const [hi, setHi] = useState(0);
-  const wrapRef = useRef<HTMLDivElement>(null);
-
-  // Load the prebuilt JSON (includes public/docs/*.html)
-  useEffect(() => {
-    fetch("/site-search.json")
-      .then((r) => r.json())
-      .then((data: SearchItem[]) => setItems(data))
-      .catch(() => setItems([]));
-  }, []);
-
-  const results = useMemo(() => {
-    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-    if (!terms.length) return [];
-    return items
-      .map((it) => {
-        const hay =
-          (it.title || "") +
-          " " +
-          (it.excerpt || "") +
-          " " +
-          (it.body || "") +
-          " " +
-          (it.tags || []).join(" ");
-        const hayL = hay.toLowerCase();
-        const titleL = it.title.toLowerCase();
-        const titleHit = terms.some((t) => titleL.includes(t));
-        const bodyHit = terms.some((t) => hayL.includes(t));
-        const score = (titleHit ? 2 : 0) + (bodyHit ? 1 : 0);
-        return { it, score };
-      })
-      .filter((x) => x.score > 0)
-      .sort((a, b) => b.score - a.score || a.it.title.localeCompare(b.it.title))
-      .slice(0, 12)
-      .map((x) => x.it);
-  }, [items, q]);
-
-  // Close on outside click
-  useEffect(() => {
-    function onDocClick(e: MouseEvent) {
-      if (!wrapRef.current) return;
-      if (!wrapRef.current.contains(e.target as Node)) {
-        setOpen(false);
-        setHi(0);
-      }
-    }
-    document.addEventListener("mousedown", onDocClick);
-    return () => document.removeEventListener("mousedown", onDocClick);
-  }, []);
-
-  function goTo(idx: number) {
-    const r = results[idx];
-    if (!r) return;
-    if (r.type === "doc") {
-      window.open(r.url, "_blank", "noopener,noreferrer");
-    } else {
-      window.location.href = r.url;
-    }
-  }
-
-  function onKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (!results.length) return;
-    if (e.key === "ArrowDown") {
-      e.preventDefault();
-      setHi((i) => (i + 1) % results.length);
-    } else if (e.key === "ArrowUp") {
-      e.preventDefault();
-      setHi((i) => (i - 1 + results.length) % results.length);
-    } else if (e.key === "Enter") {
-      e.preventDefault();
-      goTo(hi);
-    } else if (e.key === "Escape") {
-      setOpen(false);
-    }
-  }
-
-  return (
-    <div className="relative" ref={wrapRef}>
-      <input
-        value={q}
-        onChange={(e) => {
-          setQ(e.target.value);
-          setOpen(true);
-          setHi(0);
-        }}
-        onFocus={() => q && setOpen(true)}
-        onKeyDown={onKeyDown}
-        placeholder="Αναζήτηση σε όλο τον ιστότοπο…"
-        className="w-64 md:w-80 rounded-md border border-white/30 bg-white/10 px-3 py-1.5 text-sm placeholder-white/80 text-white focus:outline-none focus:ring-2 focus:ring-white/70"
-        aria-label="Αναζήτηση"
-      />
-      {open && q && (
-        <div className="absolute left-0 mt-2 w-[28rem] max-w-[85vw] rounded-md bg-white text-zinc-900 shadow-lg ring-1 ring-zinc-200 z-50">
-          {results.length ? (
-            <ul className="max-h-96 overflow-auto py-1">
-              {results.map((r, i) => (
-                <li
-                  key={r.id}
-                  className={`px-3 py-2 text-sm cursor-pointer hover:bg-zinc-50 ${
-                    i === hi ? "bg-zinc-50" : ""
-                  }`}
-                  onMouseEnter={() => setHi(i)}
-                  onMouseDown={(e) => {
-                    e.preventDefault();
-                    goTo(i);
-                  }}
-                >
-                  <div className="font-medium text-zinc-900">{r.title}</div>
-                  <div className="text-xs text-zinc-600">
-                    {r.type === "doc" ? "Document" : "Page"} · {r.url}
-                  </div>
-                </li>
-              ))}
-            </ul>
-          ) : (
-            <div className="p-3 text-sm text-zinc-600">Κανένα αποτέλεσμα.</div>
-          )}
-        </div>
-      )}
-    </div>
-  );
-}
 
 
 function iconForOpenMeteo(code: number) {

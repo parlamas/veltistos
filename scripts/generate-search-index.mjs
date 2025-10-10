@@ -1,265 +1,211 @@
 // scripts/generate-search-index.mjs
+
+// scripts/generate-search-index.mjs
 import fs from "node:fs/promises";
 import path from "node:path";
 import { JSDOM } from "jsdom";
-import { PAGES } from "./search-pages.mjs";
-import { parse } from "@babel/parser";
-import traverse from "@babel/traverse";
+import { glob } from "glob";
 
+// --- paths ---------------------------------------------------------------
 const ROOT = process.cwd();
+const SRC_DIR = path.join(ROOT, "src");
+const APP_DIR = path.join(SRC_DIR, "app");
 const PUBLIC_DIR = path.join(ROOT, "public");
 const DOCS_DIR = path.join(PUBLIC_DIR, "docs");
 const OUT_FILE = path.join(PUBLIC_DIR, "site-search.json");
 
-const APP_CANDIDATES = [path.join(ROOT, "src", "app"), path.join(ROOT, "app")];
-const PAGE_FILENAMES = new Set([
-  "page.tsx", "page.jsx", "page.js", "page.ts",
-  "page.mdx", "page.md", "page.html",
-]);
+// What to treat as "pages" in the app router:
+const APP_PATTERNS = [
+  path.join(APP_DIR, "**/page.tsx"),
+  path.join(APP_DIR, "**/page.jsx"),
+  path.join(APP_DIR, "**/page.ts"),
+  path.join(APP_DIR, "**/page.js"),
+  path.join(APP_DIR, "**/page.mdx"),
+  path.join(APP_DIR, "**/page.md"),
+  path.join(APP_DIR, "**/page.html"),
+];
 
-async function existsDir(dir) { try { return (await fs.stat(dir)).isDirectory(); } catch { return false; } }
-async function walk(dir) {
-  const out = [];
-  const ents = await fs.readdir(dir, { withFileTypes: true });
-  for (const e of ents) {
-    const abs = path.join(dir, e.name);
-    if (e.isDirectory()) out.push(...(await walk(abs)));
-    else out.push(abs);
-  }
-  return out;
-}
-const isDyn = (seg) => /^\[.*\]$/.test(seg);
+// --- helpers -------------------------------------------------------------
 
-/* --------- normalization (accent-insensitive Greek, case-folded) --------- */
-function foldGreek(s) {
-  if (!s) return "";
-  // NFD: break letters + combining marks, then strip all marks
-  let out = s.normalize("NFD").replace(/\p{M}+/gu, "");
-  // unify sigma: final ς -> σ
-  out = out.replace(/\u03C2/g, "\u03C3"); // ς -> σ
-  // lowercase
-  out = out.toLowerCase();
-  // collapse whitespace
-  out = out.replace(/\s+/g, " ").trim();
-  return out;
+/** Map absolute app file => public URL (e.g. src/app/stories/x/page.tsx -> /stories/x) */
+function routeFromAbsoluteAppFile(abs) {
+  const rel = path.relative(APP_DIR, abs);                 // stories/x/page.tsx
+  const noFile = rel.replace(/[/\\]page\.[^.]+$/i, "");    // stories/x
+  return "/" + noFile.replace(/\\/g, "/");                 // /stories/x
 }
 
-/* ---------- plain-text extractors ---------- */
-function mdToText(src) {
-  return src
-    .replace(/^---[\s\S]*?---/g, " ")
-    .replace(/```[\s\S]*?```/g, " ")
-    .replace(/`[^`]*`/g, " ")
-    .replace(/!\[[^\]]*\]\([^)]+\)/g, " ")
-    .replace(/\[[^\]]*\]\([^)]+\)/g, " ")
-    .replace(/^#{1,6}\s*/gm, " ")
-    .replace(/[*_~>#\-+]+/g, " ")
-    .replace(/\|/g, " ")
-    .replace(/\s+/g, " ")
-    .trim();
-}
-
+/** Robust HTML->text using JSDOM (grabs hidden text, lists, etc.) */
 function htmlToText(html) {
-  try {
-    const dom = new JSDOM(html);
-    // textContent includes LI text and hidden text, which we DO want in the index.
-    const txt = dom.window.document.body?.textContent || "";
-    return txt.replace(/\s+/g, " ").trim();
-  } catch {
-    return html.replace(/\s+/g, " ").trim();
-  }
+  const dom = new JSDOM(html);
+  const d = dom.window.document;
+  const title =
+    d.querySelector("title")?.textContent?.trim() ||
+    d.querySelector("h1")?.textContent?.trim() ||
+    "";
+  let body = d.body?.textContent || "";
+  body = body.replace(/\s+/g, " ").trim();
+  return { title, body };
 }
 
-/** Extracts strings from JS/TS/JSX/TSX using Babel AST (captures JSX text & literals). */
-function codeToText(src) {
-  let ast;
-  try {
-    ast = parse(src, {
-      sourceType: "module",
-      plugins: ["jsx", "typescript", "importAssertions"],
-      errorRecovery: true,
-    });
-  } catch {
-    // fallback: rough strip
-    return src
-      .replace(/\/\*[\s\S]*?\*\//g, " ")
-      .replace(/\/\/[^\n\r]*/g, " ")
-      .replace(/<[^>]+>/g, " ")
-      .replace(/\{[\s\S]*?\}/g, " ")
-      .replace(/\s+/g, " ")
-      .trim();
-  }
-
-  const chunks = [];
-
-  traverse(ast, {
-    JSXText(path) {
-      const v = path.node.value;
-      if (v && /\S/.test(v)) chunks.push(v);
-    },
-    StringLiteral(path) {
-      const v = path.node.value;
-      if (v && /\S/.test(v)) chunks.push(v);
-    },
-    TemplateLiteral(path) {
-      for (const q of path.node.quasis) {
-        const v = q.value.cooked ?? q.value.raw;
-        if (v && /\S/.test(v)) chunks.push(v);
-      }
-    },
-    JSXAttribute(path) {
-      const name = path.node.name?.name;
-      if ((name === "alt" || name === "title") && path.node.value?.type === "StringLiteral") {
-        const v = path.node.value.value;
-        if (v && /\S/.test(v)) chunks.push(v);
-      }
-    },
-  });
-
-  return chunks.join(" ").replace(/\s+/g, " ").trim();
+/** Greek-insensitive folding (remove diacritics, normalize sigmas, lowercase) */
+function foldGreek(str = "") {
+  // NFD split + remove combining marks
+  let s = str.normalize("NFD").replace(/\p{M}+/gu, "");
+  // Normalize final sigma and regular sigma
+  s = s.replace(/ς/g, "σ");
+  // Lowercase
+  s = s.toLowerCase();
+  // Collapse spaces
+  return s.replace(/\s+/g, " ").trim();
 }
 
-/* ------------------ build PAGES (app routes) ------------------ */
+/** Heuristic extractor for TSX/JSX/TS/JS files – keep visible text between tags */
+function extractTextFromTsx(source) {
+  let s = source
+    // strip imports/exports and comments
+    .replace(/^\s*import[\s\S]*?;$/gm, " ")
+    .replace(/^\s*export[\s\S]*?;$/gm, " ")
+    .replace(/\/\*[\s\S]*?\*\//g, " ")
+    .replace(/\/\/[^\n\r]*/g, " ");
+
+  // remove JSX/TSX expressions {...}
+  s = s.replace(/\{[\s\S]*?\}/g, " ");
+
+  // replace tags with spaces, keep inner text
+  s = s.replace(/<[^>]+>/g, " ");
+
+  // light entity decode
+  s = s
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#39;/g, "'")
+    .replace(/&quot;/g, '"');
+
+  return s.replace(/\s+/g, " ").trim();
+}
+
+/** Try to guess a title from source when we don't have <title>/<h1> */
+function guessTitleFromSource(src, fallbackUrl = "") {
+  // look for a heading-ish string
+  const m = src.match(/<h1[^>]*>([^<]{3,200})<\/h1>/i);
+  if (m) return m[1].replace(/\s+/g, " ").trim();
+  // fallback to path
+  return fallbackUrl || "Untitled";
+}
+
+// --- indexing ------------------------------------------------------------
+
+/** Build items for app routes (TSX/JSX/MDX/MD/HTML/JS/TS) */
 async function buildPages() {
-  const explicit = (PAGES || []).map((p, i) => {
-    const title = p.title || p.url;
-    const excerpt = p.excerpt || "";
-    const tags = p.tags || [];
-    const body = (p.body || "").toString();
+  const files = (await Promise.all(APP_PATTERNS.map((p) => glob(p)))).flat();
 
-    return {
-      type: "page",
-      id: `page-explicit-${i + 1}`,
-      url: p.url,
-      title,
-      excerpt,
-      tags,
-      body,
-      // folded fields
-      titleFold: foldGreek(title),
-      excerptFold: foldGreek(excerpt),
-      bodyFold: foldGreek(body),
-      tagsFold: tags.map(foldGreek),
-    };
-  });
+  console.log(`App page files found: ${files.length}`);
+  if (files.length) {
+    console.log("First few app pages:");
+    files
+      .slice(0, 8)
+      .forEach((f) => console.log("  -", path.relative(ROOT, f)));
+  }
 
-  let base = null;
-  for (const c of APP_CANDIDATES) { if (await existsDir(c)) { base = c; break; } }
-  if (!base) return explicit;
-
-  const all = await walk(base);
-  const pageFiles = all.filter(f => PAGE_FILENAMES.has(path.basename(f)));
-
-  const discovered = [];
-  for (const abs of pageFiles) {
-    const rel = path.relative(base, abs).replace(/\\/g, "/");
-    const parts = rel.split("/");
-    if (parts.some(isDyn)) continue;
-
-    const dir = path.dirname(rel);
-    let url = "/" + (dir === "." ? "" : dir);
-    if (url === "/index") url = "/";
-
-    let raw = "";
-    try { raw = await fs.readFile(abs, "utf8"); } catch { /* ignore */ }
-
-    const ext = path.extname(abs).toLowerCase();
-    let body = "";
-    if (ext === ".md" || ext === ".mdx") body = mdToText(raw);
-    else if (ext === ".html") body = htmlToText(raw);
-    else body = codeToText(raw);
-
-    // title: try <h1>, else folder name
-    let title = url === "/" ? "Αρχική" : (dir.split("/").pop() || url);
-    const h1 = raw.match(/<h1[^>]*>([\s\S]*?)<\/h1>/i);
-    if (h1 && h1[1]) {
-      const dom = new JSDOM(h1[1]);
-      const t = dom.window.document.body.textContent?.trim();
-      if (t) title = t;
+  const items = [];
+  for (const abs of files) {
+    let src = "";
+    try {
+      src = await fs.readFile(abs, "utf8");
+    } catch {
+      continue;
     }
 
-    if (body.length > 10000) body = body.slice(0, 10000);
+    const url = routeFromAbsoluteAppFile(abs);
+    let title = "";
+    let body = "";
 
-    discovered.push({
+    if (/\.(html|mdx|md)$/i.test(abs)) {
+      const t = htmlToText(src);
+      title = t.title || guessTitleFromSource(src, url);
+      body = t.body;
+    } else {
+      // tsx/jsx/js/ts => strip code/JSX and keep visible text
+      title = guessTitleFromSource(src, url);
+      body = extractTextFromTsx(src);
+    }
+
+    const excerpt = body.slice(0, 500);
+
+    items.push({
       type: "page",
-      id: `page-auto-${discovered.length + 1}`,
+      id: `page:${path.relative(ROOT, abs).replace(/\\/g, "/")}`,
       url,
       title,
-      excerpt: "",
+      excerpt,
       tags: [],
-      body,
+      // folded fields for accent-insensitive search
       titleFold: foldGreek(title),
-      excerptFold: "",
       bodyFold: foldGreek(body),
+      excerptFold: foldGreek(excerpt),
+      tagsFold: [],
+    });
+  }
+  return items;
+}
+
+/** Build items for public/docs/*.html */
+async function buildDocs() {
+  const exists = await fs
+    .access(DOCS_DIR)
+    .then(() => true)
+    .catch(() => false);
+  if (!exists) return [];
+
+  const files = await glob("**/*.html", { cwd: DOCS_DIR, nodir: true });
+  const items = [];
+
+  for (const rel of files) {
+    const abs = path.join(DOCS_DIR, rel);
+    const html = await fs.readFile(abs, "utf8").catch(() => "");
+    if (!html) continue;
+
+    const { title: t, body: b } = htmlToText(html);
+    const url = `/docs/${rel.replace(/\\/g, "/")}`;
+    const title = t || rel;
+    const body = b.slice(0, 8000); // keep it sane
+    const excerpt = body.slice(0, 500);
+
+    items.push({
+      type: "doc",
+      id: `doc:${rel.replace(/\\/g, "/")}`,
+      url,
+      title,
+      body,
+      // folded fields for accent-insensitive search
+      titleFold: foldGreek(title),
+      bodyFold: foldGreek(body),
+      excerptFold: foldGreek(excerpt),
       tagsFold: [],
     });
   }
 
-  const byUrl = new Map();
-  for (const p of discovered) byUrl.set(p.url, p);
-  for (const p of explicit) byUrl.set(p.url, p);
-
-  return Array.from(byUrl.values()).sort((a, b) => a.url.localeCompare(b.url));
-}
-
-/* --------------------- build DOCS (public/docs) --------------------- */
-async function buildDocs() {
-  const items = [];
-  if (!(await existsDir(DOCS_DIR))) return items;
-
-  async function walkDocs(dir, relBase = "") {
-    const ents = await fs.readdir(dir, { withFileTypes: true });
-    for (const e of ents) {
-      const abs = path.join(dir, e.name);
-      const rel = path.join(relBase, e.name);
-      if (e.isDirectory()) {
-        await walkDocs(abs, rel);
-      } else if (e.isFile() && e.name.toLowerCase().endsWith(".html")) {
-        let html = "";
-        try { html = await fs.readFile(abs, "utf8"); } catch { continue; }
-
-        const dom = new JSDOM(html);
-        const d = dom.window.document;
-
-        const title =
-          d.querySelector("h1")?.textContent?.trim() ||
-          d.querySelector("title")?.textContent?.trim() ||
-          rel;
-
-        // textContent includes UL/OL/LI and hidden text; we keep everything
-        let body = (d.body?.textContent || "").replace(/\s+/g, " ").trim();
-        if (body.length > 12000) body = body.slice(0, 12000);
-
-        items.push({
-          type: "doc",
-          id: `doc-${rel.replace(/\\/g, "/")}`,
-          url: `/docs/${rel.replace(/\\/g, "/")}`,
-          title,
-          body,
-          titleFold: foldGreek(title),
-          bodyFold: foldGreek(body),
-        });
-      }
-    }
-  }
-
-  await walkDocs(DOCS_DIR, "");
   return items;
 }
 
-/* ------------------------------ main ------------------------------ */
+// --- main ----------------------------------------------------------------
+
 async function main() {
   const pages = await buildPages();
   const docs = await buildDocs();
   const all = [...pages, ...docs];
 
+  console.log(`Pages indexed: ${pages.length}`);
+  console.log(`Docs indexed:  ${docs.length}`);
+
   await fs.mkdir(PUBLIC_DIR, { recursive: true });
   await fs.writeFile(OUT_FILE, JSON.stringify(all, null, 2), "utf8");
-
-  console.log(`✅ Indexed pages: ${pages.length}, docs: ${docs.length}`);
   console.log(`✅ Wrote ${all.length} items to ${path.relative(ROOT, OUT_FILE)}`);
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
-
-
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

@@ -3,6 +3,8 @@
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
+import '../styles/globals.css'
+
 
 // ------------------------------------------------------------------------------------
 // Types & data

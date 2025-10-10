@@ -25,11 +25,11 @@ export default async function GlossesIndex() {
     <main className="max-w-[900px] mx-auto px-6 py-8">
       <h1 className="text-2xl font-semibold tracking-tight mb-2">Γνώσεις · Γλώσσες</h1>
       <p className="text-sm text-zinc-600 mb-6">
-        Αρχεία που βρίσκονται στον φάκελο <code className="px-1 rounded bg-zinc-100">public/docs</code>.
+        Αρχεία στο/Files in <code className="px-1 rounded bg-zinc-100">public/docs</code>.
       </p>
 
       {entries.length === 0 ? (
-        <p className="text-zinc-700">Δεν υπάρχουν ακόμη αρχεία.</p>
+        <p className="text-zinc-700">Δεν υπάρχουν ακόμη αρχεία./No files yet.</p>
       ) : (
         <ul className="space-y-2">
           {entries.map(name => (
@@ -43,7 +43,7 @@ export default async function GlossesIndex() {
                 target="_blank" // open the raw HTML in a new tab
                 rel="noopener noreferrer"
               >
-                Άνοιγμα
+                Άνοιγμα/Open
               </Link>
             </li>
           ))}

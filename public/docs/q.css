@@ -1,0 +1,951 @@
+@font-face {
+  font-family: 'EBGaramond';
+  src: url('fonts/EBGaramond-Regular.ttf') format('truetype');
+}
+body {
+  font-family: 'EBGaramond', serif;
+}
+
+
+table.green-bordered {
+      font-size: 10pt;
+      text-align: left;
+      border: 2px solid green;
+      border-collapse: collapse;
+    }
+
+    table.green-bordered th,
+    table.green-bordered td {
+      border: 1px solid green;
+      padding: 5px;
+    }
+
+
+/* Clause container */
+.dspan1962 {
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Table structure */
+.clause-table {
+    width: 100%;
+    border-collapse: collapse;
+    border-color:green;
+    text-align: center;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Top label row */
+.top-label-row td {
+    font-size: 11pt;
+    font-weight: bold;
+    color: blue;
+    background-color: white;
+    padding: 5px;
+    border-bottom: 2px solid #ddd;
+    position: relative; /* Required for markers */
+}
+
+.cell-marker.top-right {
+    top: 2px;
+    right: 2px;
+    bottom: auto;
+    left: auto;
+}
+
+/* Sub-label row */
+.sub-label-row td {
+    font-size: 10pt;
+    font-weight: bold;
+    color: purple;
+    background-color: #f0f0f0;
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    position: relative; /* Required for markers */
+}
+
+/* Sub-sub-label row (NEW) */
+.sub-sub-label-row td {
+    font-size: 9pt;
+    font-weight: bold;
+    color: darkgreen;
+    background-color: #e8e8e8;
+    padding: 5px;
+    padding-top:15px;
+    border-bottom: 1px dashed #ccc;
+    position: relative;
+}
+
+/* Word cell */
+.word-cell td {
+    padding: 8px;
+    background-color: #f9f9f9;
+    position: relative; /* Required for markers */
+}
+
+/* Label styling */
+.label {
+    font-size: 11pt;
+    font-weight: bold;
+    color: red;
+    background-color: white;
+    padding: 6px;
+    border-radius: 4px;
+    display: block;
+    margin: 4px 0;
+}
+
+/* Word styling */
+.word {
+    background-color: gold;
+    color: black;
+    font-weight: bold;
+    padding: 8px;
+    display: block;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
+/* Marker styling */
+.cell-marker {
+    position: absolute;
+    font-size: 8pt;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: -3px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Ensure markers are above other content */
+}
+
+/* Position markers in the bottom-left corner */
+.cell-marker.bottom-left {
+    bottom: 0px;
+    left: 0px;
+}
+
+/*end of dspan1962*/
+
+/* Reset default list styles */
+.tree, .tree ul, .tree li {
+  margin: 0;
+  padding: 0;
+  list-style-type: none;
+  position: relative;
+}
+
+/* Styling for the nodes */
+.tree .node {
+  padding: 10px;
+  border: 1px solid #ccc;
+  background-color: #f9f9f9;
+  display: inline-block;
+  border-radius: 4px;
+}
+
+/* Vertical lines */
+.tree ul {
+  padding-left: 40px; /* Adjust spacing for child nodes */
+}
+
+.tree li {
+  padding-left: 20px; /* Adjust spacing for child nodes */
+  position: relative;
+}
+
+/* Horizontal lines */
+.tree li::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -10px;
+  width: 1px;
+  height: 100%;
+  border-left: 1px solid #ccc;
+}
+
+/* Vertical lines */
+.tree li::after {
+  content: "";
+  position: absolute;
+  top: 20px; /* Adjust based on node height */
+  left: -10px;
+  width: 20px; /* Adjust based on spacing */
+  border-top: 1px solid #ccc;
+}
+
+/* Remove lines for the last child */
+.tree li:last-child::before {
+  height: 20px; /* Adjust based on node height */
+}
+/*...........................*/
+/* beginning of dspan1961 */
+
+
+/* beginning of dspan1961 */
+
+/* Clause container */
+.dspan1961 {
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Table structure */
+.clause-table {
+    width: 50%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Example number column */
+.example-number {
+    font-size: 10pt;
+    font-weight: bold;
+    color: #4CAF50; /* Green color for consistency */
+    background-color: #f0f0f0; /* Light background */
+    padding: 8px;
+    text-align: right; /* Align numbers to the right */
+    border-right: 2px solid #ddd; /* Add a border to separate the column */
+    width: 50px; /* Fixed width for the example number column */
+}
+
+/* Top label row */
+.top-label-row td {
+    font-size: 11pt;
+    font-weight: bold;
+    color: blue;
+    background-color: white !important; /* Beige */
+    padding: 8px;
+    border-bottom: 2px solid #ddd;
+    position: relative; /* Required for markers */
+}
+
+/* Sub-label row */
+.sub-label-row td {
+    font-size: 11pt;
+    font-weight: bold;
+    color: black !important;
+    background-color: white !important; /* Very light green */
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    position: relative; /* Required for markers */
+}
+
+/* Word cell */
+.word-cell td {
+    padding: 8px;
+    background-color: #f9f9f9;
+    position: relative; /* Required for markers */
+}
+
+/* Label styling */
+.label {
+    font-size: 11pt;
+    font-weight: bold;
+    color: red !important;
+    background-color: white !important;
+    padding: 6px;
+    border-radius: 4px;
+    display: block;
+    margin: 4px 0;
+}
+
+/* Word styling */
+.word {
+    background-color: gold;
+    color: black;
+    font-weight: bold;
+    padding: 8px;
+    display: block;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
+/* Marker styling */
+.cell-marker {
+    position: absolute;
+    font-size: 11pt;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: 2px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Ensure markers are above other content */
+}
+
+/* Position markers in the bottom-left corner */
+.cell-marker.bottom-left {
+    bottom: 4px;
+    left: 4px;
+}
+
+/*end of dspan1961*/
+
+
+
+/*end of dspan1961*/
+
+
+
+/*...........dyn................*/
+
+.dyn {
+  background-color: white; /* Light background */
+  border-left: 0px solid green; /* Bold left border */
+  padding: 5px;
+  margin: 5px 0;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 800px;
+  line-height: 1.5;
+  position: relative;
+  height:930px;
+}
+
+
+.dyn::before {
+  content: attr(data-title); /* Dynamically set title from HTML */
+  display: flex;
+  align-items: center;
+  font-weight: bold;
+  color: beige; /* Title text */
+  background-color: brown;
+  padding: 6px 12px;
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  top: -12px;
+  left: 46px; /* Adjusted to make room for page number */
+}
+
+
+.dyn::after {
+  content: "Page " attr(data-page); /* Dynamically set page number */
+  font-weight: bold;
+  color: white; /* Different color for distinction */
+  background-color: black; /* Background color for contrast */
+  padding: 6px 12px;
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  top: -12px;
+  left: -30px; /* Positioning the page number */
+}
+/*...............end of dyn......................*/
+
+/*.....................*/
+
+.grammar-note {
+    border-left: 4px solid #2e8b57; background: #f6fff6; padding-top:0px; padding-bottom:0px; padding:7px; margin: 2em 0; position: relative; top: 0px;
+}
+
+.comp {
+    border-left: 4px solid brown;
+background: #F7E7CE;
+padding: 0px 10px;
+margin: 2em 0;
+
+}
+
+
+.dyn1 {
+  background-color: white; /* Light background */
+  border-left: 0px solid green; /* Bold left border */
+  padding: 5px;
+  margin: 5px 0;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 800px;
+  line-height: 1.5;
+  position: relative;
+  height: 930px;
+}
+
+.dyn1::before,
+.dyn1::after {
+  display: flex;
+  align-items: center;
+  font-size: 11pt; /* Same font size */
+  font-weight: bold;
+  padding: 6px 12px; /* Same padding */
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  top: -12px;
+  line-height: 1.5; /* Same line height */
+}
+
+.dyn1::before {
+  content: attr(data-title); /* Dynamically set title from HTML */
+  color: beige; /* Title text */
+  background-color: brown;
+  left: 53px; /* Adjusted to make room for page number */
+  width:500px;
+}
+
+.dyn1::after {
+  content: "Page " attr(data-page); /* Dynamically set page number */
+  color: white; /* Different color for distinction */
+  background-color: black; /* Background color for contrast */
+  left: -30px; /* Positioning the page number */
+  width:60px;
+}
+
+
+
+
+/*...........dyn1111 Danish................*/
+
+
+.dyn1111 {
+  background-color: white; /* Light background */
+  border-left: 0px solid green; /* Bold left border */
+  padding: 5px;
+  margin: 5px 0;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 800px;
+  line-height: 1.5;
+  position: relative;
+  height: 930px;
+}
+
+.dyn1111::before,
+.dyn1111::after {
+  display: flex;
+  align-items: center;
+  font-size: 9pt; /* Same font size */
+  font-weight: bold;
+  padding: 6px 12px; /* Same padding */
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  top: -12px;
+  line-height: 1.5; /* Same line height */
+}
+
+.dyn1111::before {
+  content: attr(data-title); /* Dynamically set title from HTML */
+  color: beige; /* Title text */
+  background-color: brown;
+  left: 38px; /* Adjusted to make room for page number */
+}
+
+.dyn1111::after {
+  content: "Side " attr(data-side); /* Dynamically set page number */
+  color: white; /* Different color for distinction */
+  background-color: black; /* Background color for contrast */
+  left: -30px; /* Positioning the page number */
+  width:44px;
+}
+
+
+/*...............end of dyn1111......................*/
+
+
+
+
+/*.....................................*/
+
+.the {font-size:12pt; line-height:1.5; color:black;}
+
+
+  .ex {background-color:grey; color:green;}
+
+            .ax {background-color:beige; color:black; padding-bottom:0px; padding-left:5px; padding-right:5px; font-weight:normal; border-radius:5px;}
+
+            .bl {color:black; font-weight:bold;}
+
+           .b2 {color:blue; font-weight:bold;}
+
+           .y {color:yellow; font-weight:bold;}
+
+           .gb {color:green; font-weight:bold; font-size:40px; position: relative; top: 7px;}
+
+           .r {color:red; font-weight:bold;}
+
+           .green {color:green; font-weight:bold;}
+
+           .br {color:brown; font-weight:bold;}
+
+           .u {border-bottom: 2px solid blue; padding-bottom: 1px;}
+
+           .u1 {border-bottom: 2px solid red; padding-bottom: 1px;}
+
+           .u2 {border-bottom: 2px solid green; padding-bottom: 1px;}
+
+           .bb {background-color:beige; color:brown; font-weight:bold;}
+
+           .brr {border-bottom: 2px solid brown; padding-bottom: 1px;}
+
+           .l {border-bottom: 2px solid lime; padding-bottom: 1px;}
+
+           .f {border-bottom: 2px solid fuchsia; padding-bottom: 1px;}
+
+           .wow {background-color:beige; color:brown; font-weight:bold; padding:2px; border-radius:5px;}
+
+            .wow2 {background-color:beige; color:black; font-weight:normal; padding-top:1px; padding-bottom:1px; padding-left:0px; padding-right:0px; border-radius:5px;}
+
+           .wow1 {color:black; font-weight:bold; padding:2px; border-radius:5px;}
+
+           .gr1 {background-color:beige; color:green; font-weight:bold; display: block; margin-top: -6px; }
+
+           .gr2 {background-color:beige; color:green; font-weight:bold; margin-top: -6px; }
+
+           .gr3 {background-color:white; color:blue; font-weight:bold; border-radius:10px; padding:5px;}
+
+           .ch {background-color:yellow; color:black; font-weight:bold; margin-top: -6px; }
+
+           .def {background-color:gold; color: black; padding-left:2px; padding-right:2px; font-size:10px; font-weight: bold;}
+
+           .tt {background-color:green; color:yellow; padding: 1px;}
+
+           .ll {color:lime;}
+
+           .wh {color:white;}
+
+           .bg {color:beige;}
+
+           .cy {color:cyan;}
+           .dng {background-color:green; color:yellow; font-weight:bold;}
+
+            .fine {background-color:blue; color:yellow; font-weight:normal; padding:2px; border-radius:5px;}
+
+
+           .com {background-color:pink; padding:2px; width:100px;}
+           .com1 {
+    background-color: pink;
+    padding: 2px;
+    width: 180px !important; /* Force the width */
+    display: inline-block;
+}
+
+
+.com2 {
+  width: 620px;  
+  height: 83px;  
+  border: 1px dashed brown;
+  padding: 8px;  
+  box-sizing: border-box; /* Ensures padding is part of the total dimensions */
+  margin: 0; /* Ensures no extra margins */
+  display: inline-block; /* Prevents block elements from adding unexpected spacing */
+}
+
+.com2 span {
+  display: inline; /* Ensures spans behave correctly */
+}
+
+.com2 * { 
+  margin: 0;
+  padding: 0;
+  line-height: 1; /* Ensures no extra space from text */
+}
+
+
+           /*........................................*/
+
+
+
+
+
+/* beginning of dspan1961 */
+
+/* Clause container */
+.dspan1961 {
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
+    width: 100%;
+    margin: 10px 0;
+}
+
+/* Table structure */
+.clause-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: center;
+    margin: 0 auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* Top label row */
+.top-label-row td {
+    font-size: 11pt;
+    font-weight: bold;
+    color: blue;
+    background-color: white;
+    padding: 8px;
+    border-bottom: 2px solid #ddd;
+    position: relative; /* Required for markers */
+}
+
+/* Sub-label row */
+.sub-label-row td {
+    font-size: 10pt;
+    font-weight: bold;
+    color: purple;
+    background-color: #f0f0f0;
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    position: relative; /* Required for markers */
+}
+
+/* Word cell */
+.word-cell td {
+    padding: 8px;
+    background-color: #f9f9f9;
+    position: relative; /* Required for markers */
+}
+
+/* Label styling */
+.label {
+    font-size: 11pt;
+    font-weight: bold;
+    color: red;
+    background-color: white;
+    padding: 6px;
+    border-radius: 4px;
+    display: block;
+    margin: 4px 0;
+}
+
+/* Word styling */
+.word {
+    background-color: gold;
+    color: black;
+    font-weight: bold;
+    padding: 8px;
+    display: block;
+    border-radius: 4px;
+    margin-top: 4px;
+}
+
+/* Marker styling */
+.cell-marker {
+    position: absolute;
+    font-size: 8pt;
+    color: #555;
+    background-color: rgba(255, 255, 255, 0.8);
+    padding: -3px;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    z-index: 2; /* Ensure markers are above other content */
+}
+
+/* Position markers in the bottom-left corner */
+.cell-marker.bottom-left {
+    bottom: 0px;
+    left: 0px;
+}
+
+/*end of dspan1961*/
+
+
+.ez {
+    background-color: #E3F2FD; /* Light blue background */
+    color: #0D47A1; /* Dark blue text */
+    padding: 8px;
+    border-radius: 8px;
+    border-left: 5px solid #0D47A1; /* Dark blue left border */
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-weight:bold;
+    text-align:left;
+}
+
+
+.av {
+    background-color: #fff3e0;
+    color: #e65100; /*text*/
+    padding: 5px;
+    border-radius: 8px;
+    border-left: 5px solid #E65100; /* Dark blue left border */
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-weight:bold;
+}
+
+
+
+.av1 {
+    background-color: #e6e6a5;
+    color: #706c11; /*text*/
+    padding: 5px;
+    border-radius: 8px;
+    border-left: 5px solid #706c11; /* Dark blue left border */
+    font-size: 11pt;
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-weight:bold;
+}
+
+
+/* Example Depot thin beginning */
+.edd {
+  background-color: #f9f9f9; /* Light gray background */
+  padding: 16px;
+  margin: 16px 0;
+  font-size: 10pt;
+  font-weight: 500;
+  border-radius: 8px;
+  box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1); /* Soft shadow */
+  max-width: 600px;
+  line-height: 1.5;
+  position: relative;
+  overflow: hidden; /* Ensure the pseudo-elements don't overflow */
+}
+
+/* Example Depot label */
+.edd::before {
+  content: "Example Depot";
+  display: block;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #ffffff;
+  background-color: brown;
+  padding: 6px 12px;
+  border-radius: 5px 5px 0 0;
+  position: absolute;
+  top: 0px;
+  left: 10px;
+  z-index: 1; /* Ensure the label is above the lines */
+  padding-bottom:2px;
+  padding-top:2px;
+}
+
+/* First thin line */
+.edd::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 1px; /* Width of the first line */
+  background-color: #f6aa1c; /* Color of the first line */
+}
+
+/* Second thin line */
+.edd .line-2 {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 5px; /* Adjust this value to control the spacing between the lines */
+  height: 100%;
+  width: 1px; /* Width of the second line */
+  background-color: #f6aa1c; /* Color of the second line */
+}
+/*end of example depot thin*/
+
+.il {
+            float: left; /* Change to 'left' if you want the image on the left */
+            margin: 10px; /* Adds space around the image */
+            width: 200px;
+            height: 200px;
+        }
+
+
+
+/*..................*/
+/* Definition Container */
+.dwb {
+    background-color: #f9f9f9; /* Light background */
+    padding-left: 10px;
+    padding-right: 10px;
+    margin: 10px 0;
+    font-family: 'Georgia', serif; /* Classic font for books */
+    font-size: 15px;
+    line-height: 1.6;
+    color: #333; /* Dark text for readability */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    border-radius: 5px;
+    position: relative; /* For the horizontal bar */
+    overflow: hidden; /* Ensure content wraps properly */
+    padding-bottom:0px;
+    padding-top:10px;
+}
+
+/* Horizontal Bar */
+.dwb::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 4px; /* Thickness of the bar */
+    background-color: #1E90FF; /* Deep blue color */
+    border-radius: 2px 2px 0 0; /* Rounded corners at the top */
+}
+
+/* Definition Title */
+.definition-title {
+    font-size: 16px;
+    font-weight: bold;
+    color: #1E90FF; /* Matching deep blue color */
+    margin-bottom: 0px;
+}
+
+/* Definition Text */
+.definition-text {
+    margin: 0;
+}
+
+/* Example Section */
+.definition-example {
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #ddd; /* Subtle separator for examples */
+    font-style: italic;
+    color: #555;
+}
+
+
+.definition-example1 {
+    margin-top: 10px;
+    padding-left: 10px;
+    border-left: 3px solid #ddd; /* Subtle separator for examples */
+    font-style: italic;
+    color: #555;
+}
+/*..........................*/
+
+sub {font-size:9pt; color:red; font-weight:bold;}
+
+
+.theo {
+    background-color: #dfffd6;
+    color: #006400; /*text*/
+    padding: 5px;
+    border-radius: 8px;
+    border-left: 5px solid #006400; /* Dark green left border */
+    font-size: 12pt;
+    font-family: Arial, sans-serif;
+    margin: 10px 0;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-weight:bold;
+}
+
+.indent {
+    text-indent: 20px;
+  }
+
+  /*........time...........*/
+
+.time {
+    background-color: #f9f9f9; /* Light background */
+    border: 2px solid #e0e0e0; /* Subtle border */
+    border-radius: 10px; /* Rounded corners */
+    padding: 5px; /* 5px padding on all sides */
+    max-width: 730px; /* Adjust width as needed */
+    margin: 5px auto; /* Center the box */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Soft shadow */
+    font-family: 'Georgia', serif; /* Elegant font */
+    font-size: 11pt; /* Font size set to 11pt */
+}
+
+.time h2 {
+    margin-top: 0; /* Remove default top margin for h2 */
+    margin-bottom: 8px; /* Add space below the h2 */
+}
+
+.time p {
+    margin: 0 0 5px 0; /* Top: 0, Right: 0, Bottom: 5px, Left: 0 */
+    text-align: justify; /* Justify text alignment */
+}
+
+
+.sci {
+    margin: 0 0 5px 0; /* Top: 0, Right: 0, Bottom: 5px, Left: 0 */
+    text-align: justify; /* Justify text alignment */
+    border: 1px dashed red; /* Add a 1px dashed red border */
+    padding: 5px; /* Add 5px padding on all sides */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.scitop {
+    margin: 0 0 5px 0; /* Top: 0, Right: 0, Bottom: 5px, Left: 0 */
+    text-align: justify; /* Justify text alignment */
+    border: 1px dashed red; /* Default border */
+    border-top: none; /* Remove the top border */
+    padding: 5px; /* Add 5px padding on all sides */
+    box-sizing: border-box; /* Include padding and border in the element's total width and height */
+}
+
+.scitop1 {
+    border: 1px dashed red; /* Default border */
+    border-top: none; /* Remove the top border */
+    width: 100%; /* Make the div occupy the full width of the page */
+    margin: 0; /* Remove default margin */
+    padding-left: 5px; /* Remove default padding */
+    padding-right: 5px;
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    min-width:100%;
+}
+
+
+.scitop2 {
+    border: 1px dashed red; /* Default border */
+    border-bottom: none; /* Remove the top border */
+    width: 100%; /* Make the div occupy the full width of the page */
+    margin: 0; /* Remove default margin */
+    padding-left: 5px; /* Remove default padding */
+    padding-right: 5px;
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    min-width:100%;
+}
+
+
+.scitop3 {
+    border: 1px dashed red; /* Default border */
+    border-bottom: none; /* Remove the top border */
+    border-top: none; /* Remove the top border */
+    width: 100%; /* Make the div occupy the full width of the page */
+    margin: 0; /* Remove default margin */
+    padding-left: 5px; /* Remove default padding */
+    padding-right: 5px;
+    box-sizing: border-box; /* Include padding and border in the element's total width */
+    min-width:100%;
+}
+
+.pistachio-box {
+  border: 2px dashed brown;
+  background-color: #93c572; /* pistachio green */
+  padding: 5px;
+  margin: 5px 0;
+  border-radius: 4px; /* optional: slightly rounded corners */
+}
+/*.....................*/
+
+
+

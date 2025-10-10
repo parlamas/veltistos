@@ -112,7 +112,7 @@ export default function MainNav() {
                 <li><Link href="/gnoseis/glosses"    className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">Γλώσσες</Link></li>
                 <li>
   <Link href="/docs/S-P-001.html" className="block px-4 py-2 hover:bg-zinc-50" role="menuitem">
-    Γλώσσες — 002
+    ΠΟΛΙΤΕΙΑ-REPUBLIC — 001
   </Link>
 </li>
 
@@ -212,7 +212,7 @@ export default function MainNav() {
     onClick={closeMobile}
     className="block px-5 py-1.25 hover:bg-zinc-50 text-[11px]"
   >
-    Γλώσσες — 002
+    ΠΟΛΙΤΕIA-REPUBLIC — 001
   </Link>
 </li>
 

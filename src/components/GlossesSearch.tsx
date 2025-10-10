@@ -1,9 +1,7 @@
 // src/components/GlossesSearch.tsx
-// npm i minisearch
-
 "use client";
 
-import MiniSearch from "minisearch";
+import MiniSearch, { type SearchResult } from "minisearch";
 import { useEffect, useMemo, useState } from "react";
 
 type Doc = {
@@ -13,7 +11,8 @@ type Doc = {
   body: string;
 };
 
-type Result = MiniSearch.SearchResult & Partial<Doc>;
+type Result = ReturnType<MiniSearch<Doc>["search"]>[number] & Partial<Doc>;
+
 
 export default function GlossesSearch() {
   const [q, setQ] = useState<string>("");
@@ -28,18 +27,20 @@ export default function GlossesSearch() {
   );
 
   useEffect(() => {
-    // Your build writes: ✅ Wrote ... to public/search-index.json
+    // Your build script writes: public/search-index.json
     fetch("/search-index.json")
       .then((r) => r.json())
       .then((json: Doc[]) => {
         mini.addAll(json);
       })
       .catch(() => {
-        // no-op: if index missing, search just returns empty
+        // If index missing, search just returns empty
       });
   }, [mini]);
 
-  const results: Result[] = q ? (mini.search(q, { prefix: true }) as Result[]) : [];
+  const results: Result[] = q
+    ? (mini.search(q, { prefix: true }) as Result[])
+    : [];
 
   return (
     <div className="space-y-3">
@@ -53,10 +54,14 @@ export default function GlossesSearch() {
         <ul className="space-y-2">
           {results.map((r) => (
             <li key={String(r.id)} className="border rounded p-3">
-              <a className="text-blue-600 hover:underline" href={r.url ?? "#"} target="_blank" rel="noopener noreferrer">
+              <a
+                className="text-blue-600 hover:underline"
+                href={r.url ?? "#"}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 {r.title ?? String(r.id)}
               </a>
-              {/* MiniSearch returns stored fields; 'match' isn’t guaranteed. Omit or show a simple snippet if needed. */}
             </li>
           ))}
         </ul>

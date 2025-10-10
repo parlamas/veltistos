@@ -1,70 +1,78 @@
-"use client";
-import MiniSearch from "minisearch";
-import { useEffect, useMemo, useState } from "react";
+// scripts/generate-search-index.mjs
+// @ts-check
+import fs from 'node:fs/promises';
+import path from 'node:path';
 
-type DocItem =
-  | { type: "doc"; id: string; url: string; title: string; body: string }
-  | { type: "page"; id: string; url: string; title: string; excerpt?: string; tags?: string[] };
+/**
+ * A document living in /public/docs
+ * @typedef {{ type:'doc', id:string, url:string, title:string, body:string }} DocItem
+ */
 
-export default function SiteSearch() {
-  const [q, setQ] = useState("");
-  const [loaded, setLoaded] = useState(false);
+/** @type {string} */
+const root = process.cwd();
+/** @type {string} */
+const docsDir = path.join(root, 'public', 'docs');
+/** @type {string} */
+const outFile = path.join(root, 'public', 'site-search.json');
 
-  const mini = useMemo(
-    () =>
-      new MiniSearch<DocItem>({
-        fields: ["title", "body", "excerpt", "tags"],
-        storeFields: ["title", "url", "type"],
-        searchOptions: { prefix: true, boost: { title: 3 } },
-      }),
-    []
-  );
+async function main () {
+  /** @type {DocItem[]} */
+  const items = [];
 
-  useEffect(() => {
-    fetch("/site-search.json")
-      .then((r) => r.json())
-      .then((data: DocItem[]) => { mini.addAll(data); setLoaded(true); })
-      .catch(() => setLoaded(true));
-  }, [mini]);
+  try {
+    const dirents = await fs.readdir(docsDir, { withFileTypes: true });
+    for (const ent of dirents) {
+      if (!ent.isFile() || !ent.name.toLowerCase().endsWith('.html')) continue;
 
-  const results = q ? mini.search(q) : [];
+      const filePath = path.join(docsDir, ent.name);
+      const html = await fs.readFile(filePath, 'utf8');
 
-  return (
-    <div className="space-y-3">
-      <input
-        value={q}
-        onChange={(e) => setQ(e.target.value)}
-        placeholder="Αναζήτηση σε όλο τον ιστότοπο…"
-        className="w-full border rounded px-3 py-2"
-        aria-label="Αναζήτηση"
-      />
-      {q && (
-        <ul className="space-y-2">
-          {results.map((r) => {
-            const url = (r as any).url as string;
-            const title = (r as any).title as string;
-            const type = (r as any).type as "doc" | "page";
-            return (
-              <li key={r.id} className="border rounded p-3">
-                <a
-                  className="text-blue-600 hover:underline"
-                  href={url}
-                  target={type === "doc" ? "_blank" : undefined}
-                  rel="noopener noreferrer"
-                >
-                  {title}
-                </a>
-                <div className="text-xs text-zinc-600 mt-1">
-                  {type === "doc" ? "Document" : "Page"} · {url}
-                </div>
-              </li>
-            );
-          })}
-          {results.length === 0 && loaded && (
-            <li className="text-sm text-zinc-600">Κανένα αποτέλεσμα.</li>
-          )}
-        </ul>
-      )}
-    </div>
-  );
+      // Title
+      const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
+      const title = clean(decode(titleMatch ? titleMatch[1] : ent.name));
+
+      // Body text (strip tags/scripts/styles, collapse whitespace)
+      const text = clean(
+        decode(
+          html
+            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
+            .replace(/<style[\s\S]*?<\/style>/gi, ' ')
+            .replace(/<[^>]+>/g, ' ')
+        )
+      );
+
+      const id = ent.name;
+      const url = `/docs/${encodeURIComponent(ent.name)}`;
+
+      items.push({
+        type: 'doc',
+        id,
+        url,
+        title,
+        body: text.slice(0, 5000) // keep it reasonable
+      });
+    }
+  } catch {
+    // If public/docs doesn't exist yet, that's fine.
+  }
+
+  await fs.writeFile(outFile, JSON.stringify(items, null, 2), 'utf8');
+  console.log(`✅ Wrote ${items.length} items to ${path.relative(root, outFile)}`);
 }
+
+function decode (s) {
+  return s
+    .replace(/&nbsp;/g, ' ')
+    .replace(/&amp;/g, '&')
+    .replace(/&lt;/g, '<')
+    .replace(/&gt;/g, '>')
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'");
+}
+
+function clean (s) {
+  return s.replace(/\s+/g, ' ').trim();
+}
+
+main().catch(err => { console.error(err); process.exit(1); });
+

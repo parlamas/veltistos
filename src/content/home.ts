@@ -70,9 +70,6 @@ export const homeSlots: HomeSlots = {
     {
       href: "/stories/parts-of-speech",
       title: "Τα μερη του λογου.",
-      {/*img: "/parts-of-speech.png",
-      width: 85,   // ← your requested size
-      height: 167, // ← your requested size*/}
       kicker: "Γραμματική",
       number: "α3 • a3",
     },
@@ -80,9 +77,6 @@ export const homeSlots: HomeSlots = {
     {
       href: "/stories/republic/b1-001",
       title: "η Πολιτεία/The Republic",
-      {/*img: "/.png",
-      width: 85,   // ← your requested size
-      height: 167, // ← your requested size*/}
       kicker: "Γλὠσσες/Languages",
       number: "α5 • a5",
     },

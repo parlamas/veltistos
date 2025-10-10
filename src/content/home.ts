@@ -76,8 +76,8 @@ export const homeSlots: HomeSlots = {
 
     {
       href: "/stories/republic/b1-001",
-      title: "η Πολιτεία<br />The Republic",
-      kicker: "Γλὠσσες<br />Languages",
+      title: "η Πολιτεία/The Republic",
+      kicker: "Γλὠσσες/Languages",
       number: "α5 • a5",
     },
   ],

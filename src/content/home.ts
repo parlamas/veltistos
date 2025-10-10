@@ -45,6 +45,14 @@ export const homeSlots: HomeSlots = {
       kicker: "Γραμματική",
       number: "α2 • a2",
     },
+
+    {
+      href: "/diethni/nobel-irony", // must match the folder name
+      title: "Δώστε το Νομπελ Ειρήνης στον Νετανιάχου<br />Give the Nobel Peace prize to Netanyahu",
+      img: "", // OK to leave blank if your component handles it
+      kicker: "Διεθνή/International",
+      number: "α4 • a4",
+    },
   ],
 
   middle: [
@@ -62,9 +70,9 @@ export const homeSlots: HomeSlots = {
     {
       href: "/stories/parts-of-speech",
       title: "Τα μερη του λογου.",
-      img: "/parts-of-speech.png",
+      {/*img: "/parts-of-speech.png",
       width: 85,   // ← your requested size
-      height: 167, // ← your requested size
+      height: 167, // ← your requested size*/}
       kicker: "Γραμματική",
       number: "α3 • a3",
     },
@@ -72,9 +80,9 @@ export const homeSlots: HomeSlots = {
     {
       href: "/stories/republic/b1-001",
       title: "η Πολιτεία/The Republic",
-      img: "/.png",
+      {/*img: "/.png",
       width: 85,   // ← your requested size
-      height: 167, // ← your requested size
+      height: 167, // ← your requested size*/}
       kicker: "Γλὠσσες/Languages",
       number: "α5 • a5",
     },

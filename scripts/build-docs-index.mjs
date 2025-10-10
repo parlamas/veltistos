@@ -1,4 +1,5 @@
 // npm i -D jsdom glob
+// scripts/build-docs-index.mjs
 import { JSDOM } from "jsdom";
 import { glob } from "glob";
 import { readFile, writeFile } from "fs/promises";

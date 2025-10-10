@@ -1,78 +1,85 @@
 // scripts/generate-search-index.mjs
-// @ts-check
-import fs from 'node:fs/promises';
-import path from 'node:path';
+
+import fs from "node:fs/promises";
+import path from "node:path";
+import { JSDOM } from "jsdom";
+import { glob } from "glob";
+import { PAGES } from "./search-pages.mjs";
+
+const ROOT = process.cwd();
+const PUBLIC_DIR = path.join(ROOT, "public");
+const DOCS_DIR = path.join(PUBLIC_DIR, "docs");
+const OUT_FILE = path.join(PUBLIC_DIR, "site-search.json");
 
 /**
- * A document living in /public/docs
- * @typedef {{ type:'doc', id:string, url:string, title:string, body:string }} DocItem
+ * Build page items (your app routes).
+ * Shape: { type: "page", id, url, title, excerpt, tags? }
  */
+function buildPages() {
+  return PAGES.map((p, i) => ({
+    type: "page",
+    id: `page-${i + 1}`,
+    url: p.url,
+    title: p.title || p.url,
+    excerpt: p.excerpt || "",
+    tags: p.tags || [],
+  }));
+}
 
-/** @type {string} */
-const root = process.cwd();
-/** @type {string} */
-const docsDir = path.join(root, 'public', 'docs');
-/** @type {string} */
-const outFile = path.join(root, 'public', 'site-search.json');
-
-async function main () {
-  /** @type {DocItem[]} */
+/**
+ * Build doc items from public/docs/*.html by extracting
+ * <title> or first <h1> and a short text body.
+ * Shape: { type: "doc", id, url, title, body }
+ */
+async function buildDocs() {
+  // Collect all .html under public/docs
+  const files = await glob("**/*.html", { cwd: DOCS_DIR, nodir: true });
   const items = [];
 
-  try {
-    const dirents = await fs.readdir(docsDir, { withFileTypes: true });
-    for (const ent of dirents) {
-      if (!ent.isFile() || !ent.name.toLowerCase().endsWith('.html')) continue;
+  for (const rel of files) {
+    const abs = path.join(DOCS_DIR, rel);
+    const html = await fs.readFile(abs, "utf8").catch(() => "");
+    if (!html) continue;
 
-      const filePath = path.join(docsDir, ent.name);
-      const html = await fs.readFile(filePath, 'utf8');
+    const dom = new JSDOM(html);
+    const d = dom.window.document;
 
-      // Title
-      const titleMatch = html.match(/<title[^>]*>([\s\S]*?)<\/title>/i);
-      const title = clean(decode(titleMatch ? titleMatch[1] : ent.name));
+    let title =
+      d.querySelector("h1")?.textContent?.trim() ||
+      d.querySelector("title")?.textContent?.trim() ||
+      rel;
 
-      // Body text (strip tags/scripts/styles, collapse whitespace)
-      const text = clean(
-        decode(
-          html
-            .replace(/<script[\s\S]*?<\/script>/gi, ' ')
-            .replace(/<style[\s\S]*?<\/style>/gi, ' ')
-            .replace(/<[^>]+>/g, ' ')
-        )
-      );
+    // Extract some visible text (very light)
+    let body = d.body?.textContent?.replace(/\s+/g, " ").trim() || "";
 
-      const id = ent.name;
-      const url = `/docs/${encodeURIComponent(ent.name)}`;
+    // Keep it reasonably sized
+    if (body.length > 4000) body = body.slice(0, 4000);
 
-      items.push({
-        type: 'doc',
-        id,
-        url,
-        title,
-        body: text.slice(0, 5000) // keep it reasonable
-      });
-    }
-  } catch {
-    // If public/docs doesn't exist yet, that's fine.
+    items.push({
+      type: "doc",
+      id: `doc-${rel}`,
+      url: `/docs/${rel.replace(/\\/g, "/")}`,
+      title,
+      body,
+    });
   }
 
-  await fs.writeFile(outFile, JSON.stringify(items, null, 2), 'utf8');
-  console.log(`✅ Wrote ${items.length} items to ${path.relative(root, outFile)}`);
+  return items;
 }
 
-function decode (s) {
-  return s
-    .replace(/&nbsp;/g, ' ')
-    .replace(/&amp;/g, '&')
-    .replace(/&lt;/g, '<')
-    .replace(/&gt;/g, '>')
-    .replace(/&quot;/g, '"')
-    .replace(/&#39;/g, "'");
+async function main() {
+  const pages = buildPages();
+  const docs = await buildDocs();
+
+  const all = [...pages, ...docs];
+
+  await fs.mkdir(PUBLIC_DIR, { recursive: true });
+  await fs.writeFile(OUT_FILE, JSON.stringify(all, null, 2), "utf8");
+
+  console.log(`✅ Wrote ${all.length} items to ${path.relative(ROOT, OUT_FILE)}`);
 }
 
-function clean (s) {
-  return s.replace(/\s+/g, ' ').trim();
-}
-
-main().catch(err => { console.error(err); process.exit(1); });
-
+main().catch((err) => {
+  console.error(err);
+  process.exit(1);
+});

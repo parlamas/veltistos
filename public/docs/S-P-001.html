@@ -229,17 +229,35 @@
     });
 
     function showTranslation(key) {
-      const card = document.getElementById('trans-card');
-      const label = document.getElementById('trans-label');
-      const html = document.getElementById('trans-html');
-      label.textContent = blocks[key].label;
-      html.innerHTML = blocks[key].html;
-      card.style.display = 'block';
-      card.dataset.lang = key; // remember which is shown
-      // Stop any ongoing speech
-      if ('speechSynthesis' in window) window.speechSynthesis.cancel();
-      window.scrollTo({ top: document.getElementById('attic-card').offsetTop, behavior: 'smooth' });
-    }
+  const card  = document.getElementById('trans-card');
+  const label = document.getElementById('trans-label');
+  const html  = document.getElementById('trans-html');
+
+  label.textContent = blocks[key].label;
+  html.innerHTML = blocks[key].html;
+  card.style.display = 'block';
+  card.dataset.lang = key; // remember which is shown
+
+  // Hide/Show the Listen/Stop buttons depending on language
+  const speakerBtn = card.querySelector('.speaker');
+  const stopBtn    = card.querySelector('.stopper');
+  if (key === 'el') {
+    if (speakerBtn) speakerBtn.style.display = 'none';
+    if (stopBtn)    stopBtn.style.display    = 'none';
+  } else {
+    if (speakerBtn) speakerBtn.style.display = 'inline-flex';
+    if (stopBtn)    stopBtn.style.display    = 'inline-flex';
+  }
+
+  // Stop any ongoing speech
+  if ('speechSynthesis' in window) window.speechSynthesis.cancel();
+
+  window.scrollTo({
+    top: document.getElementById('attic-card').offsetTop,
+    behavior: 'smooth'
+  });
+}
+
 
     // --- TTS helpers --------------------------------------------------------
     function pickVoice(forLang) {

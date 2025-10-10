@@ -1,4 +1,5 @@
 // src/components/SiteSearchInline.tsx
+
 "use client";
 
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -11,7 +12,21 @@ type SearchItem = {
   body?: string;
   excerpt?: string;
   tags?: string[];
+  // folded (accent-insensitive) fields from the JSON index; may be absent
+  titleFold?: string;
+  excerptFold?: string;
+  bodyFold?: string;
+  tagsFold?: string[];
 };
+
+// Accent-insensitive folding for Greek (and general diacritics)
+function foldGreek(s?: string) {
+  if (!s) return "";
+  // strip combining marks (accents/breathings), unify final sigma, lowercase, collapse spaces
+  let out = s.normalize("NFD").replace(/\p{M}+/gu, "");
+  out = out.replace(/\u03C2/g, "\u03C3"); // ς -> σ
+  return out.toLowerCase().replace(/\s+/g, " ").trim();
+}
 
 export default function SiteSearchInline() {
   const [items, setItems] = useState<SearchItem[]>([]);
@@ -37,15 +52,22 @@ export default function SiteSearchInline() {
   }, []);
 
   const results: SearchItem[] = useMemo(() => {
-    const terms = q.toLowerCase().split(/\s+/).filter(Boolean);
-    if (!terms.length) return [];
+    const qFold = foldGreek(q);
+    if (!qFold) return [];
+
     return items
       .map((it) => {
-        const hay =
-          `${it.title ?? ""} ${it.excerpt ?? ""} ${it.body ?? ""} ${(it.tags ?? []).join(" ")}`.toLowerCase();
-        const titleHit = terms.some((t) => it.title.toLowerCase().includes(t));
-        const bodyHit = terms.some((t) => hay.includes(t));
+        // Prefer folded fields from the index; otherwise fold on the client
+        const titleFold = it.titleFold ?? foldGreek(it.title);
+        const excerptFold = it.excerptFold ?? foldGreek(it.excerpt);
+        const bodyFold = it.bodyFold ?? foldGreek(it.body);
+        const tagsFoldArr = it.tagsFold ?? (it.tags ? it.tags.map(foldGreek) : []);
+
+        const hay = [titleFold, excerptFold, bodyFold, tagsFoldArr.join(" ")].join(" ");
+        const titleHit = titleFold.includes(qFold);
+        const bodyHit = hay.includes(qFold);
         const score = (titleHit ? 2 : 0) + (bodyHit ? 1 : 0);
+
         return { it, score };
       })
       .filter((x) => x.score > 0)
@@ -124,9 +146,7 @@ export default function SiteSearchInline() {
                   href={r.url}
                   target={r.type === "doc" ? "_blank" : undefined}
                   rel={r.type === "doc" ? "noopener noreferrer" : undefined}
-                  className={`block px-3 py-2 hover:bg-zinc-50 ${
-                    idx === hi ? "bg-zinc-50" : ""
-                  }`}
+                  className={`block px-3 py-2 hover:bg-zinc-50 ${idx === hi ? "bg-zinc-50" : ""}`}
                   onMouseEnter={() => setHi(idx)}
                   onMouseDown={(e) => {
                     // keep focus until click is processed
@@ -155,3 +175,4 @@ export default function SiteSearchInline() {
     </div>
   );
 }
+

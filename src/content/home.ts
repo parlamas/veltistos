@@ -68,6 +68,16 @@ export const homeSlots: HomeSlots = {
       kicker: "Γραμματική",
       number: "α3 • a3",
     },
+
+    {
+      href: "/stories/republic/b1-001",
+      title: "η Πολιτεία/The Republic",
+      img: "/.png",
+      width: 85,   // ← your requested size
+      height: 167, // ← your requested size
+      kicker: "Γλὠσσες/Languages",
+      number: "α5 • a5",
+    },
   ],
 };
 

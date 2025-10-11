@@ -21,7 +21,7 @@ export default function Page() {
         </div>
 
         {/* TTS (browser voices only) */}
-        <TTSButton targetSelector="#story-content" label="Ακρόαση" />
+        <TTSButton targetSelector="#parts-of-speech-tts" label="Ακρόαση" />
       </header>
 
       {/* 
@@ -40,7 +40,9 @@ export default function Page() {
       </figure>
       */}
 
-      <div>
+      
+        {/* Only this block will be read by TTS */}
+      <div id="parts-of-speech-tts">
         <span hidden>aa3 αα3</span>
         <div lang="el-GR">
           Τα μερη του λογου ειναι 10.<br />

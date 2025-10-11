@@ -22,9 +22,23 @@ export default function Page() {
           <p className="text-sm text-zinc-500">05.10.25 • Γραμματική</p>
         </div>
 
-        {/* TTS (browser voices only) */}
-        <TTSButton targetSelector="#story-content" label="Ακρόαση" />
+        {/* TTS now targets only the lines inside #parathetika-tts */}
+        <TTSButton targetSelector="#parathetika-tts" label="Ακρόαση" />
       </header>
+
+      {/* keep hidden search code OUTSIDE the TTS target */}
+      <p>
+        <span hidden data-tts-skip>aa2 αα2</span>
+      </p>
+
+      {/* Only this block will be read by TTS */}
+      <div id="parathetika-tts">
+        <p>
+          <span className="wow">θετικός βαθμός:</span> ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
+          <span className="wow">συγκριτικός βαθμός:</span> ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
+          <span className="wow">υπερθετικός βαθμός:</span> ὁ βέλτιστος • ἡ βέλτιστη • τό βέλτιστον<br />
+        </p>
+      </div>
 
       {/* 
       <figure className="my-4">
@@ -41,14 +55,6 @@ export default function Page() {
         </figcaption>
       </figure>
       */}
-
-      <p>
-        <span hidden>aa2 αα2</span>
-        <span className="wow">θετικός βαθμός:</span> ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
-        <span className="wow">συγκριτικός βαθμός:</span> ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
-        <span className="wow">υπερθετικός βαθμός:</span> ὁ βέλτιστος • ἡ βελτίστη • τό βέλτιστον<br />
-        {/*αριθμός 2 • number 2*/}
-      </p>
 
       <div data-tts-skip className="not-prose mt-4">
         <ShareBar href={href} title={title} />

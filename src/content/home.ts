@@ -42,14 +42,14 @@ export const homeSlots: HomeSlots = {
       title: "Τά παραθετικά τού <span class='wow'>ἀγαθός</span>",
       img: "",
       kicker: "Γραμματική",
-      number: "Search Code: αα2 • aa2",
+      number: '<span class="r">Search Code:</span> αα2 • aa2',
     },
     {
       href: "/diethni/nobel-irony",
       title: "Δώστε το Νομπελ Ειρήνης στον Νετανιάχου<br />Give the Nobel Peace prize to Netanyahu",
       img: "",
       kicker: "Διεθνή/International",
-      number: "Search Code: αα4 • aa4",
+      number: '<span class="r">Search Code:</span> αα4 • aa4',
     },
   ],
 
@@ -59,7 +59,7 @@ export const homeSlots: HomeSlots = {
       title: "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br />It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
       excerpt: "Οι διαδικασίες αρχίζουν αμέσως...",
-      number: "Search Code: αα1 • aa1",
+      number: '<span class="r">Search Code:</span> αα1 • aa1',
     },
   ],
 
@@ -68,7 +68,7 @@ export const homeSlots: HomeSlots = {
       href: "/stories/parts-of-speech",
       title: "Τα μέρη του λόγου.",
       kicker: "Γραμματική",
-      number: "Search Code: αα3 • aa3",
+      number: '<span class="r">Search Code:</span> αα3 • aa3',
     },
     {
       href: "/stories/republic/b1-001",

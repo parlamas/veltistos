@@ -30,8 +30,12 @@ export default function LeftStory({ item }: { item: LeftItem }) {
       )}
 
       {item.date && (
-        <div className="text-xs text-zinc-500">{item.date}</div>
-      )}
+  <div
+    className="text-xs text-zinc-500"
+    dangerouslySetInnerHTML={{ __html: item.date }}
+  />
+)}
+
 
       {item.number ? (
         <div

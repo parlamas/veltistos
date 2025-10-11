@@ -27,8 +27,12 @@ export default function LeadCard({ item }: { item: LeadItem }) {
       )}
 
       {item.date && (
-        <div className="text-xs text-zinc-500">{item.date}</div>
-      )}
+  <div
+    className="text-xs text-zinc-500"
+    dangerouslySetInnerHTML={{ __html: item.date }}
+  />
+)}
+
 
       {item.excerpt && (
         <p className="text-sm text-zinc-700">{item.excerpt}</p>

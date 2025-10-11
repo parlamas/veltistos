@@ -73,6 +73,16 @@ export const homeSlots: HomeSlots = {
       date: '<span class="r">Σωκρατικό Ημερολόγιο:</span><br />Πυανεψιώνος 1, 2495<br /><span class="r">Socratic Calendar:</span><br />1 Pyanepsion, 2495<br /><span class="r">Γρηγοριανό/Gregorian</span><br />Οκτ./Oct. 1, 2025',
       number: '<span class="r">Αναζήτηση/Search:</span> αα1 ή/or aa1',
     },
+
+    {
+      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
+      href: "/videos/malakia",
+      title: "περί μαλακίας<br />on callousness",
+      img: "/callous.jpg",
+      excerpt: "...............",
+      date: '<span class="r">Σωκρατικό Ημερολόγιο:</span><br />Πυανεψιώνος 11, 2495<br /><span class="r">Socratic Calendar:</span><br />11 Pyanepsion, 2495<br /><span class="r">Γρηγοριανό/Gregorian</span><br />Οκτ./Oct. 11, 2025',
+      number: '<span class="r">Αναζήτηση/Search:</span> αα6 ή/or aa6',
+    },
   ],
 
   right: [

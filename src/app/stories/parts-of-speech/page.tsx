@@ -41,7 +41,7 @@ export default function Page() {
       */}
 
       <div>
-        <span hidden>a3 α3</span>
+        <span hidden>aa3 αα3</span>
         <div lang="el-GR">
           Τα μερη του λογου ειναι 10.<br />
           Οι καταλληλες ερωτησεις και οι σωστες απαντησεις μας οδηγουν στο σωστο μερος του λογου.<br />

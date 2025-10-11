@@ -43,7 +43,7 @@ export default function Page() {
       */}
 
       <p>
-        <span hidden>a2 α2</span>
+        <span hidden>aa2 αα2</span>
         <span className="wow">θετικός βαθμός:</span> ὁ ἀγαθός • ἡ ἀγαθή • τό ἀγαθόν<br />
         <span className="wow">συγκριτικός βαθμός:</span> ὁ βελτίων • ἡ βελτίων • τό βέλτιον<br />
         <span className="wow">υπερθετικός βαθμός:</span> ὁ βέλτιστος • ἡ βελτίστη • τό βέλτιστον<br />

@@ -9,43 +9,47 @@ export default function HomePage() {
   return (
     <main className="min-h-dvh bg-white">
       <div className="mx-auto max-w-6xl px-4 py-6">
-
-        
-
         <SiteGrid
           left={
-            <div style={{ border: "1px solid brown", padding: "8px" }}>
-              <aside className="space-y-2 lg:sticky lg:top-16">
-                {homeSlots.left.map((s) => (
-                  <LeftStory key={s.href} item={s} />
-                ))}
-              </aside>
-            </div>
+            <aside className="space-y-2 lg:sticky lg:top-16">
+              {homeSlots.left.map((s) => (
+                <div
+                  key={s.href}
+                  style={{ border: "1px solid brown", padding: "8px" }}
+                >
+                  <LeftStory item={s} />
+                </div>
+              ))}
+            </aside>
           }
           right={
-            <div style={{ border: "1px solid brown", padding: "8px" }}>
-              <aside className="space-y-2 lg:sticky lg:top-16">
-                {homeSlots.right.map((s) => (
-                  <RightStory key={s.href} item={s} />
-                ))}
-              </aside>
-            </div>
+            <aside className="space-y-2 lg:sticky lg:top-16">
+              {homeSlots.right.map((s) => (
+                <div
+                  key={s.href}
+                  style={{ border: "1px solid brown", padding: "8px" }}
+                >
+                  <RightStory item={s} />
+                </div>
+              ))}
+            </aside>
           }
         >
           {/* Middle column (lead stories) */}
-          <div style={{ border: "1px solid brown", padding: "8px" }}>
-            <section className="space-y-3">
-              {homeSlots.middle.map((s) => (
-                <LeadCard key={s.href} item={s} />
-              ))}
-            </section>
-          </div>
+          <section className="space-y-3">
+            {homeSlots.middle.map((s) => (
+              <div
+                key={s.href}
+                style={{ border: "1px solid brown", padding: "8px" }}
+              >
+                <LeadCard item={s} />
+              </div>
+            ))}
+          </section>
         </SiteGrid>
       </div>
     </main>
   );
 }
-
-
 
 

@@ -98,7 +98,7 @@ const blocks: Record<string, Block> = {
     lang: "fi-FI",
   },
   el: {
-    menu: "Modern Greek",
+    menu: "Νέα Ελληνικά",
     label: "Σωκράτης • Νέα Ελληνικά",
     html: `
 Κατέβηκα<sub>1</sub> χθες<sub>2</sub> στον<sub>3</sub> Πειραιά<sub>4</sub> μαζί<sub>5</sub> με<sub>6</sub> τον<sub>7</sub> Γλαύκωνα,<sub>8</sub> τον<sub>9</sub> γιο<sub>10</sub> του<sub>11</sub> Αρίστωνα,<sub>12</sub> και<sub>13</sub> για<sub>14</sub> να<sub>15</sub> προσευχηθώ<sub>16</sub> στη<sub>17</sub> θεά<sub>18</sub> αλλά<sub>19</sub> και<sub>20</sub> επειδή<sub>21</sub> ήθελα<sub>22</sub> να<sub>23</sub> δω<sub>24</sub> με<sub>25</sub> ποιόν<sub>26</sub> τρόπο<sub>27</sub> θα<sub>28</sub> τελέσουν<sub>29</sub> την<sub>30</sub> γιορτή,<sub>31</sub> αφού<sub>32</sub> τώρα<sub>33</sub> την<sub>34</sub> έκαναν<sub>35</sub> για<sub>36</sub> πρώτη<sub>37</sub> φορά.<sub>38</sub> Μου<sub>39</sub> φάνηκε<sub>40</sub> λοιπόν<sub>41</sub> ωραία<sub>42</sub> η<sub>43</sub> πομπή<sub>44</sub> των<sub>45</sub> εντοπίων,<sub>46</sub> ωστόσο<sub>47</sub> εξίσου<sub>48</sub> όμορφη<sub>49</sub> μου<sub>50</sub> φάνηκε<sub>51</sub> και<sub>52</sub> η<sub>53</sub> πομπή<sub>54</sub> των<sub>55</sub> Θρακών.<sub>56</sub>
@@ -360,7 +360,7 @@ export default function SP001Page() {
       `}</style>
 
       {/* hidden marker (kept) */}
-      <span hidden>a5 • α5</span>
+      <span hidden>aa5 • αα5</span>
 
       <div className="container">
         <h2 className="title">

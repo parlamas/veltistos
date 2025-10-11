@@ -44,7 +44,7 @@ export type HomeSlots = {
 export const homeSlots: HomeSlots = {
   left: [
     {
-      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas"
+      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
       href: "/stories/parathetika",
       title: "Τά παραθετικά τού <span class='wow'>ἀγαθός</span>",
       img: "",
@@ -53,7 +53,7 @@ export const homeSlots: HomeSlots = {
       number: '<span class="r">Αναζήτηση/Search:</span> αα2 ή/or aa2',
     },
     {
-      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas"
+      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
       href: "/diethni/nobel-irony",
       title: "Δώστε το Νομπελ Ειρήνης στον Νετανιάχου<br />Give the Nobel Peace prize to Netanyahu",
       img: "",
@@ -65,7 +65,7 @@ export const homeSlots: HomeSlots = {
 
   middle: [
     {
-      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas"
+      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
       href: "/stories/union",
       title: "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br />It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
@@ -77,7 +77,7 @@ export const homeSlots: HomeSlots = {
 
   right: [
     {
-      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas"
+      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
       href: "/stories/parts-of-speech",
       title: "Τα μέρη του λόγου.",
       kicker: "Γραμματική",
@@ -85,7 +85,7 @@ export const homeSlots: HomeSlots = {
       number: '<span class="r">Αναζήτηση/Search:</span> αα3 ή/or aa3',
     },
     {
-      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas"
+      author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
       href: "/stories/republic/b1-001",
       title: "ἡ Πολιτεία • Βιβλίο 1/1<br />The Republic • Book 1/1",
       kicker: "Γλώσσες/Languages",

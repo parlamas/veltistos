@@ -43,7 +43,7 @@ export const homeSlots: HomeSlots = {
       title: "Τά παραθετικά τού <span class='wow'>ἀγαθός</span>",
       img: "", // OK to leave blank if your component handles it
       kicker: "Γραμματική",
-      number: "α2 • a2",
+      number: "Search Code: αα2 • aa2",
     },
 
     {
@@ -51,7 +51,7 @@ export const homeSlots: HomeSlots = {
       title: "Δώστε το Νομπελ Ειρήνης στον Νετανιάχου<br />Give the Nobel Peace prize to Netanyahu",
       img: "", // OK to leave blank if your component handles it
       kicker: "Διεθνή/International",
-      number: "α4 • a4",
+      number: "Search Code: αα4 • aa4",
     },
   ],
 
@@ -62,7 +62,7 @@ export const homeSlots: HomeSlots = {
         "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br>It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
       excerpt: "Οι διαδικασίες αρχίζουν αμέσως...",
-      number: "α1 • a1",
+      number: "Search Code: αα1 • aa1",
     },
   ],
 
@@ -71,14 +71,14 @@ export const homeSlots: HomeSlots = {
       href: "/stories/parts-of-speech",
       title: "Τα μερη του λογου.",
       kicker: "Γραμματική",
-      number: "α3 • a3",
+      number: "Search Code: αα3 • aa3",
     },
 
     {
       href: "/stories/republic/b1-001",
       title: "η Πολιτεία/The Republic",
       kicker: "Γλὠσσες/Languages",
-      number: "α5 • a5",
+      number: "Search Code: αα5 • aa5",
     },
   ],
 };

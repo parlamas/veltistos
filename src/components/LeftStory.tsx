@@ -22,6 +22,17 @@ export default function LeftStory({ item }: { item: LeftItem }) {
         />
       </Link>
 
+      {item.author && (
+        <div
+          className="text-xs text-zinc-600"
+          dangerouslySetInnerHTML={{ __html: item.author }}
+        />
+      )}
+
+      {item.date && (
+        <div className="text-xs text-zinc-500">{item.date}</div>
+      )}
+
       {item.number ? (
         <div
           className="text-xs text-zinc-700"
@@ -31,5 +42,6 @@ export default function LeftStory({ item }: { item: LeftItem }) {
     </article>
   );
 }
+
 
 

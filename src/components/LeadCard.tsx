@@ -19,7 +19,20 @@ export default function LeadCard({ item }: { item: LeadItem }) {
         />
       </Link>
 
-      <p className="text-sm text-zinc-700">{item.excerpt}</p>
+      {item.author && (
+        <div
+          className="text-xs text-zinc-600"
+          dangerouslySetInnerHTML={{ __html: item.author }}
+        />
+      )}
+
+      {item.date && (
+        <div className="text-xs text-zinc-500">{item.date}</div>
+      )}
+
+      {item.excerpt && (
+        <p className="text-sm text-zinc-700">{item.excerpt}</p>
+      )}
 
       {item.number ? (
         <div
@@ -30,4 +43,5 @@ export default function LeadCard({ item }: { item: LeadItem }) {
     </article>
   );
 }
+
 

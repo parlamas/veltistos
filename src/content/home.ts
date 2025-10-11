@@ -89,7 +89,7 @@ export const homeSlots: HomeSlots = {
       href: "/stories/republic/b1-001",
       title: "ἡ Πολιτεία • Βιβλίο 1/1<br />The Republic • Book 1/1",
       kicker: "Γλώσσες/Languages",
-      date: "Οκτ./Oct. 9, 2025",
+      date: '<span class="r">Σωκρατικό Ημερολόγιο:</span> Πυανεψιώνος 9, 2495<br /><span class="r">Socratic Calendar:</span> 9 Pyanepsion, 2025<br />Οκτ./Oct. 9, 2025',
       number: '<span class="r">Αναζήτηση/Search:</span> αα5 ή/or aa5',
     },
   ],

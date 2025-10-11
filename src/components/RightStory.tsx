@@ -1,5 +1,4 @@
 // src/components/RightStory.tsx
-
 import Link from "next/link";
 import type { RightItem } from "@/content/home";
 
@@ -29,16 +28,21 @@ export default function RightStory({ item }: { item: RightItem }) {
         />
       </Link>
 
-      {item.author && (
+      {/* NEW: render author (allows <br />) */}
+      {item.author ? (
         <div
           className="text-xs text-zinc-600"
           dangerouslySetInnerHTML={{ __html: item.author }}
         />
-      )}
+      ) : null}
 
-      {item.date && (
-        <div className="text-xs text-zinc-500">{item.date}</div>
-      )}
+      {/* NEW: render date (allows <span class="r">…</span> and <br />) */}
+      {item.date ? (
+        <div
+          className="text-xs text-zinc-600"
+          dangerouslySetInnerHTML={{ __html: item.date }}
+        />
+      ) : null}
 
       {item.number ? (
         <div
@@ -49,4 +53,3 @@ export default function RightStory({ item }: { item: RightItem }) {
     </article>
   );
 }
-

@@ -42,14 +42,14 @@ export const homeSlots: HomeSlots = {
       title: "Τά παραθετικά τού <span class='wow'>ἀγαθός</span>",
       img: "",
       kicker: "Γραμματική",
-      number: '<span class="r">Search Code:</span> αα2 • aa2',
+      number: '<span class="r">Αναζήτηση/Search:</span> αα2 ή/or aa2',
     },
     {
       href: "/diethni/nobel-irony",
       title: "Δώστε το Νομπελ Ειρήνης στον Νετανιάχου<br />Give the Nobel Peace prize to Netanyahu",
       img: "",
       kicker: "Διεθνή/International",
-      number: '<span class="r">Search Code:</span> αα4 • aa4',
+      number: '<span class="r">Αναζήτηση/Search:</span> αα4 ή/or aa4',
     },
   ],
 
@@ -59,7 +59,7 @@ export const homeSlots: HomeSlots = {
       title: "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br />It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
       excerpt: "Οι διαδικασίες αρχίζουν αμέσως...",
-      number: '<span class="r">Search Code:</span> αα1 • aa1',
+      number: '<span class="r">Αναζήτηση/Search:</span> αα1 ή/or aa1',
     },
   ],
 
@@ -68,13 +68,13 @@ export const homeSlots: HomeSlots = {
       href: "/stories/parts-of-speech",
       title: "Τα μέρη του λόγου.",
       kicker: "Γραμματική",
-      number: '<span class="r">Search Code:</span> αα3 • aa3',
+      number: '<span class="r">Αναζήτηση/Search:</span> αα3 ή/or aa3',
     },
     {
       href: "/stories/republic/b1-001",
       title: "ἡ Πολιτεία • Βιβλίο 1/1<br />The Republic • Book 1/1",
       kicker: "Γλώσσες/Languages",
-      number: '<span class="r">Search Code:</span> αα5 • aa5',
+      number: '<span class="r">Αναζήτηση/Search:</span> αα5 ή/or aa5',
     },
   ],
 };

@@ -3,7 +3,7 @@
 // Types for each slot
 export type LeftItem = {
   href: string;
-  title: string;
+  title: string;   // may contain inline HTML (e.g., <br />, <span>)
   img: string;
   kicker: string;
   number?: string;
@@ -11,7 +11,7 @@ export type LeftItem = {
 
 export type LeadItem = {
   href: string;
-  title: string;
+  title: string;   // may contain inline HTML
   img: string;
   excerpt: string;
   number?: string;
@@ -19,7 +19,7 @@ export type LeadItem = {
 
 export type RightItem = {
   href: string;
-  title: string;
+  title: string;   // may contain inline HTML
   img?: string;     // optional if not always needed
   kicker?: string;  // optional
   width?: number;   // optional display hint
@@ -34,22 +34,20 @@ export type HomeSlots = {
   right: RightItem[];
 };
 
-// Example content
+// Content
 export const homeSlots: HomeSlots = {
-  
   left: [
     {
-      href: "/stories/parathetika", // must match the folder name
+      href: "/stories/parathetika",
       title: "Τά παραθετικά τού <span class='wow'>ἀγαθός</span>",
-      img: "", // OK to leave blank if your component handles it
+      img: "",
       kicker: "Γραμματική",
       number: "Search Code: αα2 • aa2",
     },
-
     {
-      href: "/diethni/nobel-irony", // must match the folder name
+      href: "/diethni/nobel-irony",
       title: "Δώστε το Νομπελ Ειρήνης στον Νετανιάχου<br />Give the Nobel Peace prize to Netanyahu",
-      img: "", // OK to leave blank if your component handles it
+      img: "",
       kicker: "Διεθνή/International",
       number: "Search Code: αα4 • aa4",
     },
@@ -58,8 +56,7 @@ export const homeSlots: HomeSlots = {
   middle: [
     {
       href: "/stories/union",
-      title:
-        "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br>It is high time Greece and Cyprus united!",
+      title: "Ήρθε η ώρα η Ελλάδα και η Κύπρος να ενωθούν!<br />It is high time Greece and Cyprus united!",
       img: "/union/enosis-01.jpg",
       excerpt: "Οι διαδικασίες αρχίζουν αμέσως...",
       number: "Search Code: αα1 • aa1",
@@ -69,17 +66,17 @@ export const homeSlots: HomeSlots = {
   right: [
     {
       href: "/stories/parts-of-speech",
-      title: "Τα μερη του λογου.",
+      title: "Τα μέρη του λόγου.",
       kicker: "Γραμματική",
       number: "Search Code: αα3 • aa3",
     },
-
     {
       href: "/stories/republic/b1-001",
-      title: "η Πολιτεία/The Republic",
-      kicker: "Γλὠσσες/Languages",
-      number: "Search Code: αα5 • aa5",
+      title: "ἡ Πολιτεία • Βιβλίο 1/1<br />The Republic • Book 1/1",
+      kicker: "Γλώσσες/Languages",
+      number: '<span class="r">Search Code:</span> αα5 • aa5',
     },
   ],
 };
+
 

@@ -1,6 +1,5 @@
 // scripts/generate-search-index.mjs
 
-// scripts/generate-search-index.mjs
 import fs from "node:fs/promises";
 import path from "node:path";
 import { JSDOM } from "jsdom";
@@ -197,11 +196,66 @@ async function main() {
   const docs = await buildDocs();
   const all = [...pages, ...docs];
 
+  async function main() {
+  const pages = await buildPages();
+  const docs = await buildDocs();
+  const all = [...pages, ...docs];
+
+  console.log(`Pages indexed: ${pages.length}`);
+  console.log(`Docs indexed:  ${docs.length}`);
+
+  // --- expand dynamic routes -------------------------------------------------
+  // Hardcode your dynamic video slugs here (pulling from content/videos.ts
+  // would require TS support in this .mjs script, so we list slugs manually).
+  const dynamicVideos = [
+    { slug: "malakia", title: "περί μαλακίας • on callousness" },
+  ];
+
+  // If the script picked up /videos/[slug], use it as a template; otherwise use a blank base.
+  const videosTemplate = all.find(i => i.url === "/videos/[slug]") ?? {
+    type: "page",
+    excerpt: "",
+    tags: [],
+    title: "",
+    titleFold: "",
+    bodyFold: "",
+    excerptFold: "",
+    tagsFold: [],
+  };
+
+  // Build concrete entries for each video slug
+  const expandedVideoItems = dynamicVideos.map(v => {
+    const url = `/videos/${v.slug}`;
+    return {
+      ...videosTemplate,
+      id: `page:videos/${v.slug}`,
+      url,
+      title: v.title || url,
+      // keep folds consistent for search
+      titleFold: foldGreek(v.title || url),
+      // Optionally enrich:
+      // bodyFold: foldGreek((videosTemplate.body ?? "") + " aa6 αα6"),
+      // excerptFold: foldGreek((videosTemplate.excerpt ?? "")),
+    };
+  });
+
+  // Remove the placeholder entry `/videos/[slug]` if it exists
+  const withoutPlaceholders = all.filter(i => i.url !== "/videos/[slug]");
+
+  // Final list the search should use
+  const finalItems = [...withoutPlaceholders, ...expandedVideoItems];
+
+  await fs.mkdir(PUBLIC_DIR, { recursive: true });
+  await fs.writeFile(OUT_FILE, JSON.stringify(finalItems, null, 2), "utf8");
+  console.log(`✅ Wrote ${finalItems.length} items to ${path.relative(ROOT, OUT_FILE)}`);
+}
+
+
   console.log(`Pages indexed: ${pages.length}`);
   console.log(`Docs indexed:  ${docs.length}`);
 
   await fs.mkdir(PUBLIC_DIR, { recursive: true });
-  await fs.writeFile(OUT_FILE, JSON.stringify(all, null, 2), "utf8");
+  await fs.writeFile(OUT_FILE, JSON.stringify(finalItems, null, 2), "utf8");
   console.log(`✅ Wrote ${all.length} items to ${path.relative(ROOT, OUT_FILE)}`);
 }
 

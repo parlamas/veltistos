@@ -10,6 +10,7 @@ export type Video = {
   kicker?: string;
   date?: string;
   start?: number;
+  number?: string;
 };
 
 export const videos: Video[] = [
@@ -20,5 +21,6 @@ export const videos: Video[] = [
     start: 6,
     description: "—",
     date: "2025-10-11",
+    number: "aa6 ή/or αα6"
   },
 ];

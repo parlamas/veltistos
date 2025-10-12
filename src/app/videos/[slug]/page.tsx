@@ -28,7 +28,7 @@ export default function VideoDetail({ params }: { params: { slug: string } }) {
         ) : video.src ? (
           <video controls className="h-full w-full">
             <source src={video.src} />
-            Your browser does not support the video tag.
+            Your browser does not support the video tag. <span hidden>aa6 αα6</span>
           </video>
         ) : null}
       </div>

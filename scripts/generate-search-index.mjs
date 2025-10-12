@@ -1,5 +1,4 @@
 // scripts/generate-search-index.mjs
-
 import fs from "node:fs/promises";
 import path from "node:path";
 import { JSDOM } from "jsdom";
@@ -48,32 +47,21 @@ function htmlToText(html) {
 
 /** Greek-insensitive folding (remove diacritics, normalize sigmas, lowercase) */
 function foldGreek(str = "") {
-  // NFD split + remove combining marks
   let s = str.normalize("NFD").replace(/\p{M}+/gu, "");
-  // Normalize final sigma and regular sigma
   s = s.replace(/ς/g, "σ");
-  // Lowercase
   s = s.toLowerCase();
-  // Collapse spaces
   return s.replace(/\s+/g, " ").trim();
 }
 
 /** Heuristic extractor for TSX/JSX/TS/JS files – keep visible text between tags */
 function extractTextFromTsx(source) {
   let s = source
-    // strip imports/exports and comments
     .replace(/^\s*import[\s\S]*?;$/gm, " ")
     .replace(/^\s*export[\s\S]*?;$/gm, " ")
     .replace(/\/\*[\s\S]*?\*\//g, " ")
     .replace(/\/\/[^\n\r]*/g, " ");
-
-  // remove JSX/TSX expressions {...}
   s = s.replace(/\{[\s\S]*?\}/g, " ");
-
-  // replace tags with spaces, keep inner text
   s = s.replace(/<[^>]+>/g, " ");
-
-  // light entity decode
   s = s
     .replace(/&nbsp;/g, " ")
     .replace(/&amp;/g, "&")
@@ -81,16 +69,13 @@ function extractTextFromTsx(source) {
     .replace(/&gt;/g, ">")
     .replace(/&#39;/g, "'")
     .replace(/&quot;/g, '"');
-
   return s.replace(/\s+/g, " ").trim();
 }
 
 /** Try to guess a title from source when we don't have <title>/<h1> */
 function guessTitleFromSource(src, fallbackUrl = "") {
-  // look for a heading-ish string
   const m = src.match(/<h1[^>]*>([^<]{3,200})<\/h1>/i);
   if (m) return m[1].replace(/\s+/g, " ").trim();
-  // fallback to path
   return fallbackUrl || "Untitled";
 }
 
@@ -103,9 +88,7 @@ async function buildPages() {
   console.log(`App page files found: ${files.length}`);
   if (files.length) {
     console.log("First few app pages:");
-    files
-      .slice(0, 8)
-      .forEach((f) => console.log("  -", path.relative(ROOT, f)));
+    files.slice(0, 8).forEach((f) => console.log("  -", path.relative(ROOT, f)));
   }
 
   const items = [];
@@ -126,7 +109,6 @@ async function buildPages() {
       title = t.title || guessTitleFromSource(src, url);
       body = t.body;
     } else {
-      // tsx/jsx/js/ts => strip code/JSX and keep visible text
       title = guessTitleFromSource(src, url);
       body = extractTextFromTsx(src);
     }
@@ -140,7 +122,6 @@ async function buildPages() {
       title,
       excerpt,
       tags: [],
-      // folded fields for accent-insensitive search
       titleFold: foldGreek(title),
       bodyFold: foldGreek(body),
       excerptFold: foldGreek(excerpt),
@@ -152,10 +133,7 @@ async function buildPages() {
 
 /** Build items for public/docs/*.html */
 async function buildDocs() {
-  const exists = await fs
-    .access(DOCS_DIR)
-    .then(() => true)
-    .catch(() => false);
+  const exists = await fs.access(DOCS_DIR).then(() => true).catch(() => false);
   if (!exists) return [];
 
   const files = await glob("**/*.html", { cwd: DOCS_DIR, nodir: true });
@@ -169,7 +147,7 @@ async function buildDocs() {
     const { title: t, body: b } = htmlToText(html);
     const url = `/docs/${rel.replace(/\\/g, "/")}`;
     const title = t || rel;
-    const body = b.slice(0, 8000); // keep it sane
+    const body = b.slice(0, 8000);
     const excerpt = body.slice(0, 500);
 
     items.push({
@@ -178,7 +156,6 @@ async function buildDocs() {
       url,
       title,
       body,
-      // folded fields for accent-insensitive search
       titleFold: foldGreek(title),
       bodyFold: foldGreek(body),
       excerptFold: foldGreek(excerpt),
@@ -196,22 +173,16 @@ async function main() {
   const docs = await buildDocs();
   const all = [...pages, ...docs];
 
-  async function main() {
-  const pages = await buildPages();
-  const docs = await buildDocs();
-  const all = [...pages, ...docs];
-
   console.log(`Pages indexed: ${pages.length}`);
   console.log(`Docs indexed:  ${docs.length}`);
 
-  // --- expand dynamic routes -------------------------------------------------
-  // Hardcode your dynamic video slugs here (pulling from content/videos.ts
-  // would require TS support in this .mjs script, so we list slugs manually).
+  // --- expand dynamic routes ---------------------------------------------
+  // If you add more videos, extend this array:
   const dynamicVideos = [
     { slug: "malakia", title: "περί μαλακίας • on callousness" },
   ];
 
-  // If the script picked up /videos/[slug], use it as a template; otherwise use a blank base.
+  // Use the placeholder as a template if present; else use a minimal base
   const videosTemplate = all.find(i => i.url === "/videos/[slug]") ?? {
     type: "page",
     excerpt: "",
@@ -223,7 +194,7 @@ async function main() {
     tagsFold: [],
   };
 
-  // Build concrete entries for each video slug
+  // Create concrete entries, e.g. /videos/malakia
   const expandedVideoItems = dynamicVideos.map(v => {
     const url = `/videos/${v.slug}`;
     return {
@@ -231,32 +202,19 @@ async function main() {
       id: `page:videos/${v.slug}`,
       url,
       title: v.title || url,
-      // keep folds consistent for search
       titleFold: foldGreek(v.title || url),
-      // Optionally enrich:
-      // bodyFold: foldGreek((videosTemplate.body ?? "") + " aa6 αα6"),
-      // excerptFold: foldGreek((videosTemplate.excerpt ?? "")),
     };
   });
 
-  // Remove the placeholder entry `/videos/[slug]` if it exists
+  // Drop the placeholder /videos/[slug] entry (if present)
   const withoutPlaceholders = all.filter(i => i.url !== "/videos/[slug]");
 
-  // Final list the search should use
+  // Final output for the index
   const finalItems = [...withoutPlaceholders, ...expandedVideoItems];
 
   await fs.mkdir(PUBLIC_DIR, { recursive: true });
   await fs.writeFile(OUT_FILE, JSON.stringify(finalItems, null, 2), "utf8");
   console.log(`✅ Wrote ${finalItems.length} items to ${path.relative(ROOT, OUT_FILE)}`);
-}
-
-
-  console.log(`Pages indexed: ${pages.length}`);
-  console.log(`Docs indexed:  ${docs.length}`);
-
-  await fs.mkdir(PUBLIC_DIR, { recursive: true });
-  await fs.writeFile(OUT_FILE, JSON.stringify(finalItems, null, 2), "utf8");
-  console.log(`✅ Wrote ${all.length} items to ${path.relative(ROOT, OUT_FILE)}`);
 }
 
 main().catch((err) => {

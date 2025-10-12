@@ -16,8 +16,8 @@ export const videos: Video[] = [
   {
     slug: "malakia",
     title: "περί μαλακίας • on callousness",
-    youtubeId: "uukPFUzU_8s",  // from your URL
-    start: 6,                   // from &t=6s
+    youtubeId: "uukPFUzU_8s",
+    start: 6,
     description: "—",
     date: "2025-10-11",
   },

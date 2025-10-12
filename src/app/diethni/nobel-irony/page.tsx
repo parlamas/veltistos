@@ -87,7 +87,7 @@ export default function Page() {
               <span lang="en" className="block text-zinc-600">{titleEN}</span>
             </h1>
             <p className="text-sm text-zinc-500">
-              <span data-tts-skip hidden>α4 • a4</span>
+              <span data-tts-skip hidden>αα4 • aa4</span>
             </p>
           </div>
         </header>

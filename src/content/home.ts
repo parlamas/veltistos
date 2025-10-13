@@ -87,7 +87,7 @@ export const homeSlots: HomeSlots = {
     {
       author: "Ισίδωρος Παρλαμάς<br />Isidoros Parlamas",
       href: "/isidoros-parlamas",
-      title: "Μουνιχία2<br />Mounichia",
+      title: "Μουνιχία<br />Mounichia",
       img: "/mouni/mounixia-kastella.jpg",
       excerpt: "...............",
       date: '<span class="r">Σωκρατικό Ημερολόγιο:</span><br />13 Πυανεψιώνος, 2495<br /><span class="r">Socratic Calendar:</span><br />Pyanepsion 13, 2495<br /><span class="r">Γρηγοριανό/Gregorian</span><br />Οκτ./Oct. 13, 2025',

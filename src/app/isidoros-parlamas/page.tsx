@@ -14,6 +14,9 @@ export default function IsidorosParlamasIndex() {
   return (
     <main className="prose prose-zinc max-w-5xl mx-auto">
       <h1>Ισίδωρος Παρλαμάς</h1>
+                  <p className="text-sm text-zinc-500">
+              <span data-tts-skip hidden>αα7 • aa7</span>
+            </p>
       <ul className="not-prose grid gap-4 md:grid-cols-2">
         {items.map((a) => (
           <li key={a.slug} className="border rounded-md p-3">

@@ -17,7 +17,7 @@ export const ipArticles: IpArticle[] = [
     slug: "my-first-article-2025-10-12",
     title: "μόνος, μούνος, ο όνυξ…",
     date: "Οκτ./Oct. 13, 2025",
-    thumbnail: "/mouni/munixia-kastella.jpg", // in /public/isidoros/
+    thumbnail: "/mouni/mounixia-kastella.jpg", // in /public/isidoros/
     excerpt: "Μια σύντομη εισαγωγή στο μούνυχος και τη Μουνιχία.",
     body: `...`, // your HTML/MDX-ish string
     tags: ["Opinion"],

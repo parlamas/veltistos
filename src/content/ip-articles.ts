@@ -9,7 +9,20 @@ export type IpArticle = {
   tags?: string[];
 };
 
+
+
 export const ipArticles: IpArticle[] = [
+
+  {
+    slug: "my-first-article-2025-10-12",
+    title: "μόνος, μούνος, ο όνυξ…",
+    date: "Οκτ./Oct. 13, 2025",
+    thumbnail: "/isidoros/munichia-thumb.jpg", // in /public/isidoros/
+    excerpt: "Μια σύντομη εισαγωγή στο μούνυχος και τη Μουνιχία.",
+    body: `...`, // your HTML/MDX-ish string
+    tags: ["Opinion"],
+  },
+
   {
     slug: "my-first-article-2025-10-12",
     title: "μόνος, μούνος, ο όνυξ, του όνυχος, μούνυχος, μουνιχία, μουνιχιών, μουν*ί, monos, munos, ho onyx, tou onychos, munichia, munichion, mouni",

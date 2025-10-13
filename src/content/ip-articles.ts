@@ -16,6 +16,7 @@ export const ipArticles: IpArticle[] = [
     date: "Οκτ./Oct. 13, 2025",
     body: `
       
+    <span hidden>aa7 αα7</span>
     <center>
     <div style="width:90%; text-align:justify; line-height:1.6; font-size:13pt;">
     <img src="/mouni/hoofm.png">

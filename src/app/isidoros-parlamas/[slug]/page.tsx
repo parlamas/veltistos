@@ -25,10 +25,12 @@ export default function IpArticlePage({ params }: { params: { slug: string } }) 
 
   return (
     <article className="prose prose-zinc max-w-3xl mx-auto">
-      <h1>{a.title}</h1>
+      <h2>{a.title}</h2>
       {a.date && <p className="text-sm text-zinc-600">{a.date}</p>}
       {a.thumbnail ? <img src={a.thumbnail} alt="" /> : null}
       <div dangerouslySetInnerHTML={{ __html: a.body }} />
+      
+
     </article>
   );
 }

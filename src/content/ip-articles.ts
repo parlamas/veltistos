@@ -12,7 +12,7 @@ export type IpArticle = {
 export const ipArticles: IpArticle[] = [
   {
     slug: "my-first-article-2025-10-12",
-    title: "μόνος, μούνος, ο όνυξ, του όνυχος, μούνυχος, μουνιχία, μουνιχιών, μουνί, monos, munos, ho onyx, tou onychos, munichia, munichion, mouni",
+    title: "μόνος, μούνος, ο όνυξ, του όνυχος, μούνυχος, μουνιχία, μουνιχιών, μουν*ί, monos, munos, ho onyx, tou onychos, munichia, munichion, mouni",
     date: "Οκτ./Oct. 13, 2025",
     body: `
       
